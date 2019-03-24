@@ -1,0 +1,30 @@
+{
+	"name": "wireless-control-desltop",
+	"description": "Wireless Control lets you control 433MHz sockets within Nextcloud while running on a raspberry",
+	"version": "0.1.0",
+	"author": {
+		"name": "Jonas Schubert",
+		"email": "guepardoapps@gmail.com"
+	},
+	"license": "MIT",
+	"private": true,
+	"homepage": "https://github.com/LucaHome/WirelessControl-Desktop",
+	"main": "app.js",
+	"scripts": {
+		"start": "electron ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:LucaHome/WirelessControl-Desktop.git"
+	},
+	"keywords": [
+		"nextcloud",
+		"wirelesscontrol",
+		"433MHz"
+	],
+	"bugs": "https://github.com/LucaHome/WirelessControl-Desktop/issues",
+	"contributors": [],
+	"devDependencies": {
+		"electron": "4.1.1"
+	}
+}
