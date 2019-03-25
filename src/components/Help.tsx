@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { ListGroup, ListGroupItem } from "reactstrap";
+import { IHelpProps } from "../props/IHelpProps";
 import BrowserListItem from "./BrowserListItem";
 
-export default class Help extends React.Component {
+export default class Help extends React.Component<IHelpProps, any> {
 
-    constructor(props: any) {
+    constructor(props: IHelpProps) {
         super(props);
     }
 

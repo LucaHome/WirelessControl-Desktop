@@ -1,12 +1,13 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { Jumbotron } from "reactstrap";
+import { IHomeProps } from "../props/IHomeProps";
 
 import "../../styles/main.scss";
 
-export default class Home extends React.Component {
+export default class Home extends React.Component<IHomeProps, any> {
 
-    constructor(props: any) {
+    constructor(props: IHomeProps) {
         super(props);
     }
 
