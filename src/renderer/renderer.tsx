@@ -1,11 +1,8 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
-
-import "./style.scss";
+import App from "../components/App";
 
 ReactDom.render(
-    <div>
-        <h4>Welcome to Electron, Typescript and React for WirelessControl</h4>
-    </div>,
+    <App />,
     document.getElementById("app"),
 );

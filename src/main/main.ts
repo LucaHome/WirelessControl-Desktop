@@ -4,6 +4,13 @@ import * as url from "url";
 
 let mainWindow: Electron.BrowserWindow;
 
+let development: boolean = false;
+if (process.defaultApp
+  || /[\\/]electron-prebuilt[\\/]/.test(process.execPath)
+  || /[\\/]electron[\\/]/.test(process.execPath)) {
+  development = true;
+}
+
 function createWindow(): void {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -25,8 +32,10 @@ function createWindow(): void {
     }),
   );
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // Open the DevTools if development
+  if (development) {
+    mainWindow.webContents.openDevTools();
+  }
 
   // Emitted when the window is closed.
   mainWindow.on("closed", () => {
