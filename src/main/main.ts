@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from "electron";
 import * as path from "path";
-import { environment } from "../environment/environment";
+import * as url from "url";
 
 let mainWindow: Electron.BrowserWindow;
 
@@ -16,13 +16,17 @@ function createWindow(): void {
   });
 
   // and load the index.html of the app.
-  const indexPath = path.join(__dirname, "../index.html");
-  mainWindow.loadFile(indexPath);
+  const indexPath = path.join(__dirname, "./index.html");
+  mainWindow.loadURL(
+    url.format({
+      pathname: indexPath,
+      protocol: "file:",
+      slashes: true,
+    }),
+  );
 
-  if (environment.debug) {
-    // Open the DevTools.
-    mainWindow.webContents.openDevTools();
-  }
+  // Open the DevTools.
+  mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on("closed", () => {
@@ -36,9 +40,7 @@ function createWindow(): void {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on("ready", () => {
-  createWindow();
-});
+app.on("ready", createWindow);
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
