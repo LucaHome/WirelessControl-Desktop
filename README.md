@@ -9,7 +9,7 @@ Electron client to remotely control wireless sockets and switches using Nextclou
 [![Version](https://img.shields.io/badge/version-0.1.0-yellow.svg)](./)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-[![Typescript](https://img.shields.io/badge/lang-ElectronJs-yellow.svg)](https://www.typescriptlang.org/)
+[![Typescript](https://img.shields.io/badge/lang-Typescript-yellow.svg)](https://www.typescriptlang.org/)
 [![ElectronJs](https://img.shields.io/badge/lang-ElectronJs-blue.svg)](https://electronjs.org/)
 [![ReactJs](https://img.shields.io/badge/lang-ReactJs-darkblue.svg)](https://reactjs.org/)
 
