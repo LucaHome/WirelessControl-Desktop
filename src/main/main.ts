@@ -14,6 +14,8 @@ if (process.defaultApp
 function createWindow(): void {
   // Create the browser window.
   mainWindow = new BrowserWindow({
+    autoHideMenuBar: true,
+    darkTheme: true,
     height: 675,
     minHeight: 450,
     minWidth: 800,
