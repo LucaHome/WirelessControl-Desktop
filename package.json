@@ -9,9 +9,12 @@
 	"license": "MIT",
 	"private": true,
 	"homepage": "https://github.com/LucaHome/WirelessControl-Desktop",
-	"main": "app.js",
 	"scripts": {
-		"start": "electron ."
+		"build": "tsc",
+		"watch": "tsc -w",
+		"lint": "tslint -c tslint.json -p tsconfig.json",
+		"build_start": "npm run build && electron ./dist/main.js",
+		"start": "electron ./dist/main.js"
 	},
 	"repository": {
 		"type": "git",
@@ -25,6 +28,8 @@
 	"bugs": "https://github.com/LucaHome/WirelessControl-Desktop/issues",
 	"contributors": [],
 	"devDependencies": {
-		"electron": "4.1.1"
+		"electron": "4.1.1",
+		"tslint": "5.14.0",
+		"typescript": "3.3.4000"
 	}
 }
