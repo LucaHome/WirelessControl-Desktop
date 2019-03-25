@@ -2,9 +2,16 @@
 
 Electron client to remotely control wireless sockets and switches using Nextcloud server.
 
-[![ElectronJs](https://img.shields.io/badge/lang-ElectronJs-darkgray.svg)](https://electronjs.org/)
-[![Build](https://img.shields.io/badge/build-WIP-yellow.svg)](./)
-[![Version](https://img.shields.io/badge/version-x.y.z-yellow.svg)](./)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Donate: PayPal](https://img.shields.io/badge/paypal-donate-blue.svg)](https://www.paypal.me/GuepardoApps)
+
+[![Build](https://img.shields.io/badge/build-Succeed-green.svg)](./)
+[![Version](https://img.shields.io/badge/version-0.1.0-yellow.svg)](./)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+
+[![Typescript](https://img.shields.io/badge/lang-ElectronJs-yellow.svg)](https://www.typescriptlang.org/)
+[![ElectronJs](https://img.shields.io/badge/lang-ElectronJs-blue.svg)](https://electronjs.org/)
+[![ReactJs](https://img.shields.io/badge/lang-ReactJs-darkblue.svg)](https://reactjs.org/)
 
 ## Screenshots
 
