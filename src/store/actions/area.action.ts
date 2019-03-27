@@ -1,9 +1,9 @@
 import { Area } from "../../models";
 import {
-    AREA_ADD, AREA_ADD_FAIL, AREA_ADD_ON_SERVER, AREA_ADD_SUCCESSFUL,
-    AREA_DELETE, AREA_DELETE_FAIL, AREA_DELETE_ON_SERVER, AREA_DELETE_SUCCESSFUL,
+    AREA_ADD, AREA_ADD_FAIL, AREA_ADD_SUCCESSFUL,
+    AREA_DELETE, AREA_DELETE_FAIL, AREA_DELETE_SUCCESSFUL,
     AREA_SELECT, AREA_SELECT_FAIL, AREA_SELECT_SUCCESSFUL,
-    AREA_UPDATE, AREA_UPDATE_FAIL, AREA_UPDATE_ON_SERVER, AREA_UPDATE_SUCCESSFUL,
+    AREA_UPDATE, AREA_UPDATE_FAIL, AREA_UPDATE_SUCCESSFUL,
     AREAS_LOAD, AREAS_LOAD_FAIL, AREAS_LOAD_SUCCESSFUL,
 } from "../action-types";
 
@@ -57,11 +57,6 @@ export const areaAdd = (area: Area) => ({
     type: AREA_ADD,
 });
 
-export const areaAddOnServer = () => ({
-    payload: {},
-    type: AREA_ADD_ON_SERVER,
-});
-
 export const areaAddFail = (error: any) => ({
     payload: {
         area: undefined,
@@ -86,11 +81,6 @@ export const areaUpdate = (area: Area) => ({
     type: AREA_UPDATE,
 });
 
-export const areaUpdateOnServer = () => ({
-    payload: {},
-    type: AREA_UPDATE_ON_SERVER,
-});
-
 export const areaUpdateFail = (error: any) => ({
     payload: {
         area: undefined,
@@ -113,11 +103,6 @@ export const areaDelete = (area: Area) => ({
         error: undefined,
     },
     type: AREA_DELETE,
-});
-
-export const areaDeleteOnServer = () => ({
-    payload: {},
-    type: AREA_DELETE_ON_SERVER,
 });
 
 export const areaDeleteFail = (error: any) => ({
