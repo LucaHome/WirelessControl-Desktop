@@ -13,8 +13,6 @@ const initialState: NextCloudCredentialsStore = {
 export default function(state: NextCloudCredentialsStore = initialState, action: any): NextCloudCredentialsStore {
     switch (action.type) {
         case NEXT_CLOUD_CREDENTIALS_LOGIN: {
-            // TODO make API call
-            // const nextCloudCredentials: NextCloudCredentials = action.payload.nextCloudCredentials;
             return {
                 ...state,
                 loading: true,
