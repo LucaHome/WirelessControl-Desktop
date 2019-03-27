@@ -1,10 +1,15 @@
 # TODO
 
 - [ ] Display content
+    - [ ] login possibility
     - [ ] areas
     - [ ] wireless sockets
     - [ ] periodic tasks
+    - [ ] settings
+        - [ ] change credentials
+        - [ ] change theme
 - [ ] Load content (use actions)
+    - [x] credentials
     - [ ] areas
     - [ ] wireless sockets
     - [ ] periodic tasks
