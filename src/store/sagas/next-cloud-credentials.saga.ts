@@ -35,7 +35,7 @@ function* login(action) {
                 const b = 5;
             });
     } catch (e) {
-        put({ type: NEXT_CLOUD_CREDENTIALS_LOGIN_FAIL, payload: { error: `Unknown error: ${e.message}` } });
+        yield put({ type: NEXT_CLOUD_CREDENTIALS_LOGIN_FAIL, payload: { error: `Unknown error: ${e.message}` } });
     }
 }
 
