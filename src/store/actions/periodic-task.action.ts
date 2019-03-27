@@ -1,9 +1,9 @@
 import { PeriodicTask } from "../../models";
 import {
-    PERIODIC_TASK_ADD, PERIODIC_TASK_ADD_FAIL, PERIODIC_TASK_ADD_SUCCESSFUL,
-    PERIODIC_TASK_DELETE, PERIODIC_TASK_DELETE_FAIL, PERIODIC_TASK_DELETE_SUCCESSFUL,
+    PERIODIC_TASK_ADD, PERIODIC_TASK_ADD_FAIL, PERIODIC_TASK_ADD_ON_SERVER, PERIODIC_TASK_ADD_SUCCESSFUL,
+    PERIODIC_TASK_DELETE, PERIODIC_TASK_DELETE_FAIL, PERIODIC_TASK_DELETE_ON_SERVER, PERIODIC_TASK_DELETE_SUCCESSFUL,
     PERIODIC_TASK_SELECT, PERIODIC_TASK_SELECT_FAIL, PERIODIC_TASK_SELECT_SUCCESSFUL,
-    PERIODIC_TASK_UPDATE, PERIODIC_TASK_UPDATE_FAIL, PERIODIC_TASK_UPDATE_SUCCESSFUL,
+    PERIODIC_TASK_UPDATE, PERIODIC_TASK_UPDATE_FAIL, PERIODIC_TASK_UPDATE_ON_SERVER, PERIODIC_TASK_UPDATE_SUCCESSFUL,
     PERIODIC_TASKS_LOAD, PERIODIC_TASKS_LOAD_FAIL, PERIODIC_TASKS_LOAD_SUCCESSFUL,
 } from "../action-types";
 
@@ -57,6 +57,14 @@ export const periodicTaskAdd = (periodicTask: PeriodicTask) => ({
     type: PERIODIC_TASK_ADD,
 });
 
+export const periodicTaskAddOnServer = (periodicTask: PeriodicTask) => ({
+    payload: {
+        error: undefined,
+        periodicTask,
+    },
+    type: PERIODIC_TASK_ADD_ON_SERVER,
+});
+
 export const periodicTaskAddFail = (error: any) => ({
     payload: {
         error,
@@ -81,6 +89,14 @@ export const periodicTaskUpdate = (periodicTask: PeriodicTask) => ({
     type: PERIODIC_TASK_UPDATE,
 });
 
+export const periodicTaskUpdateOnServer = (periodicTask: PeriodicTask) => ({
+    payload: {
+        error: undefined,
+        periodicTask,
+    },
+    type: PERIODIC_TASK_UPDATE_ON_SERVER,
+});
+
 export const periodicTaskUpdateFail = (error: any) => ({
     payload: {
         error,
@@ -103,6 +119,14 @@ export const periodicTaskDelete = (periodicTask: PeriodicTask) => ({
         periodicTask,
     },
     type: PERIODIC_TASK_DELETE,
+});
+
+export const periodicTaskDeleteOnServer = (periodicTask: PeriodicTask) => ({
+    payload: {
+        error: undefined,
+        periodicTask,
+    },
+    type: PERIODIC_TASK_DELETE_ON_SERVER,
 });
 
 export const periodicTaskDeleteFail = (error: any) => ({
