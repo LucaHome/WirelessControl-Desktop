@@ -1,11 +1,25 @@
 import axios from "axios";
-import { ApiResponse, Entity } from "../models";
+import { ApiResponse, Entity, NextCloudCredentials } from "../models";
 
-const baseUrl: string = "/index.php/apps/wirelesscontrol/api/v1/";
-const headers: any = { "Content-Type": "application/json" };
+const apiUrl: string = "/index.php/apps/wirelesscontrol/api/v1/";
 
-export const get = <K>(url: string): Promise<ApiResponse<K>> => {
-    return axios(`${baseUrl}${url}`)
+const createHeader = (nextCloudCredentials: NextCloudCredentials): any => {
+    const encoded = encodeURIComponent(`${nextCloudCredentials.userName}:${nextCloudCredentials.passPhrase}`);
+    const unescaped = unescape(encoded);
+    const authorization = "Basic " + btoa(unescaped);
+
+    return {
+        "Content-Type": "application/json",
+        "authorization": authorization,
+    };
+};
+
+export const get = <K>(url: string, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
+    return axios({
+        headers: createHeader(nextCloudCredentials),
+        method: "get",
+        url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}`,
+    })
         .then((response: any) => {
             return Promise.resolve(response.data);
         })
@@ -16,13 +30,13 @@ export const get = <K>(url: string): Promise<ApiResponse<K>> => {
         });
 };
 
-export const post = <T extends Entity, K>(url: string, data: T): Promise<ApiResponse<K>> => {
+export const post = <T extends Entity, K>(url: string, data: T, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
     delete data["id"];
     return axios({
+        data: data,
+        headers: createHeader(nextCloudCredentials),
         method: "post",
-        url: `${baseUrl}${url}`,
-        data: data,
-        headers: headers
+        url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}`,
     })
         .then((response) => {
             return Promise.resolve(response.data);
@@ -34,12 +48,12 @@ export const post = <T extends Entity, K>(url: string, data: T): Promise<ApiResp
         });
 };
 
-export const put = <T extends Entity, K>(url: string, data: T): Promise<ApiResponse<K>> => {
+export const put = <T extends Entity, K>(url: string, data: T, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
     return axios({
+        data: data,
+        headers: createHeader(nextCloudCredentials),
         method: "put",
-        url: `${baseUrl}${url}/${data.id}`,
-        data: data,
-        headers: headers
+        url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}/${data.id}`,
     })
         .then((response) => {
             return Promise.resolve(response.data);
@@ -51,10 +65,11 @@ export const put = <T extends Entity, K>(url: string, data: T): Promise<ApiRespo
         });
 };
 
-export const destroy = <K>(url: string, id: number): Promise<ApiResponse<K>> => {
+export const destroy = <K>(url: string, id: number, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
     return axios({
+        headers: createHeader(nextCloudCredentials),
         method: "delete",
-        url: `${baseUrl}${url}/${id}`
+        url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}`,
     })
         .then((response) => {
             return Promise.resolve(response.data);
