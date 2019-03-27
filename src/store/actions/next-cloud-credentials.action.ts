@@ -4,8 +4,10 @@ import {
     NEXT_CLOUD_CREDENTIALS_LOGOUT, NEXT_CLOUD_CREDENTIALS_LOGOUT_FAIL, NEXT_CLOUD_CREDENTIALS_LOGOUT_SUCCESSFUL,
 } from "../action-types";
 
-export const nextCloudCredentialsLogin = () => ({
-    payload: {},
+export const nextCloudCredentialsLogin = (nextCloudCredentials: NextCloudCredentials) => ({
+    payload: {
+        nextCloudCredentials,
+    },
     type: NEXT_CLOUD_CREDENTIALS_LOGIN,
 });
 

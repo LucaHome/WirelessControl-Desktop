@@ -1,23 +1,128 @@
 import { PeriodicTask } from "../../models";
-import { ADD_PERIODIC_TASK, DELETE_PERIODIC_TASK, LOAD_PERIODIC_TASKS, SELECT_PERIODIC_TASK, UPDATE_PERIODIC_TASK } from "../action-types";
+import {
+    PERIODIC_TASK_ADD, PERIODIC_TASK_ADD_FAIL, PERIODIC_TASK_ADD_SUCCESSFUL,
+    PERIODIC_TASK_DELETE, PERIODIC_TASK_DELETE_FAIL, PERIODIC_TASK_DELETE_SUCCESSFUL,
+    PERIODIC_TASK_SELECT, PERIODIC_TASK_SELECT_FAIL, PERIODIC_TASK_SELECT_SUCCESSFUL,
+    PERIODIC_TASK_UPDATE, PERIODIC_TASK_UPDATE_FAIL, PERIODIC_TASK_UPDATE_SUCCESSFUL,
+    PERIODIC_TASKS_LOAD, PERIODIC_TASKS_LOAD_FAIL, PERIODIC_TASKS_LOAD_SUCCESSFUL,
+} from "../action-types";
 import { PeriodicTaskStore } from "../models";
 
 const initialState: PeriodicTaskStore = {
+    loading: false,
     periodicTaskSelected: undefined,
     periodicTasks: [],
 };
 
 export default function(state: PeriodicTaskStore = initialState, action: any): PeriodicTaskStore {
     switch (action.type) {
-        case ADD_PERIODIC_TASK: {
+        case PERIODIC_TASKS_LOAD: {
+            // TODO make API call
+            // const periodicTask: PeriodicTask = action.payload.periodicTask;
+            return {
+                ...state,
+                loading: true,
+            };
+        }
+        case PERIODIC_TASKS_LOAD_FAIL: {
+            return {
+                ...state,
+                loading: false,
+            };
+        }
+        case PERIODIC_TASKS_LOAD_SUCCESSFUL: {
+            const periodicTasks: PeriodicTask[] = action.payload.list;
+            let periodicTaskSelected = state.periodicTaskSelected;
+            if (!periodicTaskSelected || periodicTasks.filter((x: PeriodicTask) => x.id === periodicTaskSelected.id).length === 0) {
+                periodicTaskSelected = periodicTasks[0];
+            }
+            return {
+                ...state,
+                loading: false,
+                periodicTaskSelected,
+                periodicTasks,
+            };
+        }
+        case PERIODIC_TASK_SELECT: {
+            return {
+                ...state,
+            };
+        }
+        case PERIODIC_TASK_SELECT_FAIL: {
+            return {
+                ...state,
+            };
+        }
+        case PERIODIC_TASK_SELECT_SUCCESSFUL: {
             const periodicTask: PeriodicTask = action.payload.periodicTask;
             return {
                 ...state,
                 periodicTaskSelected: periodicTask,
+            };
+        }
+        case PERIODIC_TASK_ADD: {
+            // TODO make API call
+            // const periodicTask: PeriodicTask = action.payload.periodicTask;
+            return {
+                ...state,
+                loading: true,
+            };
+        }
+        case PERIODIC_TASK_ADD_FAIL: {
+            return {
+                ...state,
+                loading: false,
+            };
+        }
+        case PERIODIC_TASK_ADD_SUCCESSFUL: {
+            const periodicTask: PeriodicTask = action.payload.periodicTask;
+            return {
+                ...state,
+                loading: false,
+                periodicTaskSelected: periodicTask,
                 periodicTasks: [...state.periodicTasks, periodicTask],
             };
         }
-        case DELETE_PERIODIC_TASK: {
+        case PERIODIC_TASK_UPDATE: {
+            // TODO make API call
+            // const periodicTask: PeriodicTask = action.payload.periodicTask;
+            return {
+                ...state,
+                loading: true,
+            };
+        }
+        case PERIODIC_TASK_UPDATE_FAIL: {
+            return {
+                ...state,
+                loading: false,
+            };
+        }
+        case PERIODIC_TASK_UPDATE_SUCCESSFUL: {
+            const periodicTask: PeriodicTask = action.payload.periodicTask;
+            const periodicTasks = state.periodicTasks;
+            const index = periodicTasks.map((x: PeriodicTask) => x.id).indexOf(periodicTask.id);
+            periodicTasks[index] = periodicTask;
+            return {
+                ...state,
+                loading: false,
+                periodicTasks,
+            };
+        }
+        case PERIODIC_TASK_DELETE: {
+            // TODO make API call
+            // const periodicTask: PeriodicTask = action.payload.periodicTask;
+            return {
+                ...state,
+                loading: true,
+            };
+        }
+        case PERIODIC_TASK_DELETE_FAIL: {
+            return {
+                ...state,
+                loading: false,
+            };
+        }
+        case PERIODIC_TASK_DELETE_SUCCESSFUL: {
             const periodicTask: PeriodicTask = action.payload.periodicTask;
             const periodicTasks = state.periodicTasks;
             periodicTasks.splice(periodicTasks.indexOf(periodicTask), 1);
@@ -27,40 +132,13 @@ export default function(state: PeriodicTaskStore = initialState, action: any): P
             }
             return {
                 ...state,
+                loading: false,
                 periodicTaskSelected,
                 periodicTasks,
             };
         }
-        case LOAD_PERIODIC_TASKS: {
-            const periodicTasks: PeriodicTask[] = action.payload.periodicTasks;
-            let periodicTaskSelected = state.periodicTaskSelected;
-            if (!periodicTaskSelected || periodicTasks.filter((x: PeriodicTask) => x.id === periodicTaskSelected.id).length === 0) {
-                periodicTaskSelected = periodicTasks[0];
-            }
-            return {
-                ...state,
-                periodicTaskSelected,
-                periodicTasks,
-            };
-        }
-        case SELECT_PERIODIC_TASK: {
-            const periodicTask: PeriodicTask = action.payload.periodicTask;
-            return {
-                ...state,
-                periodicTaskSelected: periodicTask,
-            };
-        }
-        case UPDATE_PERIODIC_TASK: {
-            const periodicTask: PeriodicTask = action.payload.periodicTask;
-            const periodicTasks = state.periodicTasks;
-            const index = periodicTasks.map((x: PeriodicTask) => x.id).indexOf(periodicTask.id);
-            periodicTasks[index] = periodicTask;
-            return {
-                ...state,
-                periodicTasks,
-            };
-        }
-        default:
+        default: {
             return state;
+        }
     }
 }

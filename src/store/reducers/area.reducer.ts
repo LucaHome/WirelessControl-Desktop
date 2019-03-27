@@ -1,23 +1,128 @@
 import { Area } from "../../models";
-import { ADD_AREA, DELETE_AREA, LOAD_AREAS, SELECT_AREA, UPDATE_AREA } from "../action-types";
+import {
+    AREA_ADD, AREA_ADD_FAIL, AREA_ADD_SUCCESSFUL,
+    AREA_DELETE, AREA_DELETE_FAIL, AREA_DELETE_SUCCESSFUL,
+    AREA_SELECT, AREA_SELECT_FAIL, AREA_SELECT_SUCCESSFUL,
+    AREA_UPDATE, AREA_UPDATE_FAIL, AREA_UPDATE_SUCCESSFUL,
+    AREAS_LOAD, AREAS_LOAD_FAIL, AREAS_LOAD_SUCCESSFUL,
+} from "../action-types";
 import { AreaStore } from "../models";
 
 const initialState: AreaStore = {
     areaSelected: undefined,
     areas: [],
+    loading: false,
 };
 
 export default function(state: AreaStore = initialState, action: any): AreaStore {
     switch (action.type) {
-        case ADD_AREA: {
+        case AREAS_LOAD: {
+            // TODO make API call
+            // const area: Area = action.payload.area;
+            return {
+                ...state,
+                loading: true,
+            };
+        }
+        case AREAS_LOAD_FAIL: {
+            return {
+                ...state,
+                loading: false,
+            };
+        }
+        case AREAS_LOAD_SUCCESSFUL: {
+            const areas: Area[] = action.payload.list;
+            let areaSelected = state.areaSelected;
+            if (!areaSelected || areas.filter((x: Area) => x.id === areaSelected.id).length === 0) {
+                areaSelected = areas[0];
+            }
+            return {
+                ...state,
+                areaSelected,
+                areas,
+                loading: false,
+            };
+        }
+        case AREA_SELECT: {
+            return {
+                ...state,
+            };
+        }
+        case AREA_SELECT_FAIL: {
+            return {
+                ...state,
+            };
+        }
+        case AREA_SELECT_SUCCESSFUL: {
+            const area: Area = action.payload.area;
+            return {
+                ...state,
+                areaSelected: area,
+            };
+        }
+        case AREA_ADD: {
+            // TODO make API call
+            // const area: Area = action.payload.area;
+            return {
+                ...state,
+                loading: true,
+            };
+        }
+        case AREA_ADD_FAIL: {
+            return {
+                ...state,
+                loading: false,
+            };
+        }
+        case AREA_ADD_SUCCESSFUL: {
             const area: Area = action.payload.area;
             return {
                 ...state,
                 areaSelected: area,
                 areas: [...state.areas, area],
+                loading: false,
             };
         }
-        case DELETE_AREA: {
+        case AREA_UPDATE: {
+            // TODO make API call
+            // const area: Area = action.payload.area;
+            return {
+                ...state,
+                loading: true,
+            };
+        }
+        case AREA_UPDATE_FAIL: {
+            return {
+                ...state,
+                loading: false,
+            };
+        }
+        case AREA_UPDATE_SUCCESSFUL: {
+            const area: Area = action.payload.area;
+            const areas = state.areas;
+            const index = areas.map((x: Area) => x.id).indexOf(area.id);
+            areas[index] = area;
+            return {
+                ...state,
+                areas,
+                loading: false,
+            };
+        }
+        case AREA_DELETE: {
+            // TODO make API call
+            // const area: Area = action.payload.area;
+            return {
+                ...state,
+                loading: true,
+            };
+        }
+        case AREA_DELETE_FAIL: {
+            return {
+                ...state,
+                loading: false,
+            };
+        }
+        case AREA_DELETE_SUCCESSFUL: {
             const area: Area = action.payload.area;
             const areas = state.areas;
             areas.splice(areas.indexOf(area), 1);
@@ -29,38 +134,11 @@ export default function(state: AreaStore = initialState, action: any): AreaStore
                 ...state,
                 areaSelected,
                 areas,
+                loading: false,
             };
         }
-        case LOAD_AREAS: {
-            const areas: Area[] = action.payload.areas;
-            let areaSelected = state.areaSelected;
-            if (!areaSelected || areas.filter((x: Area) => x.id === areaSelected.id).length === 0) {
-                areaSelected = areas[0];
-            }
-            return {
-                ...state,
-                areaSelected,
-                areas,
-            };
-        }
-        case SELECT_AREA: {
-            const area: Area = action.payload.area;
-            return {
-                ...state,
-                areaSelected: area,
-            };
-        }
-        case UPDATE_AREA: {
-            const area: Area = action.payload.area;
-            const areas = state.areas;
-            const index = areas.map((x: Area) => x.id).indexOf(area.id);
-            areas[index] = area;
-            return {
-                ...state,
-                areas,
-            };
-        }
-        default:
+        default: {
             return state;
+        }
     }
 }
