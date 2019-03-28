@@ -1,12 +1,12 @@
-import { put, takeEvery } from "redux-saga/effects";
+import { put } from "redux-saga/effects";
 import { NextCloudCredentials } from "../../models";
 import { get } from "../../services";
 import {
-    NEXT_CLOUD_CREDENTIALS_LOGIN, NEXT_CLOUD_CREDENTIALS_LOGIN_FAIL, NEXT_CLOUD_CREDENTIALS_LOGIN_SUCCESSFUL,
+    NEXT_CLOUD_CREDENTIALS_LOGIN_FAIL, NEXT_CLOUD_CREDENTIALS_LOGIN_SUCCESSFUL,
 } from "../action-types";
 
 // worker Saga: will be fired on NEXT_CLOUD_CREDENTIALS_LOGIN actions
-function* login(action) {
+export function* login(action) {
     try {
         const nextCloudCredentials: NextCloudCredentials = action.payload.nextCloudCredentials;
         yield get("ping", nextCloudCredentials)
@@ -38,16 +38,3 @@ function* login(action) {
         yield put({ type: NEXT_CLOUD_CREDENTIALS_LOGIN_FAIL, payload: { error: `Unknown error: ${e.message}` } });
     }
 }
-
-/*
-  Starts login on each dispatched NEXT_CLOUD_CREDENTIALS_LOGIN action.
-  - takeEvery: Does allow concurrent fetches
-  - takeLatest: Does not allow concurrent fetches of user. If "USER_FETCH_REQUESTED" gets
-  dispatched while a fetch is already pending, that pending fetch is cancelled
-  and only the latest one will be run.
-*/
-function* nextCloudCredentialsSaga() {
-    yield takeEvery(NEXT_CLOUD_CREDENTIALS_LOGIN, login);
-}
-
-export default nextCloudCredentialsSaga;
