@@ -3,11 +3,13 @@ import { NextCloudCredentials } from "../../models";
 import { get } from "../../services";
 import { nextCloudCredentialsLoginFail, nextCloudCredentialsLoginSuccessful } from "../actions";
 
+const subUrl: string = "ping";
+
 // worker Saga: will be fired on NEXT_CLOUD_CREDENTIALS_LOGIN actions
 export function* login(action) {
     try {
         const nextCloudCredentials: NextCloudCredentials = action.payload.nextCloudCredentials;
-        yield get("ping", nextCloudCredentials)
+        yield get(subUrl, nextCloudCredentials)
             .then((response: any) => { // response is of type: AxiosResponse<T = any>
                 switch (response.status) {
                     // 401 For invalid userName with message: CORS requires basic auth
