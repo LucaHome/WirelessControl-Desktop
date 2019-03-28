@@ -1,5 +1,6 @@
 # TODO
 
+- [ ] Store data
 - [ ] Display content
     - [ ] login possibility
     - [ ] areas
