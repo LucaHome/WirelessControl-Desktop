@@ -13,7 +13,7 @@ import { login } from "./next-cloud-credentials.saga";
     and only the latest one will be run.
  */
 
-function* wirelessControlSagas() {
+function* sagas() {
   // Starts loadAreas on each dispatched AREAS_LOAD action.
   yield takeEvery(AREAS_LOAD, loadAreas);
 
@@ -21,4 +21,4 @@ function* wirelessControlSagas() {
   yield takeEvery(NEXT_CLOUD_CREDENTIALS_LOGIN, login);
 }
 
-export default wirelessControlSagas;
+export default sagas;
