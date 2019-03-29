@@ -1,6 +1,6 @@
 import { put } from "redux-saga/effects";
 import { NextCloudCredentials } from "../../models";
-import { get } from "../../services";
+import RequestService from "../../services/request.service";
 import { nextCloudCredentialsLoginFail, nextCloudCredentialsLoginSuccessful } from "../actions";
 
 const subUrl: string = "ping";
@@ -9,7 +9,7 @@ const subUrl: string = "ping";
 export function* login(action) {
     try {
         const nextCloudCredentials: NextCloudCredentials = action.payload.nextCloudCredentials;
-        yield get(subUrl, nextCloudCredentials)
+        yield RequestService.get(subUrl, nextCloudCredentials)
             .then((response: any) => { // response is of type: AxiosResponse<T = any>
                 switch (response.status) {
                     // 401 For invalid userName with message: CORS requires basic auth
