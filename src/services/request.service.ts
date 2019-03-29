@@ -14,69 +14,73 @@ const createHeader = (nextCloudCredentials: NextCloudCredentials): any => {
     };
 };
 
-export const get = <K>(url: string, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
-    return axios({
-        headers: createHeader(nextCloudCredentials),
-        method: "get",
-        url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}`,
-    })
-        .then((response: any) => {
-            return Promise.resolve(response.data);
+export default class RequestService {
+    public static get<K>(url: string, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> {
+        return axios({
+            headers: createHeader(nextCloudCredentials),
+            method: "get",
+            url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}`,
         })
-        .catch((error) => {
-            // tslint:disable
-            console.warn(JSON.stringify(error));
-            return Promise.reject(error);
-        });
-};
+            .then((response: any) => {
+                return Promise.resolve(response.data);
+            })
+            .catch((error) => {
+                // tslint:disable
+                console.warn(JSON.stringify(error));
+                return Promise.reject(error);
+            });
+    }
 
-export const post = <T extends Entity, K>(url: string, data: T, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
-    delete data["id"];
-    return axios({
-        data: data,
-        headers: createHeader(nextCloudCredentials),
-        method: "post",
-        url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}`,
-    })
-        .then((response) => {
-            return Promise.resolve(response.data);
+    public static post<T extends Entity, K>(url: string, data: T, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> {
+        const dataJson = JSON.stringify(data);
+        delete dataJson["id"];
+        return axios({
+            data: dataJson,
+            headers: createHeader(nextCloudCredentials),
+            method: "post",
+            url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}`,
         })
-        .catch((error) => {
-            // tslint:disable
-            console.warn(JSON.stringify(error));
-            return Promise.reject(error);
-        });
-};
+            .then((response) => {
+                return Promise.resolve(response.data);
+            })
+            .catch((error) => {
+                // tslint:disable
+                console.warn(JSON.stringify(error));
+                return Promise.reject(error);
+            });
+    }
 
-export const put = <T extends Entity, K>(url: string, data: T, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
-    return axios({
-        data: data,
-        headers: createHeader(nextCloudCredentials),
-        method: "put",
-        url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}/${data.id}`,
-    })
-        .then((response) => {
-            return Promise.resolve(response.data);
+    public static put<T extends Entity, K>(url: string, data: T, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> {
+        const dataJson = JSON.stringify(data);
+        return axios({
+            data: dataJson,
+            headers: createHeader(nextCloudCredentials),
+            method: "put",
+            url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}/${data.id}`,
         })
-        .catch((error) => {
-            // tslint:disable
-            console.warn(JSON.stringify(error));
-            return Promise.reject(error);
-        });
-};
+            .then((response) => {
+                return Promise.resolve(response.data);
+            })
+            .catch((error) => {
+                // tslint:disable
+                console.warn(JSON.stringify(error));
+                return Promise.reject(error);
+            });
+    }
 
-export const destroy = <K>(url: string, id: number, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
-    return axios({
-        headers: createHeader(nextCloudCredentials),
-        method: "delete",
-        url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}`,
-    })
-        .then((response) => {
-            return Promise.resolve(response.data);
+    public static destroy<K>(url: string, id: number, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> {
+        return axios({
+            headers: createHeader(nextCloudCredentials),
+            method: "delete",
+            url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}/${id}`,
         })
-        .catch((error) => {
-            // tslint:disable
-            console.warn(JSON.stringify(error));
-            return Promise.reject(error);
-        });
-};
+            .then((response) => {
+                return Promise.resolve(response.data);
+            })
+            .catch((error) => {
+                // tslint:disable
+                console.warn(JSON.stringify(error));
+                return Promise.reject(error);
+            });
+    }
+}
