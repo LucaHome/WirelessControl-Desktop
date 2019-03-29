@@ -12,7 +12,7 @@ import {
 const subUrl: string = "periodic_task";
 
 // worker Saga: will be fired on PERIODIC_TASKS_LOAD actions
-export function* periodicTaskLoad(action) {
+export function* periodicTasksLoad(action) {
     try {
         const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentials();
 
