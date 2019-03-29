@@ -1,6 +1,5 @@
 import * as React from "react";
 import { MemoryRouter, Route, Switch } from "react-router";
-import Help from "../Help/Help";
 import Home from "../Home/Home";
 import Loading from "../Loading/Loading";
 import { IAppProps } from "./IAppProps";
@@ -17,7 +16,6 @@ export default class App extends React.Component<IAppProps, any> {
         return <MemoryRouter>
             <Switch>
                 <Route exact path="/" component={Home} />
-                <Route path="/help" component={Help} />
                 <Route path="/loading" component={Loading} />
             </Switch>
         </MemoryRouter>;
