@@ -2,9 +2,13 @@ import { takeEvery } from "redux-saga/effects";
 import {
   AREA_ADD, AREA_DELETE, AREA_UPDATE, AREAS_LOAD,
   NEXT_CLOUD_CREDENTIALS_LOGIN,
+  PERIODIC_TASK_ADD, PERIODIC_TASK_DELETE, PERIODIC_TASK_UPDATE, PERIODIC_TASKS_LOAD,
+  WIRELESS_SOCKET_ADD, WIRELESS_SOCKET_DELETE, WIRELESS_SOCKET_UPDATE, WIRELESS_SOCKETS_LOAD,
 } from "../action-types";
 import { areaAdd, areaDelete, areasLoad, areaUpdate } from "./areas.saga";
 import { login } from "./next-cloud-credentials.saga";
+import { periodicTaskAdd, periodicTaskDelete, periodicTasksLoad, periodicTaskUpdate } from "./periodic-tasks.saga";
+import { wirelessSocketAdd, wirelessSocketDelete, wirelessSocketsLoad, wirelessSocketUpdate } from "./wireless-sockets.saga";
 
 /*
     - takeEvery: Does allow concurrent fetches
@@ -25,6 +29,24 @@ function* sagas() {
 
   // Starts login on each dispatched NEXT_CLOUD_CREDENTIALS_LOGIN action.
   yield takeEvery(NEXT_CLOUD_CREDENTIALS_LOGIN, login);
+
+  // Starts periodicTasksLoad on each dispatched PERIODIC_TASKS_LOAD action.
+  yield takeEvery(PERIODIC_TASKS_LOAD, periodicTasksLoad);
+  // Starts periodicTaskAdd on each dispatched PERIODIC_TASK_ADD action.
+  yield takeEvery(PERIODIC_TASK_ADD, periodicTaskAdd);
+  // Starts periodicTaskUpdate on each dispatched PERIODIC_TASK_UPDATE action.
+  yield takeEvery(PERIODIC_TASK_UPDATE, periodicTaskUpdate);
+  // Starts periodicTaskDelete on each dispatched PERIODIC_TASK_DELETE action.
+  yield takeEvery(PERIODIC_TASK_DELETE, periodicTaskDelete);
+
+  // Starts wirelessSocketsLoad on each dispatched WIRELESS_SOCKETS_LOAD action.
+  yield takeEvery(WIRELESS_SOCKETS_LOAD, wirelessSocketsLoad);
+  // Starts wirelessSocketAdd on each dispatched WIRELESS_SOCKET_ADD action.
+  yield takeEvery(WIRELESS_SOCKET_ADD, wirelessSocketAdd);
+  // Starts wirelessSocketUpdate on each dispatched WIRELESS_SOCKET_UPDATE action.
+  yield takeEvery(WIRELESS_SOCKET_UPDATE, wirelessSocketUpdate);
+  // Starts wirelessSocketDelete on each dispatched WIRELESS_SOCKET_DELETE action.
+  yield takeEvery(WIRELESS_SOCKET_DELETE, wirelessSocketDelete);
 }
 
 export default sagas;
