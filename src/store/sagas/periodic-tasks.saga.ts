@@ -1,7 +1,7 @@
 import { put } from "redux-saga/effects";
 import { ApiResponse, NextCloudCredentials, PeriodicTask } from "../../models";
 import RequestService from "../../services/request.service";
-import { loadNextCloudCredentials } from "../../services/storage.service";
+import StorageService from "../../services/storage.service";
 import {
     periodicTaskAddFail, periodicTaskAddSuccessful,
     periodicTaskDeleteFail, periodicTaskDeleteSuccessful,
@@ -14,7 +14,7 @@ const subUrl: string = "periodic_task";
 // worker Saga: will be fired on PERIODIC_TASKS_LOAD actions
 export function* periodicTasksLoad(action) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
 
         if (!nextCloudCredentials) {
             yield put(periodicTasksLoadFail("No Credentials available!"));
@@ -59,7 +59,7 @@ export function* periodicTasksLoad(action) {
 // worker Saga: will be fired on PERIODIC_TASK_ADD actions
 export function* periodicTaskAdd(action) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
 
         if (!nextCloudCredentials) {
             yield put(periodicTaskAddFail("No Credentials available!"));
@@ -107,7 +107,7 @@ export function* periodicTaskAdd(action) {
 // worker Saga: will be fired on PERIODIC_TASK_UPDATE actions
 export function* periodicTaskUpdate(action) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
 
         if (!nextCloudCredentials) {
             yield put(periodicTaskUpdateFail("No Credentials available!"));
@@ -154,7 +154,7 @@ export function* periodicTaskUpdate(action) {
 // worker Saga: will be fired on PERIODIC_TASK_DELETE actions
 export function* periodicTaskDelete(action) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
 
         if (!nextCloudCredentials) {
             yield put(periodicTaskDeleteFail("No Credentials available!"));

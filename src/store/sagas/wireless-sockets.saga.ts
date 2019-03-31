@@ -1,7 +1,7 @@
 import { put } from "redux-saga/effects";
 import { ApiResponse, NextCloudCredentials, WirelessSocket } from "../../models";
 import RequestService from "../../services/request.service";
-import { loadNextCloudCredentials } from "../../services/storage.service";
+import StorageService from "../../services/storage.service";
 import {
     wirelessSocketAddFail, wirelessSocketAddSuccessful,
     wirelessSocketDeleteFail, wirelessSocketDeleteSuccessful,
@@ -14,7 +14,7 @@ const subUrl: string = "wireless_socket";
 // worker Saga: will be fired on WIRELESS_SOCKETS_LOAD actions
 export function* wirelessSocketsLoad(action) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
 
         if (!nextCloudCredentials) {
             yield put(wirelessSocketsLoadFail("No Credentials available!"));
@@ -59,7 +59,7 @@ export function* wirelessSocketsLoad(action) {
 // worker Saga: will be fired on WIRELESS_SOCKET_ADD actions
 export function* wirelessSocketAdd(action) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
 
         if (!nextCloudCredentials) {
             yield put(wirelessSocketAddFail("No Credentials available!"));
@@ -107,7 +107,7 @@ export function* wirelessSocketAdd(action) {
 // worker Saga: will be fired on WIRELESS_SOCKET_UPDATE actions
 export function* wirelessSocketUpdate(action) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
 
         if (!nextCloudCredentials) {
             yield put(wirelessSocketUpdateFail("No Credentials available!"));
@@ -154,7 +154,7 @@ export function* wirelessSocketUpdate(action) {
 // worker Saga: will be fired on WIRELESS_SOCKET_DELETE actions
 export function* wirelessSocketDelete(action) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
 
         if (!nextCloudCredentials) {
             yield put(wirelessSocketDeleteFail("No Credentials available!"));

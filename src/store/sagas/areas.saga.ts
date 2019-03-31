@@ -1,7 +1,7 @@
 import { put } from "redux-saga/effects";
 import { ApiResponse, Area, NextCloudCredentials } from "../../models";
 import RequestService from "../../services/request.service";
-import { loadNextCloudCredentials } from "../../services/storage.service";
+import StorageService from "../../services/storage.service";
 import {
     areaAddFail, areaAddSuccessful,
     areaDeleteFail, areaDeleteSuccessful,
@@ -14,7 +14,7 @@ const subUrl: string = "area";
 // worker Saga: will be fired on AREAS_LOAD actions
 export function* areasLoad(action) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
 
         if (!nextCloudCredentials) {
             yield put(areasLoadFail("No Credentials available!"));
@@ -59,7 +59,7 @@ export function* areasLoad(action) {
 // worker Saga: will be fired on AREA_ADD actions
 export function* areaAdd(action) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
 
         if (!nextCloudCredentials) {
             yield put(areaAddFail("No Credentials available!"));
@@ -107,7 +107,7 @@ export function* areaAdd(action) {
 // worker Saga: will be fired on AREA_UPDATE actions
 export function* areaUpdate(action) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
 
         if (!nextCloudCredentials) {
             yield put(areaUpdateFail("No Credentials available!"));
@@ -154,7 +154,7 @@ export function* areaUpdate(action) {
 // worker Saga: will be fired on AREA_DELETE actions
 export function* areaDelete(action) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
 
         if (!nextCloudCredentials) {
             yield put(areaDeleteFail("No Credentials available!"));
