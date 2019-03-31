@@ -1,17 +1,26 @@
 import * as React from "react";
+import { connect } from "react-redux";
 import { Button, Form, FormFeedback, FormGroup, Input, Label } from "reactstrap";
+import { NextCloudCredentials } from "../../models";
+import StorageService from "../../services/storage.service";
+import { nextCloudCredentialsLogin, nextCloudCredentialsLoginSuccessful } from "../../store/actions";
 import { ILoginProps } from "./ILoginProps";
 import "./Login.css";
 
-export default class Login extends React.Component<ILoginProps, any> {
+class Login extends React.Component<ILoginProps, any> {
 
     constructor(props: ILoginProps) {
         super(props);
 
+        const nextCloudCredentials = StorageService.loadNextCloudCredentials();
+        if (nextCloudCredentials) {
+            this.props.dispatch(nextCloudCredentialsLoginSuccessful(nextCloudCredentials));
+        }
+
         this.state = {
-            baseUrl: "",
-            passPhrase: "",
-            userName: "",
+            baseUrl: nextCloudCredentials ? nextCloudCredentials.baseUrl : "",
+            passPhrase: nextCloudCredentials ? nextCloudCredentials.passPhrase : "",
+            userName: nextCloudCredentials ? nextCloudCredentials.userName : "",
         };
     }
 
@@ -48,7 +57,7 @@ export default class Login extends React.Component<ILoginProps, any> {
 
         return (
             <div className="Login">
-            <img src="../assets/images/logo.png"></img>
+                <img src="../assets/images/logo.png"></img>
                 <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
                         <Label for="baseUrl">NextCloudUrl</Label>
@@ -73,6 +82,12 @@ export default class Login extends React.Component<ILoginProps, any> {
 
     private handleSubmit = (event) => {
         event.preventDefault();
+        const nextCloudCredentials: NextCloudCredentials = {
+            baseUrl: this.state.baseUrl,
+            passPhrase: this.state.passPhrase,
+            userName: this.state.userName,
+        };
+        this.props.login(nextCloudCredentials);
     }
 
     private handleChange = (event) => {
@@ -97,3 +112,18 @@ export default class Login extends React.Component<ILoginProps, any> {
         return this.validateNextCloudUrl() && this.validatePassPhrase() && this.validateUserName();
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        nextCloudCredentials: state.nextCloudCredentials,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        dispatch,
+        login: (nextCloudCredentials: NextCloudCredentials) => dispatch(nextCloudCredentialsLogin(nextCloudCredentials)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
