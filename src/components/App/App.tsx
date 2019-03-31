@@ -1,6 +1,6 @@
 import * as React from "react";
 import { MemoryRouter, Route, Switch } from "react-router";
-// import Home from "../Home/Home";
+import * as Routes from "../../constants/routes.constants";
 import Loading from "../Loading/Loading";
 import Login from "../Login/Login";
 import { IAppProps } from "./IAppProps";
@@ -16,14 +16,14 @@ export default class App extends React.Component<IAppProps, any> {
     public render() {
         return <MemoryRouter>
             <Switch>
-                <Route exact path="/" component={Login} />
-                <Route path="/areas" component={Loading} />
-                <Route path="/areas-edit" component={Loading} />
-                <Route path="/wireless-sockets" component={Loading} />
-                <Route path="/wireless-sockets-edit" component={Loading} />
-                <Route path="/periodic-tasks" component={Loading} />
-                <Route path="/periodic-tasks-edit" component={Loading} />
-                <Route path="/loading" component={Loading} />
+                <Route exact path={Routes.login} component={Login} />
+                <Route path={Routes.loading} component={Loading} />
+                <Route path={Routes.areas} component={Loading} />
+                <Route path={Routes.areasEdit} component={Loading} />
+                <Route path={Routes.wirelessSockets} component={Loading} />
+                <Route path={Routes.wirelessSocketsEdit} component={Loading} />
+                <Route path={Routes.periodicTasks} component={Loading} />
+                <Route path={Routes.periodicTasksEdit} component={Loading} />
             </Switch>
         </MemoryRouter>;
     }
