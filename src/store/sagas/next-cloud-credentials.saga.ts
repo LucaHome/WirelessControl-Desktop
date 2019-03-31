@@ -2,12 +2,12 @@ import { put } from "redux-saga/effects";
 import { NextCloudCredentials } from "../../models";
 import RequestService from "../../services/request.service";
 import StorageService from "../../services/storage.service";
-import { nextCloudCredentialsLoginFail, nextCloudCredentialsLoginSuccessful } from "../actions";
+import { NextCloudCredentialsAction, nextCloudCredentialsLoginFail, nextCloudCredentialsLoginSuccessful } from "../actions";
 
 const subUrl: string = "ping";
 
 // worker Saga: will be fired on NEXT_CLOUD_CREDENTIALS_LOGIN actions
-export function* login(action) {
+export function* login(action: NextCloudCredentialsAction) {
     try {
         const nextCloudCredentials: NextCloudCredentials = action.payload.nextCloudCredentials;
         yield RequestService.get(subUrl, nextCloudCredentials)
