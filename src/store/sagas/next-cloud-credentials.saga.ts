@@ -1,6 +1,7 @@
 import { put } from "redux-saga/effects";
 import { NextCloudCredentials } from "../../models";
 import RequestService from "../../services/request.service";
+import StorageService from "../../services/storage.service";
 import { nextCloudCredentialsLoginFail, nextCloudCredentialsLoginSuccessful } from "../actions";
 
 const subUrl: string = "ping";
@@ -24,6 +25,7 @@ export function* login(action) {
                         put(nextCloudCredentialsLoginFail("Invalid URL"));
                         break;
                     case 200:
+                        StorageService.saveNextCloudCredentials(nextCloudCredentials);
                         put(nextCloudCredentialsLoginSuccessful(nextCloudCredentials));
                         break;
                     default:
