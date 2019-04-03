@@ -57,6 +57,11 @@ export default function(state: AreaStore = initialState, action: any): AreaStore
             };
         }
         case AREA_ADD: {
+            return {
+                ...state,
+            };
+        }
+        case AREA_ADD_ON_SERVER: {
             // TODO make API call
             // const area: Area = action.payload.area;
             return {
