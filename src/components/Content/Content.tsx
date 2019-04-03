@@ -2,22 +2,19 @@ import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
+import Icon from "@material-ui/core/Icon";
 import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { withStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from "@material-ui/icons/Menu";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import classNames from "classnames";
 import * as React from "react";
-import { Entity } from "../../models/entity";
 import { IContentProps } from "./IContentProps";
 
 import "../../../styles/main.scss";
@@ -55,9 +52,9 @@ const styles = (theme: any) => ({
             duration: theme.transitions.duration.leavingScreen,
             easing: theme.transitions.easing.sharp,
         }),
-        width: theme.spacing.unit * 7 + 1,
+        width: theme.spacing.unit * 5 + 1,
         [theme.breakpoints.up("sm")]: {
-            width: theme.spacing.unit * 9 + 1,
+            width: theme.spacing.unit * 7 + 1,
         },
     },
     drawerOpen: {
@@ -81,18 +78,18 @@ const styles = (theme: any) => ({
         alignItems: "center",
         display: "flex",
         justifyContent: "flex-end",
-        padding: "0 8px",
+        padding: "0 0.5rem",
         ...theme.mixins.toolbar,
     },
 });
 
-class Content<T extends Entity> extends React.Component<IContentProps<T>, any> {
+class Content extends React.Component<IContentProps, any> {
 
     public state = {
         open: false,
     };
 
-    constructor(props: IContentProps<T>) {
+    constructor(props: IContentProps) {
         super(props);
     }
 
@@ -140,19 +137,10 @@ class Content<T extends Entity> extends React.Component<IContentProps<T>, any> {
                 </div>
                 <Divider />
                 <List>
-                    {this.props.drawerList.map((entity, index) => (
+                    {this.props.drawerList.map((entity, _) => (
                         <ListItem button key={entity.id}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={entity.id} />
-                        </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    {this.props.drawerList.map((entity, index) => (
-                        <ListItem button key={entity.id}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={entity.id} />
+                            <Icon color={entity.iconColor}>{entity.icon}</Icon>
+                            <ListItemText primary={entity.title} />
                         </ListItem>
                     ))}
                 </List>
@@ -170,19 +158,7 @@ class Content<T extends Entity> extends React.Component<IContentProps<T>, any> {
                     Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus
                     at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed
                     ullamcorper morbi tincidunt. Lorem donec massa sapien faucibus et molestie ac.
-          </Typography>
-                <Typography paragraph>
-                    Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-                    facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-                    tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-                    consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus
-                    sed vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in.
-                    In hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-                    et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique
-                    sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo
-                    viverra maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam
-                    ultrices sagittis orci a.
-          </Typography>
+                </Typography>
             </main>
         </div>;
     }

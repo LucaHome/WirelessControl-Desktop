@@ -1,7 +1,7 @@
-import { Entity } from "../../models/entity";
+import { DrawerEntity } from "../../models/drawer-entity";
 
-export interface IContentProps<T extends Entity> {
+export interface IContentProps {
     classes: any;
     theme: any;
-    drawerList: T[];
+    drawerList: DrawerEntity[];
 }
