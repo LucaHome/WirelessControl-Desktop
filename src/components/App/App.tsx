@@ -14,9 +14,10 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import MenuIcon from "@material-ui/icons/Menu";
 import classNames from "classnames";
-import { ConnectedRouter } from "connected-react-router";
+import { ConnectedRouter, replace } from "connected-react-router";
 import * as React from "react";
 import { Route, Switch } from "react-router";
+import { put } from "redux-saga/effects";
 import * as Routes from "../../constants/routes.constants";
 import { DrawerEntity } from "../../models/drawer-entity";
 import Loading from "../Loading/Loading";
@@ -96,9 +97,9 @@ class App extends React.Component<IAppProps, any> {
     };
 
     private readonly drawerList: DrawerEntity[] = [
-        { id: 0, title: "Areas", icon: "map", iconColor: "primary", action: () => { const a = 0; } },
-        { id: 1, title: "WirelessSockets", icon: "wifi_tethering", iconColor: "primary", action: () => { const a = 0; } },
-        { id: 2, title: "PeriodicTasks", icon: "alarm", iconColor: "primary", action: () => { const a = 0; } },
+        { id: 0, title: "Areas", icon: "map", iconColor: "primary", action: () => { put(replace(Routes.areas)); } },
+        { id: 1, title: "WirelessSockets", icon: "wifi_tethering", iconColor: "primary", action: () => { put(replace(Routes.wirelessSockets)); } },
+        { id: 2, title: "PeriodicTasks", icon: "alarm", iconColor: "primary", action: () => { put(replace(Routes.periodicTasks)); } },
     ];
 
     constructor(props: IAppProps) {
