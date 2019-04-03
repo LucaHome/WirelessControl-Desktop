@@ -10,7 +10,7 @@ const subUrl: string = "ping";
 
 // worker Saga: will be fired on NEXT_CLOUD_CREDENTIALS_LOGIN actions
 export function* login(action: NextCloudCredentialsAction) {
-    push(Routes.loading);
+    put(push(Routes.loading));
     try {
         const nextCloudCredentials: NextCloudCredentials = action.payload.nextCloudCredentials;
         yield RequestService.get(subUrl, nextCloudCredentials)
@@ -20,32 +20,32 @@ export function* login(action: NextCloudCredentialsAction) {
                     // 401 For invalid passPhrase with message: CORS requires basic auth
                     case 401:
                         put(nextCloudCredentialsLoginFail("Invalid Credentials"));
-                        goBack();
+                        put(goBack());
                         break;
                     // 404 For invalid URL
                     // 405 For invalid URL
                     case 404:
                     case 405:
                         put(nextCloudCredentialsLoginFail("Invalid URL"));
-                        goBack();
+                        put(goBack());
                         break;
                     case 200:
                         StorageService.saveNextCloudCredentials(nextCloudCredentials);
                         put(nextCloudCredentialsLoginSuccessful(nextCloudCredentials));
-                        replace(Routes.areas);
+                        put(replace(Routes.areas));
                         break;
                     default:
                         put(nextCloudCredentialsLoginFail(`Unknown error: ${response.statusText}`));
-                        goBack();
+                        put(goBack());
                         break;
                 }
             })
             .catch((error) => {
                 put(nextCloudCredentialsLoginFail(`Unknown error: ${error.message}`));
-                goBack();
+                put(goBack());
             });
     } catch (error) {
         yield put(nextCloudCredentialsLoginFail(`Unknown error: ${error.message}`));
-        goBack();
+        put(goBack());
     }
 }
