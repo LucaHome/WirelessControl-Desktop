@@ -11,7 +11,6 @@ import { AreaStore } from "../models";
 const initialState: AreaStore = {
     areaSelected: undefined,
     areas: [],
-    loading: false,
 };
 
 export default function(state: AreaStore = initialState, action: any): AreaStore {
@@ -21,13 +20,11 @@ export default function(state: AreaStore = initialState, action: any): AreaStore
             // const area: Area = action.payload.area;
             return {
                 ...state,
-                loading: true,
             };
         }
         case AREAS_LOAD_FAIL: {
             return {
                 ...state,
-                loading: false,
             };
         }
         case AREAS_LOAD_SUCCESSFUL: {
@@ -40,7 +37,6 @@ export default function(state: AreaStore = initialState, action: any): AreaStore
                 ...state,
                 areaSelected,
                 areas,
-                loading: false,
             };
         }
         case AREA_SELECT: {
@@ -65,13 +61,11 @@ export default function(state: AreaStore = initialState, action: any): AreaStore
             // const area: Area = action.payload.area;
             return {
                 ...state,
-                loading: true,
             };
         }
         case AREA_ADD_FAIL: {
             return {
                 ...state,
-                loading: false,
             };
         }
         case AREA_ADD_SUCCESSFUL: {
@@ -80,7 +74,6 @@ export default function(state: AreaStore = initialState, action: any): AreaStore
                 ...state,
                 areaSelected: area,
                 areas: [...state.areas, area],
-                loading: false,
             };
         }
         case AREA_UPDATE: {
@@ -88,13 +81,11 @@ export default function(state: AreaStore = initialState, action: any): AreaStore
             // const area: Area = action.payload.area;
             return {
                 ...state,
-                loading: true,
             };
         }
         case AREA_UPDATE_FAIL: {
             return {
                 ...state,
-                loading: false,
             };
         }
         case AREA_UPDATE_SUCCESSFUL: {
@@ -105,7 +96,6 @@ export default function(state: AreaStore = initialState, action: any): AreaStore
             return {
                 ...state,
                 areas,
-                loading: false,
             };
         }
         case AREA_DELETE: {
@@ -113,13 +103,11 @@ export default function(state: AreaStore = initialState, action: any): AreaStore
             // const area: Area = action.payload.area;
             return {
                 ...state,
-                loading: true,
             };
         }
         case AREA_DELETE_FAIL: {
             return {
                 ...state,
-                loading: false,
             };
         }
         case AREA_DELETE_SUCCESSFUL: {
@@ -134,7 +122,6 @@ export default function(state: AreaStore = initialState, action: any): AreaStore
                 ...state,
                 areaSelected,
                 areas,
-                loading: false,
             };
         }
         default: {

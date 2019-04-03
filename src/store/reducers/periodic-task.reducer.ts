@@ -9,7 +9,6 @@ import {
 import { PeriodicTaskStore } from "../models";
 
 const initialState: PeriodicTaskStore = {
-    loading: false,
     periodicTaskSelected: undefined,
     periodicTasks: [],
 };
@@ -21,13 +20,11 @@ export default function(state: PeriodicTaskStore = initialState, action: any): P
             // const periodicTask: PeriodicTask = action.payload.periodicTask;
             return {
                 ...state,
-                loading: true,
             };
         }
         case PERIODIC_TASKS_LOAD_FAIL: {
             return {
                 ...state,
-                loading: false,
             };
         }
         case PERIODIC_TASKS_LOAD_SUCCESSFUL: {
@@ -38,7 +35,6 @@ export default function(state: PeriodicTaskStore = initialState, action: any): P
             }
             return {
                 ...state,
-                loading: false,
                 periodicTaskSelected,
                 periodicTasks,
             };
@@ -65,20 +61,17 @@ export default function(state: PeriodicTaskStore = initialState, action: any): P
             // const periodicTask: PeriodicTask = action.payload.periodicTask;
             return {
                 ...state,
-                loading: true,
             };
         }
         case PERIODIC_TASK_ADD_FAIL: {
             return {
                 ...state,
-                loading: false,
             };
         }
         case PERIODIC_TASK_ADD_SUCCESSFUL: {
             const periodicTask: PeriodicTask = action.payload.periodicTask;
             return {
                 ...state,
-                loading: false,
                 periodicTaskSelected: periodicTask,
                 periodicTasks: [...state.periodicTasks, periodicTask],
             };
@@ -88,13 +81,11 @@ export default function(state: PeriodicTaskStore = initialState, action: any): P
             // const periodicTask: PeriodicTask = action.payload.periodicTask;
             return {
                 ...state,
-                loading: true,
             };
         }
         case PERIODIC_TASK_UPDATE_FAIL: {
             return {
                 ...state,
-                loading: false,
             };
         }
         case PERIODIC_TASK_UPDATE_SUCCESSFUL: {
@@ -104,7 +95,6 @@ export default function(state: PeriodicTaskStore = initialState, action: any): P
             periodicTasks[index] = periodicTask;
             return {
                 ...state,
-                loading: false,
                 periodicTasks,
             };
         }
@@ -113,13 +103,11 @@ export default function(state: PeriodicTaskStore = initialState, action: any): P
             // const periodicTask: PeriodicTask = action.payload.periodicTask;
             return {
                 ...state,
-                loading: true,
             };
         }
         case PERIODIC_TASK_DELETE_FAIL: {
             return {
                 ...state,
-                loading: false,
             };
         }
         case PERIODIC_TASK_DELETE_SUCCESSFUL: {
@@ -132,7 +120,6 @@ export default function(state: PeriodicTaskStore = initialState, action: any): P
             }
             return {
                 ...state,
-                loading: false,
                 periodicTaskSelected,
                 periodicTasks,
             };

@@ -9,7 +9,6 @@ import {
 import { WirelessSocketStore } from "../models";
 
 const initialState: WirelessSocketStore = {
-    loading: false,
     wirelessSocketSelected: undefined,
     wirelessSockets: [],
 };
@@ -21,13 +20,11 @@ export default function(state: WirelessSocketStore = initialState, action: any):
             // const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
             return {
                 ...state,
-                loading: true,
             };
         }
         case WIRELESS_SOCKETS_LOAD_FAIL: {
             return {
                 ...state,
-                loading: false,
             };
         }
         case WIRELESS_SOCKETS_LOAD_SUCCESSFUL: {
@@ -38,7 +35,6 @@ export default function(state: WirelessSocketStore = initialState, action: any):
             }
             return {
                 ...state,
-                loading: false,
                 wirelessSocketSelected,
                 wirelessSockets,
             };
@@ -65,20 +61,17 @@ export default function(state: WirelessSocketStore = initialState, action: any):
             // const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
             return {
                 ...state,
-                loading: true,
             };
         }
         case WIRELESS_SOCKET_ADD_FAIL: {
             return {
                 ...state,
-                loading: false,
             };
         }
         case WIRELESS_SOCKET_ADD_SUCCESSFUL: {
             const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
             return {
                 ...state,
-                loading: false,
                 wirelessSocketSelected: wirelessSocket,
                 wirelessSockets: [...state.wirelessSockets, wirelessSocket],
             };
@@ -88,13 +81,11 @@ export default function(state: WirelessSocketStore = initialState, action: any):
             // const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
             return {
                 ...state,
-                loading: true,
             };
         }
         case WIRELESS_SOCKET_UPDATE_FAIL: {
             return {
                 ...state,
-                loading: false,
             };
         }
         case WIRELESS_SOCKET_UPDATE_SUCCESSFUL: {
@@ -104,7 +95,6 @@ export default function(state: WirelessSocketStore = initialState, action: any):
             wirelessSockets[index] = wirelessSocket;
             return {
                 ...state,
-                loading: false,
                 wirelessSockets,
             };
         }
@@ -113,13 +103,11 @@ export default function(state: WirelessSocketStore = initialState, action: any):
             // const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
             return {
                 ...state,
-                loading: true,
             };
         }
         case WIRELESS_SOCKET_DELETE_FAIL: {
             return {
                 ...state,
-                loading: false,
             };
         }
         case WIRELESS_SOCKET_DELETE_SUCCESSFUL: {
@@ -132,7 +120,6 @@ export default function(state: WirelessSocketStore = initialState, action: any):
             }
             return {
                 ...state,
-                loading: false,
                 wirelessSocketSelected,
                 wirelessSockets,
             };
