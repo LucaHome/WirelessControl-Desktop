@@ -6,13 +6,17 @@ import {
     AREA_UPDATE, AREA_UPDATE_FAIL, AREA_UPDATE_ON_SERVER, AREA_UPDATE_SUCCESSFUL,
     AREAS_LOAD, AREAS_LOAD_FAIL, AREAS_LOAD_SUCCESSFUL,
 } from "../action-types";
+import { AreaAction, AreasAction } from "./area.action.d";
 
-export const areasLoad = () => ({
-    payload: {},
+export const areasLoad = (): AreasAction => ({
+    payload: {
+        error: undefined,
+        list: undefined,
+    },
     type: AREAS_LOAD,
 });
 
-export const areasLoadFail = (error: any) => ({
+export const areasLoadFail = (error: any): AreasAction => ({
     payload: {
         error,
         list: undefined,
@@ -20,7 +24,7 @@ export const areasLoadFail = (error: any) => ({
     type: AREAS_LOAD_FAIL,
 });
 
-export const areasLoadSuccessful = (list: Area[]) => ({
+export const areasLoadSuccessful = (list: Area[]): AreasAction => ({
     payload: {
         error: undefined,
         list,
@@ -28,12 +32,15 @@ export const areasLoadSuccessful = (list: Area[]) => ({
     type: AREAS_LOAD_SUCCESSFUL,
 });
 
-export const areaSelect = () => ({
-    payload: {},
+export const areaSelect = (): AreaAction => ({
+    payload: {
+        area: undefined,
+        error: undefined,
+    },
     type: AREA_SELECT,
 });
 
-export const areaSelectFail = (error: any) => ({
+export const areaSelectFail = (error: any): AreaAction => ({
     payload: {
         area: undefined,
         error,
@@ -41,7 +48,7 @@ export const areaSelectFail = (error: any) => ({
     type: AREA_SELECT_FAIL,
 });
 
-export const areaSelectSuccessful = (area: Area) => ({
+export const areaSelectSuccessful = (area: Area): AreaAction => ({
     payload: {
         area,
         error: undefined,
@@ -49,7 +56,7 @@ export const areaSelectSuccessful = (area: Area) => ({
     type: AREA_SELECT_SUCCESSFUL,
 });
 
-export const areaAdd = (area: Area) => ({
+export const areaAdd = (area: Area): AreaAction => ({
     payload: {
         area,
         error: undefined,
@@ -57,7 +64,7 @@ export const areaAdd = (area: Area) => ({
     type: AREA_ADD,
 });
 
-export const areaAddOnServer = (area: Area) => ({
+export const areaAddOnServer = (area: Area): AreaAction => ({
     payload: {
         area,
         error: undefined,
@@ -65,7 +72,7 @@ export const areaAddOnServer = (area: Area) => ({
     type: AREA_ADD_ON_SERVER,
 });
 
-export const areaAddFail = (error: any) => ({
+export const areaAddFail = (error: any): AreaAction => ({
     payload: {
         area: undefined,
         error,
@@ -73,7 +80,7 @@ export const areaAddFail = (error: any) => ({
     type: AREA_ADD_FAIL,
 });
 
-export const areaAddSuccessful = (area: Area) => ({
+export const areaAddSuccessful = (area: Area): AreaAction => ({
     payload: {
         area,
         error: undefined,
@@ -81,7 +88,7 @@ export const areaAddSuccessful = (area: Area) => ({
     type: AREA_ADD_SUCCESSFUL,
 });
 
-export const areaUpdate = (area: Area) => ({
+export const areaUpdate = (area: Area): AreaAction => ({
     payload: {
         area,
         error: undefined,
@@ -89,7 +96,7 @@ export const areaUpdate = (area: Area) => ({
     type: AREA_UPDATE,
 });
 
-export const areaUpdateOnServer = (area: Area) => ({
+export const areaUpdateOnServer = (area: Area): AreaAction => ({
     payload: {
         area,
         error: undefined,
@@ -97,7 +104,7 @@ export const areaUpdateOnServer = (area: Area) => ({
     type: AREA_UPDATE_ON_SERVER,
 });
 
-export const areaUpdateFail = (error: any) => ({
+export const areaUpdateFail = (error: any): AreaAction => ({
     payload: {
         area: undefined,
         error,
@@ -105,7 +112,7 @@ export const areaUpdateFail = (error: any) => ({
     type: AREA_UPDATE_FAIL,
 });
 
-export const areaUpdateSuccessful = (area: Area) => ({
+export const areaUpdateSuccessful = (area: Area): AreaAction => ({
     payload: {
         area,
         error: undefined,
@@ -113,7 +120,7 @@ export const areaUpdateSuccessful = (area: Area) => ({
     type: AREA_UPDATE_SUCCESSFUL,
 });
 
-export const areaDelete = (area: Area) => ({
+export const areaDelete = (area: Area): AreaAction => ({
     payload: {
         area,
         error: undefined,
@@ -121,7 +128,7 @@ export const areaDelete = (area: Area) => ({
     type: AREA_DELETE,
 });
 
-export const areaDeleteOnServer = (area: Area) => ({
+export const areaDeleteOnServer = (area: Area): AreaAction => ({
     payload: {
         area,
         error: undefined,
@@ -129,7 +136,7 @@ export const areaDeleteOnServer = (area: Area) => ({
     type: AREA_DELETE_ON_SERVER,
 });
 
-export const areaDeleteFail = (error: any) => ({
+export const areaDeleteFail = (error: any): AreaAction => ({
     payload: {
         area: undefined,
         error,
@@ -137,7 +144,7 @@ export const areaDeleteFail = (error: any) => ({
     type: AREA_DELETE_FAIL,
 });
 
-export const areaDeleteSuccessful = (area: Area) => ({
+export const areaDeleteSuccessful = (area: Area): AreaAction => ({
     payload: {
         area,
         error: undefined,

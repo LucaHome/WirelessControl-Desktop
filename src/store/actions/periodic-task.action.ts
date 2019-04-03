@@ -6,13 +6,17 @@ import {
     PERIODIC_TASK_UPDATE, PERIODIC_TASK_UPDATE_FAIL, PERIODIC_TASK_UPDATE_ON_SERVER, PERIODIC_TASK_UPDATE_SUCCESSFUL,
     PERIODIC_TASKS_LOAD, PERIODIC_TASKS_LOAD_FAIL, PERIODIC_TASKS_LOAD_SUCCESSFUL,
 } from "../action-types";
+import { PeriodicTaskAction, PeriodicTasksAction } from "./periodic-task.action.d";
 
-export const periodicTasksLoad = () => ({
-    payload: {},
+export const periodicTasksLoad = (): PeriodicTasksAction => ({
+    payload: {
+        error: undefined,
+        list: undefined,
+    },
     type: PERIODIC_TASKS_LOAD,
 });
 
-export const periodicTasksLoadFail = (error: any) => ({
+export const periodicTasksLoadFail = (error: any): PeriodicTasksAction => ({
     payload: {
         error,
         list: undefined,
@@ -20,7 +24,7 @@ export const periodicTasksLoadFail = (error: any) => ({
     type: PERIODIC_TASKS_LOAD_FAIL,
 });
 
-export const periodicTasksLoadSuccessful = (list: PeriodicTask[]) => ({
+export const periodicTasksLoadSuccessful = (list: PeriodicTask[]): PeriodicTasksAction => ({
     payload: {
         error: undefined,
         list,
@@ -28,12 +32,15 @@ export const periodicTasksLoadSuccessful = (list: PeriodicTask[]) => ({
     type: PERIODIC_TASKS_LOAD_SUCCESSFUL,
 });
 
-export const periodicTaskSelect = () => ({
-    payload: {},
+export const periodicTaskSelect = (): PeriodicTaskAction => ({
+    payload: {
+        error: undefined,
+        periodicTask: undefined,
+    },
     type: PERIODIC_TASK_SELECT,
 });
 
-export const periodicTaskSelectFail = (error: any) => ({
+export const periodicTaskSelectFail = (error: any): PeriodicTaskAction => ({
     payload: {
         error,
         periodicTask: undefined,
@@ -41,7 +48,7 @@ export const periodicTaskSelectFail = (error: any) => ({
     type: PERIODIC_TASK_SELECT_FAIL,
 });
 
-export const periodicTaskSelectSuccessful = (periodicTask: PeriodicTask) => ({
+export const periodicTaskSelectSuccessful = (periodicTask: PeriodicTask): PeriodicTaskAction => ({
     payload: {
         error: undefined,
         periodicTask,
@@ -49,7 +56,7 @@ export const periodicTaskSelectSuccessful = (periodicTask: PeriodicTask) => ({
     type: PERIODIC_TASK_SELECT_SUCCESSFUL,
 });
 
-export const periodicTaskAdd = (periodicTask: PeriodicTask) => ({
+export const periodicTaskAdd = (periodicTask: PeriodicTask): PeriodicTaskAction => ({
     payload: {
         error: undefined,
         periodicTask,
@@ -57,7 +64,7 @@ export const periodicTaskAdd = (periodicTask: PeriodicTask) => ({
     type: PERIODIC_TASK_ADD,
 });
 
-export const periodicTaskAddOnServer = (periodicTask: PeriodicTask) => ({
+export const periodicTaskAddOnServer = (periodicTask: PeriodicTask): PeriodicTaskAction => ({
     payload: {
         error: undefined,
         periodicTask,
@@ -65,7 +72,7 @@ export const periodicTaskAddOnServer = (periodicTask: PeriodicTask) => ({
     type: PERIODIC_TASK_ADD_ON_SERVER,
 });
 
-export const periodicTaskAddFail = (error: any) => ({
+export const periodicTaskAddFail = (error: any): PeriodicTaskAction => ({
     payload: {
         error,
         periodicTask: undefined,
@@ -73,7 +80,7 @@ export const periodicTaskAddFail = (error: any) => ({
     type: PERIODIC_TASK_ADD_FAIL,
 });
 
-export const periodicTaskAddSuccessful = (periodicTask: PeriodicTask) => ({
+export const periodicTaskAddSuccessful = (periodicTask: PeriodicTask): PeriodicTaskAction => ({
     payload: {
         error: undefined,
         periodicTask,
@@ -81,7 +88,7 @@ export const periodicTaskAddSuccessful = (periodicTask: PeriodicTask) => ({
     type: PERIODIC_TASK_ADD_SUCCESSFUL,
 });
 
-export const periodicTaskUpdate = (periodicTask: PeriodicTask) => ({
+export const periodicTaskUpdate = (periodicTask: PeriodicTask): PeriodicTaskAction => ({
     payload: {
         error: undefined,
         periodicTask,
@@ -89,7 +96,7 @@ export const periodicTaskUpdate = (periodicTask: PeriodicTask) => ({
     type: PERIODIC_TASK_UPDATE,
 });
 
-export const periodicTaskUpdateOnServer = (periodicTask: PeriodicTask) => ({
+export const periodicTaskUpdateOnServer = (periodicTask: PeriodicTask): PeriodicTaskAction => ({
     payload: {
         error: undefined,
         periodicTask,
@@ -97,7 +104,7 @@ export const periodicTaskUpdateOnServer = (periodicTask: PeriodicTask) => ({
     type: PERIODIC_TASK_UPDATE_ON_SERVER,
 });
 
-export const periodicTaskUpdateFail = (error: any) => ({
+export const periodicTaskUpdateFail = (error: any): PeriodicTaskAction => ({
     payload: {
         error,
         periodicTask: undefined,
@@ -105,7 +112,7 @@ export const periodicTaskUpdateFail = (error: any) => ({
     type: PERIODIC_TASK_UPDATE_FAIL,
 });
 
-export const periodicTaskUpdateSuccessful = (periodicTask: PeriodicTask) => ({
+export const periodicTaskUpdateSuccessful = (periodicTask: PeriodicTask): PeriodicTaskAction => ({
     payload: {
         error: undefined,
         periodicTask,
@@ -113,7 +120,7 @@ export const periodicTaskUpdateSuccessful = (periodicTask: PeriodicTask) => ({
     type: PERIODIC_TASK_UPDATE_SUCCESSFUL,
 });
 
-export const periodicTaskDelete = (periodicTask: PeriodicTask) => ({
+export const periodicTaskDelete = (periodicTask: PeriodicTask): PeriodicTaskAction => ({
     payload: {
         error: undefined,
         periodicTask,
@@ -121,7 +128,7 @@ export const periodicTaskDelete = (periodicTask: PeriodicTask) => ({
     type: PERIODIC_TASK_DELETE,
 });
 
-export const periodicTaskDeleteOnServer = (periodicTask: PeriodicTask) => ({
+export const periodicTaskDeleteOnServer = (periodicTask: PeriodicTask): PeriodicTaskAction => ({
     payload: {
         error: undefined,
         periodicTask,
@@ -129,7 +136,7 @@ export const periodicTaskDeleteOnServer = (periodicTask: PeriodicTask) => ({
     type: PERIODIC_TASK_DELETE_ON_SERVER,
 });
 
-export const periodicTaskDeleteFail = (error: any) => ({
+export const periodicTaskDeleteFail = (error: any): PeriodicTaskAction => ({
     payload: {
         error,
         periodicTask: undefined,
@@ -137,7 +144,7 @@ export const periodicTaskDeleteFail = (error: any) => ({
     type: PERIODIC_TASK_DELETE_FAIL,
 });
 
-export const periodicTaskDeleteSuccessful = (periodicTask: PeriodicTask) => ({
+export const periodicTaskDeleteSuccessful = (periodicTask: PeriodicTask): PeriodicTaskAction => ({
     payload: {
         error: undefined,
         periodicTask,
