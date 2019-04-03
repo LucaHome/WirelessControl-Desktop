@@ -1,5 +1,6 @@
+import { ConnectedRouter } from "connected-react-router";
 import * as React from "react";
-import { MemoryRouter, Route, Switch } from "react-router";
+import { Route, Switch } from "react-router";
 import * as Routes from "../../constants/routes.constants";
 import Loading from "../Loading/Loading";
 import Login from "../Login/Login";
@@ -14,7 +15,7 @@ export default class App extends React.Component<IAppProps, any> {
     }
 
     public render() {
-        return <MemoryRouter>
+        return <ConnectedRouter history={this.props.history}>
             <Switch>
                 <Route exact path={Routes.login} component={Login} />
                 <Route path={Routes.loading} component={Loading} />
@@ -25,6 +26,6 @@ export default class App extends React.Component<IAppProps, any> {
                 <Route path={Routes.periodicTasks} component={Loading} />
                 <Route path={Routes.periodicTasksEdit} component={Loading} />
             </Switch>
-        </MemoryRouter>;
+        </ConnectedRouter>;
     }
 }
