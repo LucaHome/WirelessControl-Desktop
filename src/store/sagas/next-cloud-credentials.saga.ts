@@ -1,4 +1,4 @@
-import { goBack, push, replace } from "react-router-redux";
+import { goBack, push, replace } from "connected-react-router";
 import { put } from "redux-saga/effects";
 import * as Routes from "../../constants/routes.constants";
 import { NextCloudCredentials } from "../../models";
