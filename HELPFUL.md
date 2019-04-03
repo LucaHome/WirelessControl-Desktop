@@ -7,3 +7,4 @@
 - [X] [Redux](https://react-redux.js.org/introduction/basic-tutorial)
 - [X] [Axios](https://alligator.io/react/axios-react/)
 - [X] [Redux Side Effects](https://medium.com/magnetis-backstage/redux-side-effects-and-me-89c104a4b149)
+- [X] [Connected React Router](https://github.com/supasate/connected-react-router)

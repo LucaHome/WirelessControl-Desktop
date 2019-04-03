@@ -18,4 +18,6 @@
     - [ ] areas
     - [ ] wireless sockets
     - [ ] periodic tasks
+- [ ] Navigating
+- [ ] Display content
 - [ ] ...
