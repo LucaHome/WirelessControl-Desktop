@@ -50,7 +50,7 @@ class Login extends React.Component<ILoginProps, any> {
         }
 
         return (
-            <div className="Login">
+            <div className="login">
                 <img src="../assets/images/logo.png"></img>
                 <Form onSubmit={this.handleSubmit}>
                     <FormGroup>

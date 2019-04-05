@@ -1,10 +1,10 @@
 @media all and (min-width: 480px) {
-    .Login form {
+    .login form {
         margin: 0 auto;
         max-width: 320px;
     }
 
-    .Login img {
+    .login img {
         margin-left: 45%;
         width: 96px;
         height: 96px;
