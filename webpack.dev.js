@@ -1,5 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HotModuleReplacementPlugin = require('hot-module-replacement-plugin');
+const webpack = require('webpack');
 const path = require('path');
 
 let mainConfig = {
@@ -98,7 +98,7 @@ let rendererConfig = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './src/renderer/index.html'),
         }),
-        new HotModuleReplacementPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
     ],
 };
 
