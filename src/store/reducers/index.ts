@@ -1,16 +1,30 @@
 import { connectRouter } from "connected-react-router";
+import { History } from "history";
 import { combineReducers } from "redux";
-import areaReducer from "./area.reducer";
-import loadingReducer from "./loading.reducer";
-import nextCloudCredentialsTaskReducer from "./next-cloud-credentials.reducer";
-import periodicTaskReducer from "./periodic-task.reducer";
-import wirelessSocketReducer from "./wireless-socket.reducer";
+import areasReducer from "./areas.reducer";
+import nextCloudCredentialsReducer from "./next-cloud-credentials.reducer";
+import periodicTasksReducer from "./periodic.tasks.reducer";
+import wirelessSocketsReducer from "./wireless-sockets.reducer";
 
-export default (history) => combineReducers({
-    areaReducer,
-    loadingReducer,
-    nextCloudCredentialsTaskReducer,
-    periodicTaskReducer,
+export default (history: History) => combineReducers({
     router: connectRouter(history),
-    wirelessSocketReducer,
+    theme: null,
+
+    nextCloudCredentials: nextCloudCredentialsReducer.nextCloudCredentialsReducer,
+    nextCloudCredentialsLoading: nextCloudCredentialsReducer.nextCloudCredentialsReducer,
+
+    areas: areasReducer.areasReducer,
+    areaSelected: areasReducer.areaSelectReducer,
+    areaToBeAdded: areasReducer.areaAddReducer,
+    areaLoading: areasReducer.areaLoadingReducer,
+
+    wirelessSockets: wirelessSocketsReducer.wirelessSocketsReducer,
+    wirelessSocketSelected: wirelessSocketsReducer.wirelessSocketSelectReducer,
+    wirelessSocketToBeAdded: wirelessSocketsReducer.wirelessSocketAddReducer,
+    wirelessSocketLoading: wirelessSocketsReducer.wirelessSocketLoadingReducer,
+
+    periodicTasks: periodicTasksReducer.periodicTasksReducer,
+    periodicTaskSelected: periodicTasksReducer.periodicTaskSelectReducer,
+    periodicTaskToBeAdded: periodicTasksReducer.periodicTaskAddReducer,
+    periodicTaskLoading: periodicTasksReducer.periodicTaskLoadingReducer,
 });
