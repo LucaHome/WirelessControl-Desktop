@@ -1,7 +1,11 @@
+import { Severity } from "../../enums";
 import { Area, NextCloudCredentials, PeriodicTask, WirelessSocket } from "../../models";
 
 export interface AppState {
     route: string;
+
+    snackbarMessage: string;
+    snackbarSeverity: Severity;
 
     nextCloudCredentials: NextCloudCredentials;
     nextCloudCredentialsLoading: boolean;

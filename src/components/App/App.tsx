@@ -1,8 +1,9 @@
 import {
-    AppBar, Button, CssBaseline, Divider, Drawer, Icon, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles,
+    AppBar, Button, CssBaseline, Divider, Drawer, Icon, IconButton, List, ListItem, ListItemText, Snackbar, Toolbar, Typography, withStyles,
 } from "@material-ui/core";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import CloseIcon from '@material-ui/icons/Close';
 import MenuIcon from "@material-ui/icons/Menu";
 
 import classNames from "classnames";
@@ -12,7 +13,7 @@ import { connect } from "react-redux";
 import * as Routes from "../../constants/routes.constants";
 import { DrawerEntity, NextCloudCredentials } from "../../models";
 import { nextCloudCredentialsLogout, routeSet } from "../../store/actions";
-import { isAnythingLoading } from "../../store/selectors";
+import { isAnythingLoading, snackbarContent } from "../../store/selectors";
 
 import Content from "../Content/Content";
 import Loading from "../Loading/Loading";
@@ -83,6 +84,9 @@ const styles = (theme: any) => ({
     root: {
         display: "flex",
     },
+    snackbarClose: {
+        padding: theme.spacing.unit / 2,
+    },
     toolbar: {
         alignItems: "center",
         display: "flex",
@@ -94,8 +98,12 @@ const styles = (theme: any) => ({
 
 class App extends React.Component<IAppProps, any> {
 
+    public snackbarQueue = [];
+
     public state = {
-        open: false,
+        drawerOpen: false,
+        snackbarDisplay: false,
+        snackbarMessageInfo: { key: "", message: "" },
     };
 
     private readonly drawerList: DrawerEntity[] = [
@@ -109,6 +117,11 @@ class App extends React.Component<IAppProps, any> {
     }
 
     public render() {
+        const snackbarSelection = snackbarContent(this.props.state);
+        if (snackbarSelection.display) {
+            this.handleSnackbarDisplay(snackbarSelection.message);
+        }
+
         const nextCloudCredentials: NextCloudCredentials = this.props.state.nextCloudCredentials;
         let route: string = this.props.state.route;
         route = isAnythingLoading(this.props.state)
@@ -130,7 +143,7 @@ class App extends React.Component<IAppProps, any> {
                 aria-label="Open drawer"
                 onClick={this.handleDrawerOpen}
                 className={classNames(this.props.classes.menuButton, {
-                    [this.props.classes.hide]: this.state.open,
+                    [this.props.classes.hide]: this.state.drawerOpen,
                 })} >
                 <MenuIcon />
             </IconButton>;
@@ -168,10 +181,10 @@ class App extends React.Component<IAppProps, any> {
             <AppBar
                 position="fixed"
                 className={classNames(this.props.classes.appBar, {
-                    [this.props.classes.appBarShift]: this.state.open,
+                    [this.props.classes.appBarShift]: this.state.drawerOpen,
                 })}
             >
-                <Toolbar disableGutters={!this.state.open}>
+                <Toolbar disableGutters={!this.state.drawerOpen}>
                     {drawerToggleButton}
                     <Typography variant="h6" color="inherit" noWrap />
                 </Toolbar>
@@ -180,16 +193,16 @@ class App extends React.Component<IAppProps, any> {
             <Drawer
                 variant="permanent"
                 className={classNames(this.props.classes.drawer, {
-                    [this.props.classes.drawerOpen]: this.state.open,
-                    [this.props.classes.drawerClose]: !this.state.open,
+                    [this.props.classes.drawerOpen]: this.state.drawerOpen,
+                    [this.props.classes.drawerClose]: !this.state.drawerOpen,
                 })}
                 classes={{
                     paper: classNames({
-                        [this.props.classes.drawerOpen]: this.state.open,
-                        [this.props.classes.drawerClose]: !this.state.open,
+                        [this.props.classes.drawerOpen]: this.state.drawerOpen,
+                        [this.props.classes.drawerClose]: !this.state.drawerOpen,
                     }),
                 }}
-                open={this.state.open}
+                open={this.state.drawerOpen}
             >
                 <div className={this.props.classes.toolbar}>
                     <IconButton onClick={this.handleDrawerClose}>
@@ -203,11 +216,58 @@ class App extends React.Component<IAppProps, any> {
                 <div className={this.props.classes.toolbar} />
                 {contentComponent}
             </main>
+            <Snackbar
+                key={this.state.snackbarMessageInfo.key}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                open={this.state.snackbarDisplay}
+                autoHideDuration={3000}
+                onClose={this.handleSnackbarHide}
+                onExited={this.handleSnackbarExited}
+                ContentProps={{
+                    'aria-describedby': 'message-id',
+                }}
+                message={<span id="message-id">{this.state.snackbarMessageInfo.message}</span>}
+                action={[
+                    <IconButton
+                        key="close"
+                        aria-label="Close"
+                        color="inherit"
+                        className={this.props.classes.snackbarClose}
+                        onClick={this.handleSnackbarHide} >
+                        <CloseIcon />
+                    </IconButton>,
+                ]}
+            />
         </div>;
     }
 
-    private handleDrawerOpen = () => this.setState({ open: true });
-    private handleDrawerClose = () => this.setState({ open: false });
+    private handleDrawerOpen = () => this.setState({ drawerOpen: true });
+    private handleDrawerClose = () => this.setState({ drawerOpen: false });
+    private handleSnackbarDisplay = (message: string) => {
+        this.snackbarQueue.push({
+            key: new Date().getTime(),
+            message,
+        });
+
+        if (this.state.snackbarDisplay) {
+            this.setState({ snackbarDisplay: false });
+        } else {
+            this.processSnackbarQueue();
+        }
+    };
+    private handleSnackbarHide = () => this.setState({ snackbarDisplay: false });
+    private handleSnackbarExited = () => this.processSnackbarQueue();
+    private processSnackbarQueue = () => {
+        if (this.snackbarQueue.length > 0) {
+            this.setState({
+                snackbarDisplay: true,
+                snackbarMessageInfo: this.snackbarQueue.shift(),
+            });
+        }
+    };
 }
 
 const mapStateToProps = (state) => {
