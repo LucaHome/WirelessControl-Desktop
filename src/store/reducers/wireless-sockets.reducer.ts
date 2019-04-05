@@ -7,7 +7,7 @@ import {
     WIRELESS_SOCKETS_LOAD, WIRELESS_SOCKETS_LOAD_FAIL, WIRELESS_SOCKETS_LOAD_SUCCESSFUL,
 } from "../action-types";
 
-const wirelessSocketsReducer = (wirelessSockets: WirelessSocket[], action: any): WirelessSocket[] => {
+const wirelessSocketsReducer = (wirelessSockets: WirelessSocket[] = [], action: any): WirelessSocket[] => {
     switch (action.type) {
         case WIRELESS_SOCKETS_LOAD_SUCCESSFUL: {
             return action.payload.wirelessSockets;
@@ -31,7 +31,7 @@ const wirelessSocketsReducer = (wirelessSockets: WirelessSocket[], action: any):
     }
 }
 
-const wirelessSocketSelectReducer = (wirelessSocket: WirelessSocket, action: any): WirelessSocket => {
+const wirelessSocketSelectReducer = (wirelessSocket: WirelessSocket = null, action: any): WirelessSocket => {
     switch (action.type) {
         case WIRELESS_SOCKET_SELECT_SUCCESSFUL:
             return action.payload.area;
@@ -40,20 +40,20 @@ const wirelessSocketSelectReducer = (wirelessSocket: WirelessSocket, action: any
     }
 }
 
-const wirelessSocketAddReducer = (wirelessSocket: WirelessSocket, action: any): WirelessSocket => {
+const wirelessSocketAddReducer = (wirelessSocket: WirelessSocket = null, action: any): WirelessSocket => {
     switch (action.type) {
         case WIRELESS_SOCKET_ADD: {
             return action.payload.wirelessSocket;
         }
         case WIRELESS_SOCKET_ADD_SUCCESSFUL:
         case WIRELESS_SOCKET_ADD_FAIL:
-            return undefined;
+            return null;
         default:
             return wirelessSocket;
     }
 }
 
-const wirelessSocketLoadingReducer = (wirelessSocketLoading: boolean, action: any): boolean => {
+const wirelessSocketLoadingReducer = (wirelessSocketLoading: boolean = false, action: any): boolean => {
     switch (action.type) {
         case WIRELESS_SOCKETS_LOAD:
         case WIRELESS_SOCKET_ADD_ON_SERVER:

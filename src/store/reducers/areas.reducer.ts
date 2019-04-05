@@ -7,7 +7,7 @@ import {
     AREAS_LOAD, AREAS_LOAD_FAIL, AREAS_LOAD_SUCCESSFUL,
 } from "../action-types";
 
-const areasReducer = (areas: Area[], action: any): Area[] => {
+const areasReducer = (areas: Area[] = [], action: any): Area[] => {
     switch (action.type) {
         case AREAS_LOAD_SUCCESSFUL: {
             return action.payload.areas;
@@ -31,7 +31,7 @@ const areasReducer = (areas: Area[], action: any): Area[] => {
     }
 }
 
-const areaSelectReducer = (area: Area, action: any): Area => {
+const areaSelectReducer = (area: Area = null, action: any): Area => {
     switch (action.type) {
         case AREA_SELECT_SUCCESSFUL:
             return action.payload.area;
@@ -40,20 +40,20 @@ const areaSelectReducer = (area: Area, action: any): Area => {
     }
 }
 
-const areaAddReducer = (area: Area, action: any): Area => {
+const areaAddReducer = (area: Area = null, action: any): Area => {
     switch (action.type) {
         case AREA_ADD: {
             return action.payload.area;
         }
         case AREA_ADD_SUCCESSFUL:
         case AREA_ADD_FAIL:
-            return undefined;
+            return null;
         default:
             return area;
     }
 }
 
-const areaLoadingReducer = (areaLoading: boolean, action: any): boolean => {
+const areaLoadingReducer = (areaLoading: boolean = false, action: any): boolean => {
     switch (action.type) {
         case AREAS_LOAD:
         case AREA_ADD_ON_SERVER:

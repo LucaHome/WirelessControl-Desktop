@@ -7,7 +7,7 @@ import {
     PERIODIC_TASKS_LOAD, PERIODIC_TASKS_LOAD_FAIL, PERIODIC_TASKS_LOAD_SUCCESSFUL,
 } from "../action-types";
 
-const periodicTasksReducer = (periodicTasks: PeriodicTask[], action: any): PeriodicTask[] => {
+const periodicTasksReducer = (periodicTasks: PeriodicTask[] = [], action: any): PeriodicTask[] => {
     switch (action.type) {
         case PERIODIC_TASKS_LOAD_SUCCESSFUL: {
             return action.payload.periodicTasks;
@@ -31,7 +31,7 @@ const periodicTasksReducer = (periodicTasks: PeriodicTask[], action: any): Perio
     }
 }
 
-const periodicTaskSelectReducer = (periodicTask: PeriodicTask, action: any): PeriodicTask => {
+const periodicTaskSelectReducer = (periodicTask: PeriodicTask = null, action: any): PeriodicTask => {
     switch (action.type) {
         case PERIODIC_TASK_SELECT_SUCCESSFUL:
             return action.payload.area;
@@ -40,20 +40,20 @@ const periodicTaskSelectReducer = (periodicTask: PeriodicTask, action: any): Per
     }
 }
 
-const periodicTaskAddReducer = (periodicTask: PeriodicTask, action: any): PeriodicTask => {
+const periodicTaskAddReducer = (periodicTask: PeriodicTask = null, action: any): PeriodicTask => {
     switch (action.type) {
         case PERIODIC_TASK_ADD: {
             return action.payload.periodicTask;
         }
         case PERIODIC_TASK_ADD_SUCCESSFUL:
         case PERIODIC_TASK_ADD_FAIL:
-            return undefined;
+            return null;
         default:
             return periodicTask;
     }
 }
 
-const periodicTaskLoadingReducer = (periodicTaskLoading: boolean, action: any): boolean => {
+const periodicTaskLoadingReducer = (periodicTaskLoading: boolean = false, action: any): boolean => {
     switch (action.type) {
         case PERIODIC_TASKS_LOAD:
         case PERIODIC_TASK_ADD_ON_SERVER:
