@@ -1,8 +1,10 @@
-import { put } from "redux-saga/effects";
+import { call, put } from "redux-saga/effects";
+import * as Routes from "../../constants/routes.constants";
 import { NextCloudCredentials, WirelessSocket } from "../../models";
 import { serverGet, serverPost, serverPut, serverDestroy } from "../../services/request.service";
 import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
 import {
+    routeSet,
     wirelessSocketAddFail, wirelessSocketAddSuccessful,
     wirelessSocketDeleteFail, wirelessSocketDeleteSuccessful,
     wirelessSocketsLoadFail, wirelessSocketsLoadSuccessful,
@@ -18,23 +20,18 @@ export function* wirelessSocketsLoad(action: any) {
 
         if (!nextCloudCredentials) {
             yield put(wirelessSocketsLoadFail("No Credentials available!"));
-            return;
+        } else {
+            const response = yield call(serverGet, subUrl, nextCloudCredentials);
+            switch (response.status) {
+                case "success":
+                    yield put(wirelessSocketsLoadSuccessful(response.data));
+                    yield put(routeSet(Routes.content));
+                    break;
+                default:
+                    yield put(wirelessSocketsLoadFail(response.message));
+                    break;
+            }
         }
-
-        yield serverGet(subUrl, nextCloudCredentials)
-            .then((response: any) => {
-                switch (response.status) {
-                    case "success":
-                        put(wirelessSocketsLoadSuccessful(response.data));
-                        break;
-                    default:
-                        put(wirelessSocketsLoadFail(response.message));
-                        break;
-                }
-            })
-            .catch((error) => {
-                put(wirelessSocketsLoadFail(`Unknown error: ${error.message}`));
-            });
     } catch (error) {
         yield put(wirelessSocketsLoadFail(`Unknown error: ${error.message}`));
     }
@@ -44,29 +41,23 @@ export function* wirelessSocketsLoad(action: any) {
 export function* wirelessSocketAdd(action: any) {
     try {
         const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
+        const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
 
         if (!nextCloudCredentials) {
             yield put(wirelessSocketAddFail("No Credentials available!"));
-            return;
+        } else {
+            const response = yield call(serverPost, subUrl, wirelessSocket, nextCloudCredentials);
+            switch (response.status) {
+                case "success":
+                    yield wirelessSocket.id = response.data;
+                    yield put(wirelessSocketAddSuccessful(wirelessSocket));
+                    yield put(routeSet(Routes.content));
+                    break;
+                default:
+                    yield put(wirelessSocketAddFail(response.message));
+                    break;
+            }
         }
-
-        const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
-
-        yield serverPost(subUrl, wirelessSocket, nextCloudCredentials)
-            .then((response: any) => {
-                switch (response.status) {
-                    case "success":
-                        wirelessSocket.id = response.data;
-                        put(wirelessSocketAddSuccessful(wirelessSocket));
-                        break;
-                    default:
-                        put(wirelessSocketAddFail(response.message));
-                        break;
-                }
-            })
-            .catch((error) => {
-                put(wirelessSocketAddFail(`Unknown error: ${error.message}`));
-            });
     } catch (error) {
         yield put(wirelessSocketAddFail(`Unknown error: ${error.message}`));
     }
@@ -76,28 +67,22 @@ export function* wirelessSocketAdd(action: any) {
 export function* wirelessSocketUpdate(action: any) {
     try {
         const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
+        const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
 
         if (!nextCloudCredentials) {
             yield put(wirelessSocketUpdateFail("No Credentials available!"));
-            return;
+        } else {
+            const response = yield call(serverPut, subUrl, wirelessSocket, nextCloudCredentials);
+            switch (response.status) {
+                case "success":
+                    yield put(wirelessSocketUpdateSuccessful(wirelessSocket));
+                    yield put(routeSet(Routes.content));
+                    break;
+                default:
+                    yield put(wirelessSocketUpdateFail(response.message));
+                    break;
+            }
         }
-
-        const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
-
-        yield serverPut(subUrl, wirelessSocket, nextCloudCredentials)
-            .then((response: any) => {
-                switch (response.status) {
-                    case "success":
-                        put(wirelessSocketUpdateSuccessful(wirelessSocket));
-                        break;
-                    default:
-                        put(wirelessSocketUpdateFail(response.message));
-                        break;
-                }
-            })
-            .catch((error) => {
-                put(wirelessSocketUpdateFail(`Unknown error: ${error.message}`));
-            });
     } catch (error) {
         yield put(wirelessSocketUpdateFail(`Unknown error: ${error.message}`));
     }
@@ -107,28 +92,22 @@ export function* wirelessSocketUpdate(action: any) {
 export function* wirelessSocketDelete(action: any) {
     try {
         const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
+        const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
 
         if (!nextCloudCredentials) {
             yield put(wirelessSocketDeleteFail("No Credentials available!"));
-            return;
+        } else {
+            const response = yield call(serverDestroy, subUrl, wirelessSocket.id, nextCloudCredentials);
+            switch (response.status) {
+                case "success":
+                    yield put(wirelessSocketDeleteSuccessful(wirelessSocket));
+                    yield put(routeSet(Routes.content));
+                    break;
+                default:
+                    yield put(wirelessSocketDeleteFail(response.message));
+                    break;
+            }
         }
-
-        const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
-
-        yield serverDestroy(subUrl, wirelessSocket.id, nextCloudCredentials)
-            .then((response: any) => {
-                switch (response.status) {
-                    case "success":
-                        put(wirelessSocketDeleteSuccessful(wirelessSocket));
-                        break;
-                    default:
-                        put(wirelessSocketDeleteFail(response.message));
-                        break;
-                }
-            })
-            .catch((error) => {
-                put(wirelessSocketDeleteFail(`Unknown error: ${error.message}`));
-            });
     } catch (error) {
         yield put(wirelessSocketDeleteFail(`Unknown error: ${error.message}`));
     }

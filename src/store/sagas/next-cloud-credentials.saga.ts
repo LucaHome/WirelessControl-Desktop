@@ -1,8 +1,12 @@
-import { put } from "redux-saga/effects";
+import { call, put } from "redux-saga/effects";
+import * as Routes from "../../constants/routes.constants";
 import { NextCloudCredentials } from "../../models";
 import { serverGet } from "../../services/request.service";
 import { deleteNextCloudCredentialsInStore, saveNextCloudCredentialsInStore } from "../../services/storage.service";
-import { nextCloudCredentialsLoginFail, nextCloudCredentialsLoginSuccessful, nextCloudCredentialsLogoutFail, nextCloudCredentialsLogoutSuccessful } from "../actions";
+import {
+    nextCloudCredentialsLoginFail, nextCloudCredentialsLoginSuccessful, nextCloudCredentialsLogoutFail, nextCloudCredentialsLogoutSuccessful,
+    routeSet,
+} from "../actions";
 
 const subUrl: string = "ping";
 
@@ -10,22 +14,18 @@ const subUrl: string = "ping";
 export function* login(action: any) {
     try {
         const nextCloudCredentials: NextCloudCredentials = action.payload.nextCloudCredentials;
-        yield serverGet(subUrl, nextCloudCredentials)
-            .then((response: any) => {
-                switch (response.status) {
-                    case "success":
-                        saveNextCloudCredentialsInStore(nextCloudCredentials);
-                        put(nextCloudCredentialsLoginSuccessful(nextCloudCredentials));
-                        break;
-                    default:
-                        put(nextCloudCredentialsLoginFail(response.message));
-                        break;
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-                put(nextCloudCredentialsLoginFail(`Unknown error: ${error.message}`));
-            });
+        const response = yield call(serverGet, subUrl, nextCloudCredentials);
+
+        switch (response.status) {
+            case "success":
+                yield saveNextCloudCredentialsInStore(nextCloudCredentials);
+                yield put(nextCloudCredentialsLoginSuccessful(nextCloudCredentials));
+                yield put(routeSet(Routes.content));
+                break;
+            default:
+                yield put(nextCloudCredentialsLoginFail(response.message));
+                break;
+        }
     } catch (error) {
         console.error(error);
         yield put(nextCloudCredentialsLoginFail(`Unknown error: ${error.message}`));

@@ -1,4 +1,5 @@
-import { put } from "redux-saga/effects";
+import { call, put } from "redux-saga/effects";
+import * as Routes from "../../constants/routes.constants";
 import { NextCloudCredentials, PeriodicTask } from "../../models";
 import { serverGet, serverPost, serverPut, serverDestroy } from "../../services/request.service";
 import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
@@ -7,6 +8,7 @@ import {
     periodicTaskDeleteFail, periodicTaskDeleteSuccessful,
     periodicTasksLoadFail, periodicTasksLoadSuccessful,
     periodicTaskUpdateFail, periodicTaskUpdateSuccessful,
+    routeSet,
 } from "../actions";
 
 const subUrl: string = "periodic_task";
@@ -18,23 +20,18 @@ export function* periodicTasksLoad(action: any) {
 
         if (!nextCloudCredentials) {
             yield put(periodicTasksLoadFail("No Credentials available!"));
-            return;
+        } else {
+            const response = yield call(serverGet, subUrl, nextCloudCredentials);
+            switch (response.status) {
+                case "success":
+                    yield put(periodicTasksLoadSuccessful(response.data));
+                    yield put(routeSet(Routes.content));
+                    break;
+                default:
+                    yield put(periodicTasksLoadFail(response.message));
+                    break;
+            }
         }
-
-        yield serverGet(subUrl, nextCloudCredentials)
-            .then((response: any) => {
-                switch (response.status) {
-                    case "success":
-                        put(periodicTasksLoadSuccessful(response.data));
-                        break;
-                    default:
-                        put(periodicTasksLoadFail(response.message));
-                        break;
-                }
-            })
-            .catch((error) => {
-                put(periodicTasksLoadFail(`Unknown error: ${error.message}`));
-            });
     } catch (error) {
         yield put(periodicTasksLoadFail(`Unknown error: ${error.message}`));
     }
@@ -44,29 +41,23 @@ export function* periodicTasksLoad(action: any) {
 export function* periodicTaskAdd(action: any) {
     try {
         const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
+        const periodicTask: PeriodicTask = action.payload.periodicTask;
 
         if (!nextCloudCredentials) {
             yield put(periodicTaskAddFail("No Credentials available!"));
-            return;
+        } else {
+            const response = yield call(serverPost, subUrl, periodicTask, nextCloudCredentials);
+            switch (response.status) {
+                case "success":
+                    yield periodicTask.id = response.data;
+                    yield put(periodicTaskAddSuccessful(periodicTask));
+                    yield put(routeSet(Routes.content));
+                    break;
+                default:
+                    yield put(periodicTaskAddFail(response.message));
+                    break;
+            }
         }
-
-        const periodicTask: PeriodicTask = action.payload.periodicTask;
-
-        yield serverPost(subUrl, periodicTask, nextCloudCredentials)
-            .then((response: any) => {
-                switch (response.status) {
-                    case "success":
-                        periodicTask.id = response.data;
-                        put(periodicTaskAddSuccessful(periodicTask));
-                        break;
-                    default:
-                        put(periodicTaskAddFail(response.message));
-                        break;
-                }
-            })
-            .catch((error) => {
-                put(periodicTaskAddFail(`Unknown error: ${error.message}`));
-            });
     } catch (error) {
         yield put(periodicTaskAddFail(`Unknown error: ${error.message}`));
     }
@@ -76,28 +67,22 @@ export function* periodicTaskAdd(action: any) {
 export function* periodicTaskUpdate(action: any) {
     try {
         const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
+        const periodicTask: PeriodicTask = action.payload.periodicTask;
 
         if (!nextCloudCredentials) {
             yield put(periodicTaskUpdateFail("No Credentials available!"));
-            return;
+        } else {
+            const response = yield call(serverPut, subUrl, periodicTask, nextCloudCredentials);
+            switch (response.status) {
+                case "success":
+                    yield put(periodicTaskUpdateSuccessful(periodicTask));
+                    yield put(routeSet(Routes.content));
+                    break;
+                default:
+                    yield put(periodicTaskUpdateFail(response.message));
+                    break;
+            }
         }
-
-        const periodicTask: PeriodicTask = action.payload.periodicTask;
-
-        yield serverPut(subUrl, periodicTask, nextCloudCredentials)
-            .then((response: any) => {
-                switch (response.status) {
-                    case "success":
-                        put(periodicTaskUpdateSuccessful(periodicTask));
-                        break;
-                    default:
-                        put(periodicTaskUpdateFail(response.message));
-                        break;
-                }
-            })
-            .catch((error) => {
-                put(periodicTaskUpdateFail(`Unknown error: ${error.message}`));
-            });
     } catch (error) {
         yield put(periodicTaskUpdateFail(`Unknown error: ${error.message}`));
     }
@@ -107,28 +92,22 @@ export function* periodicTaskUpdate(action: any) {
 export function* periodicTaskDelete(action: any) {
     try {
         const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
+        const periodicTask: PeriodicTask = action.payload.periodicTask;
 
         if (!nextCloudCredentials) {
             yield put(periodicTaskDeleteFail("No Credentials available!"));
-            return;
+        } else {
+            const response = yield call(serverDestroy, subUrl, periodicTask.id, nextCloudCredentials);
+            switch (response.status) {
+                case "success":
+                    yield put(periodicTaskDeleteSuccessful(periodicTask));
+                    yield put(routeSet(Routes.content));
+                    break;
+                default:
+                    yield put(periodicTaskDeleteFail(response.message));
+                    break;
+            }
         }
-
-        const periodicTask: PeriodicTask = action.payload.periodicTask;
-
-        yield serverDestroy(subUrl, periodicTask.id, nextCloudCredentials)
-            .then((response: any) => {
-                switch (response.status) {
-                    case "success":
-                        put(periodicTaskDeleteSuccessful(periodicTask));
-                        break;
-                    default:
-                        put(periodicTaskDeleteFail(response.message));
-                        break;
-                }
-            })
-            .catch((error) => {
-                put(periodicTaskDeleteFail(`Unknown error: ${error.message}`));
-            });
     } catch (error) {
         yield put(periodicTaskDeleteFail(`Unknown error: ${error.message}`));
     }
