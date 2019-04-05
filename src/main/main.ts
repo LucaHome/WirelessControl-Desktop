@@ -16,12 +16,13 @@ function createWindow(): void {
   mainWindow = new BrowserWindow({
     autoHideMenuBar: true,
     darkTheme: true,
-    height: 675,
+    fullscreen: false,
+    height: 900,
     minHeight: 450,
     minWidth: 800,
     resizable: true,
     show: true,
-    width: 1200,
+    width: 1600,
   });
 
   // and load the index.html of the app.
