@@ -2,8 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Button, Form, FormFeedback, FormGroup, Input, Label } from "reactstrap";
 import { NextCloudCredentials } from "../../models";
-import StorageService from "../../services/storage.service";
-import { nextCloudCredentialsLogin, nextCloudCredentialsLoginSuccessful } from "../../store/actions";
+import { nextCloudCredentialsLogin } from "../../store/actions";
 import { ILoginProps } from "./ILoginProps";
 import "./Login.css";
 
@@ -12,15 +11,10 @@ class Login extends React.Component<ILoginProps, any> {
     constructor(props: ILoginProps) {
         super(props);
 
-        const nextCloudCredentials = StorageService.loadNextCloudCredentials();
-        if (nextCloudCredentials) {
-            this.props.dispatch(nextCloudCredentialsLoginSuccessful(nextCloudCredentials));
-        }
-
         this.state = {
-            baseUrl: nextCloudCredentials ? nextCloudCredentials.baseUrl : "",
-            passPhrase: nextCloudCredentials ? nextCloudCredentials.passPhrase : "",
-            userName: nextCloudCredentials ? nextCloudCredentials.userName : "",
+            baseUrl: props.nextCloudCredentials ? props.nextCloudCredentials.baseUrl : "",
+            passPhrase: props.nextCloudCredentials ? props.nextCloudCredentials.passPhrase : "",
+            userName: props.nextCloudCredentials ? props.nextCloudCredentials.userName : "",
         };
     }
 

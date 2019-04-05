@@ -1,8 +1,7 @@
-import { History } from "history";
-
 export interface IAppProps {
     context: any;
-    history: History;
     classes: any;
+    dispatch: Function;
+    state: any;
     theme: any;
 }

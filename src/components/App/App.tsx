@@ -1,19 +1,18 @@
 import {
-    AppBar, CssBaseline, Divider, Drawer, Icon, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles,
+    AppBar, Button, CssBaseline, Divider, Drawer, Icon, IconButton, List, ListItem, ListItemText, Toolbar, Typography, withStyles,
 } from "@material-ui/core";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import MenuIcon from "@material-ui/icons/Menu";
 
 import classNames from "classnames";
-import { ConnectedRouter, replace } from "connected-react-router";
 import * as React from "react";
-import { Route, Switch } from "react-router";
-import { Link } from "react-router-dom";
-import { put } from "redux-saga/effects";
+import { connect } from "react-redux";
 
 import * as Routes from "../../constants/routes.constants";
-import { DrawerEntity } from "../../models/drawer-entity";
+import { DrawerEntity, NextCloudCredentials } from "../../models";
+import { routeSet } from "../../store/actions/route.action";
+
 import Content from "../Content/Content";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
@@ -98,22 +97,62 @@ class App extends React.Component<IAppProps, any> {
     };
 
     private readonly drawerList: DrawerEntity[] = [
-        { id: 0, title: "Areas", icon: "map", iconColor: "primary", action: () => { console.log("Areas"); put(replace(Routes.areas)); } },
-        { id: 1, title: "WirelessSockets", icon: "wifi_tethering", iconColor: "primary", action: () => { console.log("WirelessSockets"); put(replace(Routes.wirelessSockets)); } },
-        { id: 2, title: "PeriodicTasks", icon: "alarm", iconColor: "primary", action: () => { console.log("PeriodicTasks"); put(replace(Routes.periodicTasks)); } },
+        { id: 0, title: "Areas", icon: "map", iconColor: "primary", action: () => this.props.dispatch(routeSet(Routes.content)) },
+        { id: 1, title: "WirelessSockets", icon: "wifi_tethering", iconColor: "primary", action: () => this.props.dispatch(routeSet(Routes.content)) },
+        { id: 2, title: "PeriodicTasks", icon: "alarm", iconColor: "primary", action: () => this.props.dispatch(routeSet(Routes.notFound)) },
     ];
 
     constructor(props: IAppProps) {
         super(props);
-        console.log(props);
-        put(replace(Routes.login));
-        console.log(props);
-        props.history.replace(Routes.login);
-        console.log(props);
     }
 
     public render() {
-        return <ConnectedRouter history={this.props.history}><div className={this.props.classes.root}>
+        const nextCloudCredentials: NextCloudCredentials = this.props.state.nextCloudCredentials;
+        let route: string = this.props.state.route;
+        route = !nextCloudCredentials ? Routes.login : route;
+
+        const loginButton = !nextCloudCredentials
+            ? <Button className={this.props.classes.loginButton} onClick={() => this.props.dispatch(routeSet(Routes.login))}>Login</Button>
+            : null;
+
+        const drawerToggleButton = !nextCloudCredentials
+            ? null
+            : <IconButton
+                color="inherit"
+                aria-label="Open drawer"
+                onClick={this.handleDrawerOpen}
+                className={classNames(this.props.classes.menuButton, {
+                    [this.props.classes.hide]: this.state.open,
+                })} >
+                <MenuIcon />
+            </IconButton>;
+
+        const drawerButtonList = !nextCloudCredentials
+            ? <List></List>
+            : <List>
+                {this.drawerList.map((entity, _) => (
+                    <ListItem button key={entity.id} onClick={entity.action}>
+                        <Icon color={entity.iconColor}>{entity.icon}</Icon>
+                        <ListItemText primary={entity.title} />
+                    </ListItem>
+                ))}
+            </List>;
+
+        let contentComponent = null;
+        switch (route) {
+            case Routes.login:
+                contentComponent = <Login></Login>;
+                break;
+            case Routes.notFound:
+                contentComponent = <NotFound></NotFound>;
+                break;
+            default:
+                contentComponent = <Content></Content>
+                break;
+        }
+
+
+        return <div className={this.props.classes.root}>
             <CssBaseline />
             <AppBar
                 position="fixed"
@@ -122,19 +161,10 @@ class App extends React.Component<IAppProps, any> {
                 })}
             >
                 <Toolbar disableGutters={!this.state.open}>
-                    <IconButton
-                        color="inherit"
-                        aria-label="Open drawer"
-                        onClick={this.handleDrawerOpen}
-                        className={classNames(this.props.classes.menuButton, {
-                            [this.props.classes.hide]: this.state.open,
-                        })}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+                    {drawerToggleButton}
                     <Typography variant="h6" color="inherit" noWrap />
                 </Toolbar>
-                <Link className={this.props.classes.loginButton} to={Routes.login}>Login</Link>
+                {loginButton}
             </AppBar>
             <Drawer
                 variant="permanent"
@@ -156,36 +186,32 @@ class App extends React.Component<IAppProps, any> {
                     </IconButton>
                 </div>
                 <Divider />
-                <List>
-                    {this.drawerList.map((entity, _) => (
-                        <ListItem button key={entity.id} onClick={entity.action}>
-                            <Icon color={entity.iconColor}>{entity.icon}</Icon>
-                            <ListItemText primary={entity.title} />
-                        </ListItem>
-                    ))}
-                </List>
+                {drawerButtonList}
             </Drawer>
             <main className={this.props.classes.content}>
                 <div className={this.props.classes.toolbar} />
-                <Switch>
-                    <Route path={Routes.login} component={Login} exact />
-                    <Route path={Routes.loading} component={Content} />
-                    <Route path={Routes.areas} component={Content} />
-                    <Route path={Routes.areasEdit} component={Content} />
-                    <Route path={Routes.wirelessSockets} component={Content} />
-                    <Route path={Routes.wirelessSocketsEdit} component={Content} />
-                    <Route path={Routes.periodicTasks} component={Content} />
-                    <Route path={Routes.periodicTasksEdit} component={Content} />
-                    <Route component={NotFound} />
-                </Switch>
+                {contentComponent}
             </main>
-        </div>
-        </ConnectedRouter>;
+        </div>;
     }
 
     private handleDrawerOpen = () => this.setState({ open: true });
     private handleDrawerClose = () => this.setState({ open: false });
 }
 
+const mapStateToProps = (state) => {
+    return {
+        state,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        dispatch,
+    };
+};
+
 // @ts-ignore
-export default withStyles(styles, { withTheme: true })(App);
+// export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(App));
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(App));
+// export default connect(mapStateToProps)(App);
