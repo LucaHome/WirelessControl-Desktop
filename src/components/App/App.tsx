@@ -11,9 +11,11 @@ import { connect } from "react-redux";
 
 import * as Routes from "../../constants/routes.constants";
 import { DrawerEntity, NextCloudCredentials } from "../../models";
-import { routeSet } from "../../store/actions/route.action";
+import { nextCloudCredentialsLogout, routeSet } from "../../store/actions";
+import { isAnythingLoading } from "../../store/selectors";
 
 import Content from "../Content/Content";
+import Loading from "../Loading/Loading";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
 import { IAppProps } from "./IAppProps";
@@ -68,7 +70,7 @@ const styles = (theme: any) => ({
     hide: {
         display: "none",
     },
-    loginButton: {
+    logoutButton: {
         right: 24,
         position: "absolute",
         top: 18,
@@ -109,11 +111,17 @@ class App extends React.Component<IAppProps, any> {
     public render() {
         const nextCloudCredentials: NextCloudCredentials = this.props.state.nextCloudCredentials;
         let route: string = this.props.state.route;
-        route = !nextCloudCredentials ? Routes.login : route;
+        route = isAnythingLoading(this.props.state)
+            ? Routes.loading
+            : !nextCloudCredentials
+                ? Routes.login
+                : route;
 
-        const loginButton = !nextCloudCredentials
-            ? <Button className={this.props.classes.loginButton} onClick={() => this.props.dispatch(routeSet(Routes.login))}>Login</Button>
-            : null;
+        const logoutButton = isAnythingLoading(this.props.state)
+            ? null
+            : !nextCloudCredentials
+                ? null
+                : <Button className={this.props.classes.logoutButton} onClick={() => this.props.dispatch(nextCloudCredentialsLogout())}>Logout</Button>;
 
         const drawerToggleButton = !nextCloudCredentials
             ? null
@@ -143,6 +151,9 @@ class App extends React.Component<IAppProps, any> {
             case Routes.login:
                 contentComponent = <Login></Login>;
                 break;
+            case Routes.loading:
+                contentComponent = <Loading></Loading>;
+                break;
             case Routes.notFound:
                 contentComponent = <NotFound></NotFound>;
                 break;
@@ -150,7 +161,7 @@ class App extends React.Component<IAppProps, any> {
                 contentComponent = <Content></Content>
                 break;
         }
-
+        this.props.dispatch(routeSet(route));
 
         return <div className={this.props.classes.root}>
             <CssBaseline />
@@ -164,7 +175,7 @@ class App extends React.Component<IAppProps, any> {
                     {drawerToggleButton}
                     <Typography variant="h6" color="inherit" noWrap />
                 </Toolbar>
-                {loginButton}
+                {logoutButton}
             </AppBar>
             <Drawer
                 variant="permanent"
@@ -212,6 +223,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 // @ts-ignore
-// export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(App));
 export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(App));
-// export default connect(mapStateToProps)(App);

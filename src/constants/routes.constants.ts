@@ -1,9 +1,9 @@
 export const login: string = "/";
+export const loading: string = "/loading";
 export const notFound: string = "/not-found";
 export const content: string = "/content";
 
 /*
-export const loading: string = "/loading";
 export const areas: string = "/areas";
 export const areasEdit: string = "/areas-edit";
 export const wirelessSockets: string = "/wireless-sockets";
