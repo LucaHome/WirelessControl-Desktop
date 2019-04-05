@@ -5,7 +5,7 @@ import { Provider, ReactReduxContext } from "react-redux";
 import App from "../components/App/App";
 import configureStore, { history } from "../store";
 
-const store = configureStore(undefined);
+const store = configureStore();
 
 ReactDom.render(
     <Provider store={store} context={ReactReduxContext}>

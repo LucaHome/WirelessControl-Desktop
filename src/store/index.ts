@@ -7,7 +7,7 @@ import rootSaga from "./sagas";
 
 export const history = createBrowserHistory();
 
-export default function configureStore(preloadedState) {
+export default function configureStore(preloadedState?: any) {
     const sagaMiddleware = createSagaMiddleware();
 
     const store = createStore(
