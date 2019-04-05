@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HotModuleReplacementPlugin = require('hot-module-replacement-plugin');
 const path = require('path');
 
 let mainConfig = {
@@ -17,7 +18,8 @@ let mainConfig = {
         extensions: ['.js', '.json', '.ts'],
     },
     module: {
-        rules: [{
+        rules: [
+            {
                 // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
                 test: /\.(ts)$/,
                 exclude: /node_modules/,
@@ -59,7 +61,8 @@ let rendererConfig = {
         extensions: ['.js', '.json', '.ts', '.tsx'],
     },
     module: {
-        rules: [{
+        rules: [
+            {
                 // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
                 test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
@@ -95,6 +98,7 @@ let rendererConfig = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './src/renderer/index.html'),
         }),
+        new HotModuleReplacementPlugin(),
     ],
 };
 
