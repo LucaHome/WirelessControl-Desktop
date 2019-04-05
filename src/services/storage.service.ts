@@ -1,34 +1,40 @@
 import Store from "electron-store";
+import { storeEncryptionKey } from "../constants/keys.constants";
 import { AppTheme } from "../enums";
 import { NextCloudCredentials } from "../models";
 
 const nextCloudCredentialsKey: string = "NextCloudCredentials";
 const themeKey: string = "Theme";
 
-export default class StorageService {
-    public static saveNextCloudCredentials = (nextCloudCredentials: NextCloudCredentials): void => {
-        const store = new Store();
-        store.set(nextCloudCredentialsKey, JSON.stringify(nextCloudCredentials));
-    }
+const store = new Store();
+store.encryptionKey = storeEncryptionKey;
 
-    public static loadNextCloudCredentials = (): NextCloudCredentials => {
-        const store = new Store();
-        const nextCloudCredentialsJSON = store.get(nextCloudCredentialsKey);
-        return !!nextCloudCredentialsJSON
-            ? JSON.parse(nextCloudCredentialsJSON)
-            : undefined;
-    }
+export const saveNextCloudCredentialsInStore = (nextCloudCredentials: NextCloudCredentials): void => {
+    store.set(nextCloudCredentialsKey, JSON.stringify(nextCloudCredentials));
+}
 
-    public static saveAppTheme = (appTheme: AppTheme): void => {
-        const store = new Store();
-        store.set(themeKey, appTheme);
-    }
+export const loadNextCloudCredentialsFromStore = (): NextCloudCredentials => {
+    const nextCloudCredentialsJSON = store.get(nextCloudCredentialsKey);
+    return !!nextCloudCredentialsJSON
+        ? JSON.parse(nextCloudCredentialsJSON)
+        : undefined;
+}
 
-    public static loadAppTheme = (): AppTheme => {
-        const store = new Store();
-        const appThemeJSON = store.get(themeKey);
-        return !!appThemeJSON
-            ? JSON.parse(appThemeJSON)
-            : AppTheme.Light;
-    }
+export const deleteNextCloudCredentialsInStore = (): void => {
+    store.delete(nextCloudCredentialsKey);
+}
+
+export const saveAppThemeInStore = (appTheme: AppTheme): void => {
+    store.set(themeKey, appTheme);
+}
+
+export const loadAppThemeFromStore = (): AppTheme => {
+    const appThemeJSON = store.get(themeKey);
+    return !!appThemeJSON
+        ? JSON.parse(appThemeJSON)
+        : AppTheme.Light;
+}
+
+export const deleteAppThemeInStore = (): void => {
+    store.delete(themeKey);
 }
