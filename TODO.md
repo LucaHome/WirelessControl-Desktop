@@ -1,19 +1,19 @@
 # TODO
 
-- [ ] Store data
+- [x] Store data
 - [ ] Display content
-    - [ ] login possibility
+    - [x] login possibility
     - [ ] areas
     - [ ] wireless sockets
     - [ ] periodic tasks
     - [ ] settings
-        - [ ] change credentials
+        - [x] change credentials => Logout-Button
         - [ ] change theme
-- [ ] Load content (use actions)
+- [x] Load content (use actions)
     - [x] credentials
-    - [ ] areas
-    - [ ] wireless sockets
-    - [ ] periodic tasks
+    - [x] areas
+    - [x] wireless sockets
+    - [x] periodic tasks
 - [ ] Add, Update, Delete entries
     - [ ] areas
     - [ ] wireless sockets
