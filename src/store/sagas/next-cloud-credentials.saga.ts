@@ -1,7 +1,7 @@
 import { put } from "redux-saga/effects";
 import { NextCloudCredentials } from "../../models";
 import { serverGet } from "../../services/request.service";
-import { saveNextCloudCredentialsInStore } from "../../services/storage.service";
+import { deleteNextCloudCredentialsInStore, saveNextCloudCredentialsInStore } from "../../services/storage.service";
 import { nextCloudCredentialsLoginFail, nextCloudCredentialsLoginSuccessful, nextCloudCredentialsLogoutFail, nextCloudCredentialsLogoutSuccessful } from "../actions";
 
 const subUrl: string = "ping";
@@ -23,9 +23,11 @@ export function* login(action: any) {
                 }
             })
             .catch((error) => {
+                console.error(error);
                 put(nextCloudCredentialsLoginFail(`Unknown error: ${error.message}`));
             });
     } catch (error) {
+        console.error(error);
         yield put(nextCloudCredentialsLoginFail(`Unknown error: ${error.message}`));
     }
 }
@@ -33,9 +35,10 @@ export function* login(action: any) {
 // worker Saga: will be fired on NEXT_CLOUD_CREDENTIALS_LOGOUT actions
 export function* logout(action: any) {
     try {
-        saveNextCloudCredentialsInStore(undefined);
+        yield deleteNextCloudCredentialsInStore();
         yield put(nextCloudCredentialsLogoutSuccessful());
     } catch (error) {
+        console.error(error);
         yield put(nextCloudCredentialsLogoutFail(`Unknown error: ${error.message}`));
     }
 }
