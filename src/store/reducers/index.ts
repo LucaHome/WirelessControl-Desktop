@@ -1,14 +1,12 @@
-import { connectRouter } from "connected-react-router";
-import { History } from "history";
 import { combineReducers } from "redux";
 import areasReducer from "./areas.reducer";
 import nextCloudCredentialsReducer from "./next-cloud-credentials.reducer";
-import periodicTasksReducer from "./periodic.tasks.reducer";
+import periodicTasksReducer from "./periodic-tasks.reducer";
+import routesReducer from "./routes.reducer";
 import wirelessSocketsReducer from "./wireless-sockets.reducer";
 
-export default (history: History) => combineReducers({
-    router: connectRouter(history),
-    theme: null,
+export default () => combineReducers({
+    route: routesReducer.routeReducer,
 
     nextCloudCredentials: nextCloudCredentialsReducer.nextCloudCredentialsReducer,
     nextCloudCredentialsLoading: nextCloudCredentialsReducer.nextCloudCredentialsReducer,
