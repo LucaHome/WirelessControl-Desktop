@@ -1,9 +1,7 @@
-import { RouterState } from "connected-react-router";
 import { Area, NextCloudCredentials, PeriodicTask, WirelessSocket } from "../../models";
 
 export interface AppState {
-    router: RouterState;
-    theme: any;
+    route: string;
 
     nextCloudCredentials: NextCloudCredentials;
     nextCloudCredentialsLoading: boolean;
