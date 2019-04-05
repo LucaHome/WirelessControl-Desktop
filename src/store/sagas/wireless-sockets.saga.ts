@@ -1,7 +1,7 @@
 import { put } from "redux-saga/effects";
-import { ApiResponse, NextCloudCredentials, WirelessSocket } from "../../models";
-import RequestService from "../../services/request.service";
-import StorageService from "../../services/storage.service";
+import { NextCloudCredentials, WirelessSocket } from "../../models";
+import { serverGet, serverPost, serverPut, serverDestroy } from "../../services/request.service";
+import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
 import {
     wirelessSocketAddFail, wirelessSocketAddSuccessful,
     wirelessSocketDeleteFail, wirelessSocketDeleteSuccessful,
@@ -12,39 +12,23 @@ import {
 const subUrl: string = "wireless_socket";
 
 // worker Saga: will be fired on WIRELESS_SOCKETS_LOAD actions
-export function* wirelessSocketsLoad(action) {
+export function* wirelessSocketsLoad(action: any) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
 
         if (!nextCloudCredentials) {
             yield put(wirelessSocketsLoadFail("No Credentials available!"));
             return;
         }
 
-        yield RequestService.get(subUrl, nextCloudCredentials)
-            .then((response: any) => { // response is of type: AxiosResponse<T = any>
+        yield serverGet(subUrl, nextCloudCredentials)
+            .then((response: any) => {
                 switch (response.status) {
-                    // 401 For invalid userName with message: CORS requires basic auth
-                    // 401 For invalid passPhrase with message: CORS requires basic auth
-                    case 401:
-                        put(wirelessSocketsLoadFail("Invalid Credentials"));
-                        break;
-                    // 404 For invalid URL
-                    // 405 For invalid URL
-                    case 404:
-                    case 405:
-                        put(wirelessSocketsLoadFail("Invalid URL"));
-                        break;
-                    case 200:
-                        const apiResponse: ApiResponse<WirelessSocket[]> = response.data;
-                        if (apiResponse.status === "success") {
-                            put(wirelessSocketsLoadSuccessful(apiResponse.data));
-                        } else {
-                            put(wirelessSocketsLoadFail(`${apiResponse.message}`));
-                        }
+                    case "success":
+                        put(wirelessSocketsLoadSuccessful(response.data));
                         break;
                     default:
-                        put(wirelessSocketsLoadFail(`Unknown error: ${response.statusText}`));
+                        put(wirelessSocketsLoadFail(response.message));
                         break;
                 }
             })
@@ -57,9 +41,9 @@ export function* wirelessSocketsLoad(action) {
 }
 
 // worker Saga: will be fired on WIRELESS_SOCKET_ADD actions
-export function* wirelessSocketAdd(action) {
+export function* wirelessSocketAdd(action: any) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
 
         if (!nextCloudCredentials) {
             yield put(wirelessSocketAddFail("No Credentials available!"));
@@ -68,31 +52,15 @@ export function* wirelessSocketAdd(action) {
 
         const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
 
-        yield RequestService.post(subUrl, wirelessSocket, nextCloudCredentials)
-            .then((response: any) => { // response is of type: AxiosResponse<T = any>
+        yield serverPost(subUrl, wirelessSocket, nextCloudCredentials)
+            .then((response: any) => {
                 switch (response.status) {
-                    // 401 For invalid userName with message: CORS requires basic auth
-                    // 401 For invalid passPhrase with message: CORS requires basic auth
-                    case 401:
-                        put(wirelessSocketAddFail("Invalid Credentials"));
-                        break;
-                    // 404 For invalid URL
-                    // 405 For invalid URL
-                    case 404:
-                    case 405:
-                        put(wirelessSocketAddFail("Invalid URL"));
-                        break;
-                    case 200:
-                        const apiResponse: ApiResponse<number> = response.data;
-                        if (apiResponse.status === "success" && apiResponse.data >= 0) {
-                            wirelessSocket.id = apiResponse.data;
-                            put(wirelessSocketAddSuccessful(wirelessSocket));
-                        } else {
-                            put(wirelessSocketAddFail(`${apiResponse.message}`));
-                        }
+                    case "success":
+                        wirelessSocket.id = response.data;
+                        put(wirelessSocketAddSuccessful(wirelessSocket));
                         break;
                     default:
-                        put(wirelessSocketAddFail(`Unknown error: ${response.statusText}`));
+                        put(wirelessSocketAddFail(response.message));
                         break;
                 }
             })
@@ -105,9 +73,9 @@ export function* wirelessSocketAdd(action) {
 }
 
 // worker Saga: will be fired on WIRELESS_SOCKET_UPDATE actions
-export function* wirelessSocketUpdate(action) {
+export function* wirelessSocketUpdate(action: any) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
 
         if (!nextCloudCredentials) {
             yield put(wirelessSocketUpdateFail("No Credentials available!"));
@@ -116,30 +84,14 @@ export function* wirelessSocketUpdate(action) {
 
         const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
 
-        yield RequestService.put(subUrl, wirelessSocket, nextCloudCredentials)
-            .then((response: any) => { // response is of type: AxiosResponse<T = any>
+        yield serverPut(subUrl, wirelessSocket, nextCloudCredentials)
+            .then((response: any) => {
                 switch (response.status) {
-                    // 401 For invalid userName with message: CORS requires basic auth
-                    // 401 For invalid passPhrase with message: CORS requires basic auth
-                    case 401:
-                        put(wirelessSocketUpdateFail("Invalid Credentials"));
-                        break;
-                    // 404 For invalid URL
-                    // 405 For invalid URL
-                    case 404:
-                    case 405:
-                        put(wirelessSocketUpdateFail("Invalid URL"));
-                        break;
-                    case 200:
-                        const apiResponse: ApiResponse<number> = response.data;
-                        if (apiResponse.status === "success" && apiResponse.data === 0) {
-                            put(wirelessSocketUpdateSuccessful(wirelessSocket));
-                        } else {
-                            put(wirelessSocketUpdateFail(`${apiResponse.message}`));
-                        }
+                    case "success":
+                        put(wirelessSocketUpdateSuccessful(wirelessSocket));
                         break;
                     default:
-                        put(wirelessSocketUpdateFail(`Unknown error: ${response.statusText}`));
+                        put(wirelessSocketUpdateFail(response.message));
                         break;
                 }
             })
@@ -152,9 +104,9 @@ export function* wirelessSocketUpdate(action) {
 }
 
 // worker Saga: will be fired on WIRELESS_SOCKET_DELETE actions
-export function* wirelessSocketDelete(action) {
+export function* wirelessSocketDelete(action: any) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
 
         if (!nextCloudCredentials) {
             yield put(wirelessSocketDeleteFail("No Credentials available!"));
@@ -163,30 +115,14 @@ export function* wirelessSocketDelete(action) {
 
         const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
 
-        yield RequestService.put(subUrl, wirelessSocket, nextCloudCredentials)
-            .then((response: any) => { // response is of type: AxiosResponse<T = any>
+        yield serverDestroy(subUrl, wirelessSocket.id, nextCloudCredentials)
+            .then((response: any) => {
                 switch (response.status) {
-                    // 401 For invalid userName with message: CORS requires basic auth
-                    // 401 For invalid passPhrase with message: CORS requires basic auth
-                    case 401:
-                        put(wirelessSocketDeleteFail("Invalid Credentials"));
-                        break;
-                    // 404 For invalid URL
-                    // 405 For invalid URL
-                    case 404:
-                    case 405:
-                        put(wirelessSocketDeleteFail("Invalid URL"));
-                        break;
-                    case 200:
-                        const apiResponse: ApiResponse<number> = response.data;
-                        if (apiResponse.status === "success" && apiResponse.data === 0) {
-                            put(wirelessSocketDeleteSuccessful(wirelessSocket));
-                        } else {
-                            put(wirelessSocketDeleteFail(`${apiResponse.message}`));
-                        }
+                    case "success":
+                        put(wirelessSocketDeleteSuccessful(wirelessSocket));
                         break;
                     default:
-                        put(wirelessSocketDeleteFail(`Unknown error: ${response.statusText}`));
+                        put(wirelessSocketDeleteFail(response.message));
                         break;
                 }
             })

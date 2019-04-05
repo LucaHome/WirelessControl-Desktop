@@ -1,7 +1,7 @@
 import { put } from "redux-saga/effects";
-import { ApiResponse, Area, NextCloudCredentials } from "../../models";
-import RequestService from "../../services/request.service";
-import StorageService from "../../services/storage.service";
+import { Area, NextCloudCredentials } from "../../models";
+import { serverGet, serverPost, serverPut, serverDestroy } from "../../services/request.service";
+import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
 import {
     areaAddFail, areaAddSuccessful,
     areaDeleteFail, areaDeleteSuccessful,
@@ -12,39 +12,23 @@ import {
 const subUrl: string = "area";
 
 // worker Saga: will be fired on AREAS_LOAD actions
-export function* areasLoad(action) {
+export function* areasLoad(action: any) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
 
         if (!nextCloudCredentials) {
             yield put(areasLoadFail("No Credentials available!"));
             return;
         }
 
-        yield RequestService.get(subUrl, nextCloudCredentials)
-            .then((response: any) => { // response is of type: AxiosResponse<T = any>
+        yield serverGet(subUrl, nextCloudCredentials)
+            .then((response: any) => {
                 switch (response.status) {
-                    // 401 For invalid userName with message: CORS requires basic auth
-                    // 401 For invalid passPhrase with message: CORS requires basic auth
-                    case 401:
-                        put(areasLoadFail("Invalid Credentials"));
-                        break;
-                    // 404 For invalid URL
-                    // 405 For invalid URL
-                    case 404:
-                    case 405:
-                        put(areasLoadFail("Invalid URL"));
-                        break;
-                    case 200:
-                        const apiResponse: ApiResponse<Area[]> = response.data;
-                        if (apiResponse.status === "success") {
-                            put(areasLoadSuccessful(apiResponse.data));
-                        } else {
-                            put(areasLoadFail(`${apiResponse.message}`));
-                        }
+                    case "success":
+                        put(areasLoadSuccessful(response.data));
                         break;
                     default:
-                        put(areasLoadFail(`Unknown error: ${response.statusText}`));
+                        put(areasLoadFail(response.message));
                         break;
                 }
             })
@@ -57,9 +41,9 @@ export function* areasLoad(action) {
 }
 
 // worker Saga: will be fired on AREA_ADD actions
-export function* areaAdd(action) {
+export function* areaAdd(action: any) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
 
         if (!nextCloudCredentials) {
             yield put(areaAddFail("No Credentials available!"));
@@ -68,31 +52,15 @@ export function* areaAdd(action) {
 
         const area: Area = action.payload.area;
 
-        yield RequestService.post(subUrl, area, nextCloudCredentials)
-            .then((response: any) => { // response is of type: AxiosResponse<T = any>
+        yield serverPost(subUrl, area, nextCloudCredentials)
+            .then((response: any) => {
                 switch (response.status) {
-                    // 401 For invalid userName with message: CORS requires basic auth
-                    // 401 For invalid passPhrase with message: CORS requires basic auth
-                    case 401:
-                        put(areaAddFail("Invalid Credentials"));
-                        break;
-                    // 404 For invalid URL
-                    // 405 For invalid URL
-                    case 404:
-                    case 405:
-                        put(areaAddFail("Invalid URL"));
-                        break;
-                    case 200:
-                        const apiResponse: ApiResponse<number> = response.data;
-                        if (apiResponse.status === "success" && apiResponse.data >= 0) {
-                            area.id = apiResponse.data;
-                            put(areaAddSuccessful(area));
-                        } else {
-                            put(areaAddFail(`${apiResponse.message}`));
-                        }
+                    case "success":
+                        area.id = response.data;
+                        put(areaAddSuccessful(area));
                         break;
                     default:
-                        put(areaAddFail(`Unknown error: ${response.statusText}`));
+                        put(areaAddFail(response.message));
                         break;
                 }
             })
@@ -105,9 +73,9 @@ export function* areaAdd(action) {
 }
 
 // worker Saga: will be fired on AREA_UPDATE actions
-export function* areaUpdate(action) {
+export function* areaUpdate(action: any) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
 
         if (!nextCloudCredentials) {
             yield put(areaUpdateFail("No Credentials available!"));
@@ -116,30 +84,15 @@ export function* areaUpdate(action) {
 
         const area: Area = action.payload.area;
 
-        yield RequestService.put(subUrl, area, nextCloudCredentials)
-            .then((response: any) => { // response is of type: AxiosResponse<T = any>
+        yield serverPut(subUrl, area, nextCloudCredentials)
+            .then((response: any) => {
                 switch (response.status) {
-                    // 401 For invalid userName with message: CORS requires basic auth
-                    // 401 For invalid passPhrase with message: CORS requires basic auth
-                    case 401:
-                        put(areaUpdateFail("Invalid Credentials"));
-                        break;
-                    // 404 For invalid URL
-                    // 405 For invalid URL
-                    case 404:
-                    case 405:
-                        put(areaUpdateFail("Invalid URL"));
-                        break;
-                    case 200:
-                        const apiResponse: ApiResponse<number> = response.data;
-                        if (apiResponse.status === "success" && apiResponse.data === 0) {
-                            put(areaUpdateSuccessful(area));
-                        } else {
-                            put(areaUpdateFail(`${apiResponse.message}`));
-                        }
+                    case "success":
+                        area.id = response.data;
+                        put(areaUpdateSuccessful(area));
                         break;
                     default:
-                        put(areaUpdateFail(`Unknown error: ${response.statusText}`));
+                        put(areaUpdateFail(response.message));
                         break;
                 }
             })
@@ -152,9 +105,9 @@ export function* areaUpdate(action) {
 }
 
 // worker Saga: will be fired on AREA_DELETE actions
-export function* areaDelete(action) {
+export function* areaDelete(action: any) {
     try {
-        const nextCloudCredentials: NextCloudCredentials = StorageService.loadNextCloudCredentials();
+        const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
 
         if (!nextCloudCredentials) {
             yield put(areaDeleteFail("No Credentials available!"));
@@ -163,30 +116,15 @@ export function* areaDelete(action) {
 
         const area: Area = action.payload.area;
 
-        yield RequestService.put(subUrl, area, nextCloudCredentials)
-            .then((response: any) => { // response is of type: AxiosResponse<T = any>
+        yield serverDestroy(subUrl, area.id, nextCloudCredentials)
+            .then((response: any) => {
                 switch (response.status) {
-                    // 401 For invalid userName with message: CORS requires basic auth
-                    // 401 For invalid passPhrase with message: CORS requires basic auth
-                    case 401:
-                        put(areaDeleteFail("Invalid Credentials"));
-                        break;
-                    // 404 For invalid URL
-                    // 405 For invalid URL
-                    case 404:
-                    case 405:
-                        put(areaDeleteFail("Invalid URL"));
-                        break;
-                    case 200:
-                        const apiResponse: ApiResponse<number> = response.data;
-                        if (apiResponse.status === "success" && apiResponse.data === 0) {
-                            put(areaDeleteSuccessful(area));
-                        } else {
-                            put(areaDeleteFail(`${apiResponse.message}`));
-                        }
+                    case "success":
+                        area.id = response.data;
+                        put(areaDeleteSuccessful(area));
                         break;
                     default:
-                        put(areaDeleteFail(`Unknown error: ${response.statusText}`));
+                        put(areaDeleteFail(response.message));
                         break;
                 }
             })

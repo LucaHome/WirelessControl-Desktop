@@ -1,12 +1,12 @@
 import { takeEvery } from "redux-saga/effects";
 import {
   AREA_ADD, AREA_DELETE, AREA_UPDATE, AREAS_LOAD,
-  NEXT_CLOUD_CREDENTIALS_LOGIN,
+  NEXT_CLOUD_CREDENTIALS_LOGIN, NEXT_CLOUD_CREDENTIALS_LOGOUT,
   PERIODIC_TASK_ADD, PERIODIC_TASK_DELETE, PERIODIC_TASK_UPDATE, PERIODIC_TASKS_LOAD,
   WIRELESS_SOCKET_ADD, WIRELESS_SOCKET_DELETE, WIRELESS_SOCKET_UPDATE, WIRELESS_SOCKETS_LOAD,
 } from "../action-types";
 import { areaAdd, areaDelete, areasLoad, areaUpdate } from "./areas.saga";
-import { login } from "./next-cloud-credentials.saga";
+import { login, logout } from "./next-cloud-credentials.saga";
 import { periodicTaskAdd, periodicTaskDelete, periodicTasksLoad, periodicTaskUpdate } from "./periodic-tasks.saga";
 import { wirelessSocketAdd, wirelessSocketDelete, wirelessSocketsLoad, wirelessSocketUpdate } from "./wireless-sockets.saga";
 
@@ -29,6 +29,8 @@ function* sagas() {
 
   // Starts login on each dispatched NEXT_CLOUD_CREDENTIALS_LOGIN action.
   yield takeEvery(NEXT_CLOUD_CREDENTIALS_LOGIN, login);
+  // Starts login on each dispatched NEXT_CLOUD_CREDENTIALS_LOGOUT action.
+  yield takeEvery(NEXT_CLOUD_CREDENTIALS_LOGOUT, logout);
 
   // Starts periodicTasksLoad on each dispatched PERIODIC_TASKS_LOAD action.
   yield takeEvery(PERIODIC_TASKS_LOAD, periodicTasksLoad);
