@@ -34,7 +34,7 @@ const periodicTasksReducer = (periodicTasks: PeriodicTask[] = [], action: any): 
 const periodicTaskSelectReducer = (periodicTask: PeriodicTask = null, action: any): PeriodicTask => {
     switch (action.type) {
         case PERIODIC_TASK_SELECT_SUCCESSFUL:
-            return action.payload.area;
+            return action.payload.periodicTask;
         default:
             return periodicTask;
     }

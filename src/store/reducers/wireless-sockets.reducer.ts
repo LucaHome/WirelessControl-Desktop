@@ -34,7 +34,7 @@ const wirelessSocketsReducer = (wirelessSockets: WirelessSocket[] = [], action: 
 const wirelessSocketSelectReducer = (wirelessSocket: WirelessSocket = null, action: any): WirelessSocket => {
     switch (action.type) {
         case WIRELESS_SOCKET_SELECT_SUCCESSFUL:
-            return action.payload.area;
+            return action.payload.wirelessSocket;
         default:
             return wirelessSocket;
     }
