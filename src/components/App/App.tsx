@@ -155,10 +155,6 @@ class App extends React.Component<IAppProps, any> {
                 ))}
             </List>;
 
-        console.info(`nextCloudCredentials: ${JSON.stringify(nextCloudCredentials)}`);
-        console.info(`route 1: ${JSON.stringify(this.props.state.route)}`);
-        console.info(`isAnythingLoading: ${isAnythingLoading(this.props.state)}`);
-
         let route: string = this.props.state.route;
         route = isAnythingLoading(this.props.state)
             ? Routes.loading
@@ -167,8 +163,6 @@ class App extends React.Component<IAppProps, any> {
                 : (route === Routes.loading && !isAnythingLoading(this.props.state)) || route === ""
                     ? Routes.areas
                     : route;
-
-        console.info(`route 2: ${JSON.stringify(route)}`);
 
         let contentComponent = null;
         switch (route) {
