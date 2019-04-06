@@ -3,6 +3,7 @@ import { NextCloudCredentials, WirelessSocket } from "../../models";
 import { serverGet, serverPost, serverPut, serverDestroy } from "../../services/request.service";
 import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
 import {
+    periodicTasksLoad,
     wirelessSocketAddFail, wirelessSocketAddSuccessful,
     wirelessSocketDeleteFail, wirelessSocketDeleteSuccessful,
     wirelessSocketsLoadFail, wirelessSocketsLoadSuccessful,
@@ -23,6 +24,7 @@ export function* wirelessSocketsLoad(action: any) {
             switch (response.status) {
                 case "success":
                     yield put(wirelessSocketsLoadSuccessful(response.data));
+                    yield put(periodicTasksLoad());
                     break;
                 default:
                     yield put(wirelessSocketsLoadFail(response.message));

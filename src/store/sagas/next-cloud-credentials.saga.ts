@@ -6,9 +6,7 @@ import { deleteNextCloudCredentialsInStore, saveNextCloudCredentialsInStore } fr
 import {
     areasLoad,
     nextCloudCredentialsLoginFail, nextCloudCredentialsLoginSuccessful, nextCloudCredentialsLogoutFail, nextCloudCredentialsLogoutSuccessful,
-    periodicTasksLoad,
     routeSet,
-    wirelessSocketsLoad,
 } from "../actions";
 
 const subUrl: string = "ping";
@@ -24,8 +22,6 @@ export function* login(action: any) {
                 yield saveNextCloudCredentialsInStore(nextCloudCredentials);
                 yield put(nextCloudCredentialsLoginSuccessful(nextCloudCredentials));
                 yield put(areasLoad());
-                yield put(wirelessSocketsLoad());
-                yield put(periodicTasksLoad());
                 break;
             default:
                 yield put(nextCloudCredentialsLoginFail(response.message));
