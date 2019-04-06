@@ -10,8 +10,8 @@ import { WirelessSocketAction, WirelessSocketsAction } from "./wireless-socket.a
 
 export const wirelessSocketsLoad = (): WirelessSocketsAction => ({
     payload: {
-        error: undefined,
-        list: undefined,
+        error: null,
+        list: null,
     },
     type: WIRELESS_SOCKETS_LOAD,
 });
@@ -19,14 +19,14 @@ export const wirelessSocketsLoad = (): WirelessSocketsAction => ({
 export const wirelessSocketsLoadFail = (error: any): WirelessSocketsAction => ({
     payload: {
         error,
-        list: undefined,
+        list: null,
     },
     type: WIRELESS_SOCKETS_LOAD_FAIL,
 });
 
 export const wirelessSocketsLoadSuccessful = (list: WirelessSocket[]): WirelessSocketsAction => ({
     payload: {
-        error: undefined,
+        error: null,
         list,
     },
     type: WIRELESS_SOCKETS_LOAD_SUCCESSFUL,
@@ -34,8 +34,8 @@ export const wirelessSocketsLoadSuccessful = (list: WirelessSocket[]): WirelessS
 
 export const wirelessSocketSelect = (): WirelessSocketAction => ({
     payload: {
-        error: undefined,
-        wirelessSocket: undefined,
+        error: null,
+        wirelessSocket: null,
     },
     type: WIRELESS_SOCKET_SELECT,
 });
@@ -43,14 +43,14 @@ export const wirelessSocketSelect = (): WirelessSocketAction => ({
 export const wirelessSocketSelectFail = (error: any): WirelessSocketAction => ({
     payload: {
         error,
-        wirelessSocket: undefined,
+        wirelessSocket: null,
     },
     type: WIRELESS_SOCKET_SELECT_FAIL,
 });
 
 export const wirelessSocketSelectSuccessful = (wirelessSocket: WirelessSocket): WirelessSocketAction => ({
     payload: {
-        error: undefined,
+        error: null,
         wirelessSocket,
     },
     type: WIRELESS_SOCKET_SELECT_SUCCESSFUL,
@@ -58,7 +58,7 @@ export const wirelessSocketSelectSuccessful = (wirelessSocket: WirelessSocket): 
 
 export const wirelessSocketAdd = (wirelessSocket: WirelessSocket): WirelessSocketAction => ({
     payload: {
-        error: undefined,
+        error: null,
         wirelessSocket,
     },
     type: WIRELESS_SOCKET_ADD,
@@ -66,7 +66,7 @@ export const wirelessSocketAdd = (wirelessSocket: WirelessSocket): WirelessSocke
 
 export const wirelessSocketAddOnServer = (wirelessSocket: WirelessSocket): WirelessSocketAction => ({
     payload: {
-        error: undefined,
+        error: null,
         wirelessSocket,
     },
     type: WIRELESS_SOCKET_ADD_ON_SERVER,
@@ -75,14 +75,14 @@ export const wirelessSocketAddOnServer = (wirelessSocket: WirelessSocket): Wirel
 export const wirelessSocketAddFail = (error: any): WirelessSocketAction => ({
     payload: {
         error,
-        wirelessSocket: undefined,
+        wirelessSocket: null,
     },
     type: WIRELESS_SOCKET_ADD_FAIL,
 });
 
 export const wirelessSocketAddSuccessful = (wirelessSocket: WirelessSocket): WirelessSocketAction => ({
     payload: {
-        error: undefined,
+        error: null,
         wirelessSocket,
     },
     type: WIRELESS_SOCKET_ADD_SUCCESSFUL,
@@ -90,7 +90,7 @@ export const wirelessSocketAddSuccessful = (wirelessSocket: WirelessSocket): Wir
 
 export const wirelessSocketUpdate = (wirelessSocket: WirelessSocket): WirelessSocketAction => ({
     payload: {
-        error: undefined,
+        error: null,
         wirelessSocket,
     },
     type: WIRELESS_SOCKET_UPDATE,
@@ -98,7 +98,7 @@ export const wirelessSocketUpdate = (wirelessSocket: WirelessSocket): WirelessSo
 
 export const wirelessSocketUpdateOnServer = (wirelessSocket: WirelessSocket): WirelessSocketAction => ({
     payload: {
-        error: undefined,
+        error: null,
         wirelessSocket,
     },
     type: WIRELESS_SOCKET_UPDATE_ON_SERVER,
@@ -107,14 +107,14 @@ export const wirelessSocketUpdateOnServer = (wirelessSocket: WirelessSocket): Wi
 export const wirelessSocketUpdateFail = (error: any): WirelessSocketAction => ({
     payload: {
         error,
-        wirelessSocket: undefined,
+        wirelessSocket: null,
     },
     type: WIRELESS_SOCKET_UPDATE_FAIL,
 });
 
 export const wirelessSocketUpdateSuccessful = (wirelessSocket: WirelessSocket): WirelessSocketAction => ({
     payload: {
-        error: undefined,
+        error: null,
         wirelessSocket,
     },
     type: WIRELESS_SOCKET_UPDATE_SUCCESSFUL,
@@ -122,7 +122,7 @@ export const wirelessSocketUpdateSuccessful = (wirelessSocket: WirelessSocket): 
 
 export const wirelessSocketDelete = (wirelessSocket: WirelessSocket): WirelessSocketAction => ({
     payload: {
-        error: undefined,
+        error: null,
         wirelessSocket,
     },
     type: WIRELESS_SOCKET_DELETE,
@@ -130,7 +130,7 @@ export const wirelessSocketDelete = (wirelessSocket: WirelessSocket): WirelessSo
 
 export const wirelessSocketDeleteOnServer = (wirelessSocket: WirelessSocket): WirelessSocketAction => ({
     payload: {
-        error: undefined,
+        error: null,
         wirelessSocket,
     },
     type: WIRELESS_SOCKET_DELETE_ON_SERVER,
@@ -139,14 +139,14 @@ export const wirelessSocketDeleteOnServer = (wirelessSocket: WirelessSocket): Wi
 export const wirelessSocketDeleteFail = (error: any): WirelessSocketAction => ({
     payload: {
         error,
-        wirelessSocket: undefined,
+        wirelessSocket: null,
     },
     type: WIRELESS_SOCKET_DELETE_FAIL,
 });
 
 export const wirelessSocketDeleteSuccessful = (wirelessSocket: WirelessSocket): WirelessSocketAction => ({
     payload: {
-        error: undefined,
+        error: null,
         wirelessSocket,
     },
     type: WIRELESS_SOCKET_DELETE_SUCCESSFUL,
