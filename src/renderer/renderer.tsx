@@ -7,7 +7,7 @@ import { Provider, ReactReduxContext } from "react-redux";
 import App from "../components/App/App";
 import { loadNextCloudCredentialsFromStore } from "../services/storage.service";
 import configureStore from "../store";
-import { nextCloudCredentialsLoginSuccessful } from "../store/actions";
+import { nextCloudCredentialsLogin } from "../store/actions";
 import rootSaga from "../store/sagas";
 
 const store = configureStore();
@@ -15,7 +15,7 @@ store.runSaga(rootSaga);
 
 const nextCloudCredentials = loadNextCloudCredentialsFromStore();
 if (!!nextCloudCredentials) {
-    store.dispatch(nextCloudCredentialsLoginSuccessful(nextCloudCredentials))
+    store.dispatch(nextCloudCredentialsLogin(nextCloudCredentials))
 }
 
 ReactDom.render(
