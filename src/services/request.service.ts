@@ -1,7 +1,9 @@
 import axios from "axios";
 import { ApiResponse, Entity, NextCloudCredentials } from "../models";
+import { mockServerGetData, mockServerPostDeleteData, mockServerPutData } from "./request.service.mock";
 
 const apiUrl: string = "/index.php/apps/wirelesscontrol/api/v1/";
+const useMockData: boolean = true;
 
 const createHeader = (nextCloudCredentials: NextCloudCredentials): any => {
     const encoded = encodeURIComponent(`${nextCloudCredentials.userName}:${nextCloudCredentials.passPhrase}`);
@@ -15,6 +17,15 @@ const createHeader = (nextCloudCredentials: NextCloudCredentials): any => {
 };
 
 export const serverGet = async <K>(url: string, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
+    if (useMockData) {
+        const mockApiResponse: ApiResponse<K> = {
+            status: "success",
+            data: mockServerGetData(url),
+            message: ""
+        };
+        return mockApiResponse;
+    }
+
     return axios({
         headers: createHeader(nextCloudCredentials),
         method: "get",
@@ -46,6 +57,15 @@ export const serverGet = async <K>(url: string, nextCloudCredentials: NextCloudC
 }
 
 export const serverPost = async <T extends Entity, K>(url: string, data: T, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
+    if (useMockData) {
+        const mockApiResponse: ApiResponse<K> = {
+            status: "success",
+            data: mockServerPostDeleteData(),
+            message: ""
+        };
+        return mockApiResponse;
+    }
+
     const dataJson = JSON.stringify(data);
     delete dataJson["id"];
     return axios({
@@ -80,6 +100,15 @@ export const serverPost = async <T extends Entity, K>(url: string, data: T, next
 }
 
 export const serverPut = async <T extends Entity, K>(url: string, data: T, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
+    if (useMockData) {
+        const mockApiResponse: ApiResponse<K> = {
+            status: "success",
+            data: mockServerPutData(data.id),
+            message: ""
+        };
+        return mockApiResponse;
+    }
+
     const dataJson = JSON.stringify(data);
     return axios({
         data: dataJson,
@@ -113,6 +142,15 @@ export const serverPut = async <T extends Entity, K>(url: string, data: T, nextC
 }
 
 export const serverDestroy = async <K>(url: string, id: number, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
+    if (useMockData) {
+        const mockApiResponse: ApiResponse<K> = {
+            status: "success",
+            data: mockServerPostDeleteData(),
+            message: ""
+        };
+        return mockApiResponse;
+    }
+
     return axios({
         headers: createHeader(nextCloudCredentials),
         method: "delete",
