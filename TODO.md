@@ -20,4 +20,6 @@
     - [ ] periodic tasks
 - [ ] Navigating
 - [ ] Display content
+- [ ] Bugs
+    - [ ] 302 error loading areas, wireless sockets or periodic tasks after successful login
 - [ ] ...
