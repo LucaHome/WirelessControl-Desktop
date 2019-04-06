@@ -7,10 +7,17 @@ import {
     AREAS_LOAD, AREAS_LOAD_FAIL, AREAS_LOAD_SUCCESSFUL,
 } from "../action-types";
 
+const areaAll: Area = {
+    id: 0,
+    name: "All",
+    filter: "",
+    deletable: 0
+};
+
 const areasReducer = (areas: Area[] = [], action: any): Area[] => {
     switch (action.type) {
         case AREAS_LOAD_SUCCESSFUL: {
-            return action.payload.list;
+            return [areaAll, ...action.payload.list];
         }
         case AREA_ADD_SUCCESSFUL: {
             return [...areas, action.payload.area];
