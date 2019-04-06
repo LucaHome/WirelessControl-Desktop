@@ -10,7 +10,7 @@ import {
 const wirelessSocketsReducer = (wirelessSockets: WirelessSocket[] = [], action: any): WirelessSocket[] => {
     switch (action.type) {
         case WIRELESS_SOCKETS_LOAD_SUCCESSFUL: {
-            return action.payload.wirelessSockets;
+            return action.payload.list;
         }
         case WIRELESS_SOCKET_ADD_SUCCESSFUL: {
             return [...wirelessSockets, action.payload.area];

@@ -10,7 +10,7 @@ import {
 const periodicTasksReducer = (periodicTasks: PeriodicTask[] = [], action: any): PeriodicTask[] => {
     switch (action.type) {
         case PERIODIC_TASKS_LOAD_SUCCESSFUL: {
-            return action.payload.periodicTasks;
+            return action.payload.list;
         }
         case PERIODIC_TASK_ADD_SUCCESSFUL: {
             return [...periodicTasks, action.payload.area];

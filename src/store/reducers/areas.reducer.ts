@@ -10,7 +10,7 @@ import {
 const areasReducer = (areas: Area[] = [], action: any): Area[] => {
     switch (action.type) {
         case AREAS_LOAD_SUCCESSFUL: {
-            return action.payload.areas;
+            return action.payload.list;
         }
         case AREA_ADD_SUCCESSFUL: {
             return [...areas, action.payload.area];
