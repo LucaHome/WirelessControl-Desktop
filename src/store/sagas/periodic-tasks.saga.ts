@@ -1,5 +1,4 @@
 import { call, put } from "redux-saga/effects";
-import * as Routes from "../../constants/routes.constants";
 import { NextCloudCredentials, PeriodicTask } from "../../models";
 import { serverGet, serverPost, serverPut, serverDestroy } from "../../services/request.service";
 import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
@@ -8,7 +7,6 @@ import {
     periodicTaskDeleteFail, periodicTaskDeleteSuccessful,
     periodicTasksLoadFail, periodicTasksLoadSuccessful,
     periodicTaskUpdateFail, periodicTaskUpdateSuccessful,
-    routeSet,
 } from "../actions";
 
 const subUrl: string = "periodic_task";
@@ -25,7 +23,6 @@ export function* periodicTasksLoad(action: any) {
             switch (response.status) {
                 case "success":
                     yield put(periodicTasksLoadSuccessful(response.data));
-                    yield put(routeSet(Routes.content));
                     break;
                 default:
                     yield put(periodicTasksLoadFail(response.message));
@@ -33,6 +30,7 @@ export function* periodicTasksLoad(action: any) {
             }
         }
     } catch (error) {
+        console.error(error);
         yield put(periodicTasksLoadFail(`Unknown error: ${error.message}`));
     }
 }
@@ -51,7 +49,6 @@ export function* periodicTaskAdd(action: any) {
                 case "success":
                     yield periodicTask.id = response.data;
                     yield put(periodicTaskAddSuccessful(periodicTask));
-                    yield put(routeSet(Routes.content));
                     break;
                 default:
                     yield put(periodicTaskAddFail(response.message));
@@ -59,6 +56,7 @@ export function* periodicTaskAdd(action: any) {
             }
         }
     } catch (error) {
+        console.error(error);
         yield put(periodicTaskAddFail(`Unknown error: ${error.message}`));
     }
 }
@@ -76,7 +74,6 @@ export function* periodicTaskUpdate(action: any) {
             switch (response.status) {
                 case "success":
                     yield put(periodicTaskUpdateSuccessful(periodicTask));
-                    yield put(routeSet(Routes.content));
                     break;
                 default:
                     yield put(periodicTaskUpdateFail(response.message));
@@ -84,6 +81,7 @@ export function* periodicTaskUpdate(action: any) {
             }
         }
     } catch (error) {
+        console.error(error);
         yield put(periodicTaskUpdateFail(`Unknown error: ${error.message}`));
     }
 }
@@ -101,7 +99,6 @@ export function* periodicTaskDelete(action: any) {
             switch (response.status) {
                 case "success":
                     yield put(periodicTaskDeleteSuccessful(periodicTask));
-                    yield put(routeSet(Routes.content));
                     break;
                 default:
                     yield put(periodicTaskDeleteFail(response.message));
@@ -109,6 +106,7 @@ export function* periodicTaskDelete(action: any) {
             }
         }
     } catch (error) {
+        console.error(error);
         yield put(periodicTaskDeleteFail(`Unknown error: ${error.message}`));
     }
 }

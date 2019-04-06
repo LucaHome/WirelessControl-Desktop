@@ -1,11 +1,9 @@
 import { call, put } from "redux-saga/effects";
-import * as Routes from "../../constants/routes.constants";
 import { NextCloudCredentials } from "../../models";
 import { serverGet } from "../../services/request.service";
 import { deleteNextCloudCredentialsInStore, saveNextCloudCredentialsInStore } from "../../services/storage.service";
 import {
     nextCloudCredentialsLoginFail, nextCloudCredentialsLoginSuccessful, nextCloudCredentialsLogoutFail, nextCloudCredentialsLogoutSuccessful,
-    routeSet,
 } from "../actions";
 
 const subUrl: string = "ping";
@@ -20,7 +18,6 @@ export function* login(action: any) {
             case "success":
                 yield saveNextCloudCredentialsInStore(nextCloudCredentials);
                 yield put(nextCloudCredentialsLoginSuccessful(nextCloudCredentials));
-                yield put(routeSet(Routes.content));
                 break;
             default:
                 yield put(nextCloudCredentialsLoginFail(response.message));

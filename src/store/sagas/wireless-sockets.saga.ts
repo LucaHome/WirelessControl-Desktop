@@ -1,10 +1,8 @@
 import { call, put } from "redux-saga/effects";
-import * as Routes from "../../constants/routes.constants";
 import { NextCloudCredentials, WirelessSocket } from "../../models";
 import { serverGet, serverPost, serverPut, serverDestroy } from "../../services/request.service";
 import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
 import {
-    routeSet,
     wirelessSocketAddFail, wirelessSocketAddSuccessful,
     wirelessSocketDeleteFail, wirelessSocketDeleteSuccessful,
     wirelessSocketsLoadFail, wirelessSocketsLoadSuccessful,
@@ -25,7 +23,6 @@ export function* wirelessSocketsLoad(action: any) {
             switch (response.status) {
                 case "success":
                     yield put(wirelessSocketsLoadSuccessful(response.data));
-                    yield put(routeSet(Routes.content));
                     break;
                 default:
                     yield put(wirelessSocketsLoadFail(response.message));
@@ -33,6 +30,7 @@ export function* wirelessSocketsLoad(action: any) {
             }
         }
     } catch (error) {
+        console.error(error);
         yield put(wirelessSocketsLoadFail(`Unknown error: ${error.message}`));
     }
 }
@@ -51,7 +49,6 @@ export function* wirelessSocketAdd(action: any) {
                 case "success":
                     yield wirelessSocket.id = response.data;
                     yield put(wirelessSocketAddSuccessful(wirelessSocket));
-                    yield put(routeSet(Routes.content));
                     break;
                 default:
                     yield put(wirelessSocketAddFail(response.message));
@@ -59,6 +56,7 @@ export function* wirelessSocketAdd(action: any) {
             }
         }
     } catch (error) {
+        console.error(error);
         yield put(wirelessSocketAddFail(`Unknown error: ${error.message}`));
     }
 }
@@ -76,7 +74,6 @@ export function* wirelessSocketUpdate(action: any) {
             switch (response.status) {
                 case "success":
                     yield put(wirelessSocketUpdateSuccessful(wirelessSocket));
-                    yield put(routeSet(Routes.content));
                     break;
                 default:
                     yield put(wirelessSocketUpdateFail(response.message));
@@ -84,6 +81,7 @@ export function* wirelessSocketUpdate(action: any) {
             }
         }
     } catch (error) {
+        console.error(error);
         yield put(wirelessSocketUpdateFail(`Unknown error: ${error.message}`));
     }
 }
@@ -101,7 +99,6 @@ export function* wirelessSocketDelete(action: any) {
             switch (response.status) {
                 case "success":
                     yield put(wirelessSocketDeleteSuccessful(wirelessSocket));
-                    yield put(routeSet(Routes.content));
                     break;
                 default:
                     yield put(wirelessSocketDeleteFail(response.message));
@@ -109,6 +106,7 @@ export function* wirelessSocketDelete(action: any) {
             }
         }
     } catch (error) {
+        console.error(error);
         yield put(wirelessSocketDeleteFail(`Unknown error: ${error.message}`));
     }
 }

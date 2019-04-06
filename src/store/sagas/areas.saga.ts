@@ -1,5 +1,4 @@
 import { call, put } from "redux-saga/effects";
-import * as Routes from "../../constants/routes.constants";
 import { Area, NextCloudCredentials } from "../../models";
 import { serverGet, serverPost, serverPut, serverDestroy } from "../../services/request.service";
 import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
@@ -8,7 +7,6 @@ import {
     areaDeleteFail, areaDeleteSuccessful,
     areasLoadFail, areasLoadSuccessful,
     areaUpdateFail, areaUpdateSuccessful,
-    routeSet,
 } from "../actions";
 
 const subUrl: string = "area";
@@ -25,7 +23,6 @@ export function* areasLoad(action: any) {
             switch (response.status) {
                 case "success":
                     yield put(areasLoadSuccessful(response.data));
-                    yield put(routeSet(Routes.content));
                     break;
                 default:
                     yield put(areasLoadFail(response.message));
@@ -33,6 +30,7 @@ export function* areasLoad(action: any) {
             }
         }
     } catch (error) {
+        console.error(error);
         yield put(areasLoadFail(`Unknown error: ${error.message}`));
     }
 }
@@ -51,7 +49,6 @@ export function* areaAdd(action: any) {
                 case "success":
                     yield area.id = response.data;
                     yield put(areaAddSuccessful(area));
-                    yield put(routeSet(Routes.content));
                     break;
                 default:
                     yield put(areaAddFail(response.message));
@@ -59,6 +56,7 @@ export function* areaAdd(action: any) {
             }
         }
     } catch (error) {
+        console.error(error);
         yield put(areaAddFail(`Unknown error: ${error.message}`));
     }
 }
@@ -76,7 +74,6 @@ export function* areaUpdate(action: any) {
             switch (response.status) {
                 case "success":
                     yield put(areaUpdateSuccessful(area));
-                    yield put(routeSet(Routes.content));
                     break;
                 default:
                     yield put(areaUpdateFail(response.message));
@@ -84,6 +81,7 @@ export function* areaUpdate(action: any) {
             }
         }
     } catch (error) {
+        console.error(error);
         yield put(areaUpdateFail(`Unknown error: ${error.message}`));
     }
 }
@@ -101,7 +99,6 @@ export function* areaDelete(action: any) {
             switch (response.status) {
                 case "success":
                     yield put(areaDeleteSuccessful(area));
-                    yield put(routeSet(Routes.content));
                     break;
                 default:
                     yield put(areaDeleteFail(response.message));
@@ -109,6 +106,7 @@ export function* areaDelete(action: any) {
             }
         }
     } catch (error) {
+        console.error(error);
         yield put(areaDeleteFail(`Unknown error: ${error.message}`));
     }
 }
