@@ -1,28 +1,50 @@
-import Typography from "@material-ui/core/Typography";
+import {
+    AppBar, Button, CssBaseline, Divider, Drawer, Icon, IconButton, List, ListItem, ListItemText, Snackbar, Toolbar, Typography, withStyles,
+} from "@material-ui/core";
 import * as React from "react";
+import { connect } from "react-redux";
+
+import { Area } from "../../models";
+import { areaSelectSuccessful } from "../../store/actions";
 import { IAreasProps } from "./IAreasProps";
 
-export default class Areas extends React.Component<IAreasProps, any> {
+class Areas extends React.Component<IAreasProps, any> {
 
     constructor(props: IAreasProps) {
         super(props);
     }
 
     public render() {
+        const areas: Area[] = this.props.state.areas;
+
+        const areaList = areas.length > 0
+            ? <List>
+                {areas.map((area: Area, _) => (
+                    <ListItem button key={area.id} onClick={() => this.handleAreaSelect(area)}>
+                        <ListItemText primary={area.name} />
+                    </ListItem>
+                ))}
+            </List>
+            : <List></List>
+
         return <div>
-            Areas
-            <Typography paragraph>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent
-                elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in
-                hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum
-                velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing.
-                Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis
-                viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
-                Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus
-                at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed
-                ullamcorper morbi tincidunt. Lorem donec massa sapien faucibus et molestie ac.
-            </Typography>
+            {areaList}
         </div>;
     }
+
+    private handleAreaSelect = (area: Area) => this.props.dispatch(areaSelectSuccessful(area));
 }
+
+const mapStateToProps = (state) => {
+    return {
+        state,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        dispatch,
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Areas);
