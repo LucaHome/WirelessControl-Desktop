@@ -1,9 +1,14 @@
 import { call, put } from "redux-saga/effects";
+import * as Routes from "../../constants/routes.constants";
 import { NextCloudCredentials } from "../../models";
 import { serverGet } from "../../services/request.service";
 import { deleteNextCloudCredentialsInStore, saveNextCloudCredentialsInStore } from "../../services/storage.service";
 import {
+    areasLoad,
     nextCloudCredentialsLoginFail, nextCloudCredentialsLoginSuccessful, nextCloudCredentialsLogoutFail, nextCloudCredentialsLogoutSuccessful,
+    periodicTasksLoad,
+    routeSet,
+    wirelessSocketsLoad,
 } from "../actions";
 
 const subUrl: string = "ping";
@@ -18,14 +23,19 @@ export function* login(action: any) {
             case "success":
                 yield saveNextCloudCredentialsInStore(nextCloudCredentials);
                 yield put(nextCloudCredentialsLoginSuccessful(nextCloudCredentials));
+                yield put(areasLoad());
+                yield put(wirelessSocketsLoad());
+                yield put(periodicTasksLoad());
                 break;
             default:
                 yield put(nextCloudCredentialsLoginFail(response.message));
+                yield put(routeSet(Routes.login));
                 break;
         }
     } catch (error) {
         console.error(error);
         yield put(nextCloudCredentialsLoginFail(`Unknown error: ${error.message}`));
+        yield put(routeSet(Routes.login));
     }
 }
 
@@ -34,6 +44,7 @@ export function* logout(action: any) {
     try {
         yield deleteNextCloudCredentialsInStore();
         yield put(nextCloudCredentialsLogoutSuccessful());
+        yield put(routeSet(Routes.login));
     } catch (error) {
         console.error(error);
         yield put(nextCloudCredentialsLogoutFail(`Unknown error: ${error.message}`));
