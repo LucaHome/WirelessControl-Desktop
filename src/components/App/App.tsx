@@ -15,10 +15,12 @@ import { DrawerEntity, NextCloudCredentials } from "../../models";
 import { nextCloudCredentialsLogout, routeSet } from "../../store/actions";
 import { isAnythingLoading, snackbarContent } from "../../store/selectors";
 
-import Content from "../Content/Content";
+import Areas from "../Areas/Areas";
 import Loading from "../Loading/Loading";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
+import PeriodicTasks from "../PeriodicTasks/PeriodicTasks";
+import WirelessSockets from "../WirelessSockets/WirelessSockets";
 import { IAppProps } from "./IAppProps";
 
 import "../../../styles/main.scss";
@@ -107,9 +109,9 @@ class App extends React.Component<IAppProps, any> {
     };
 
     private readonly drawerList: DrawerEntity[] = [
-        { id: 0, title: "Areas", icon: "map", iconColor: "primary", action: () => this.props.dispatch(routeSet(Routes.content)) },
-        { id: 1, title: "WirelessSockets", icon: "wifi_tethering", iconColor: "primary", action: () => this.props.dispatch(routeSet(Routes.content)) },
-        { id: 2, title: "PeriodicTasks", icon: "alarm", iconColor: "primary", action: () => this.props.dispatch(routeSet(Routes.notFound)) },
+        { id: 0, title: "Areas", icon: "map", iconColor: "primary", action: () => this.props.dispatch(routeSet(Routes.areas)) },
+        { id: 1, title: "WirelessSockets", icon: "wifi_tethering", iconColor: "primary", action: () => this.props.dispatch(routeSet(Routes.wirelessSockets)) },
+        { id: 2, title: "PeriodicTasks", icon: "alarm", iconColor: "primary", action: () => this.props.dispatch(routeSet(Routes.periodicTasks)) },
     ];
 
     constructor(props: IAppProps) {
@@ -117,18 +119,12 @@ class App extends React.Component<IAppProps, any> {
     }
 
     public render() {
-        const snackbarSelection = snackbarContent(this.props.state);
+        const snackbarSelection: any = snackbarContent(this.props.state);
+        const nextCloudCredentials: NextCloudCredentials = this.props.state.nextCloudCredentials;
+
         if (snackbarSelection.display) {
             this.handleSnackbarDisplay(snackbarSelection.message);
         }
-
-        const nextCloudCredentials: NextCloudCredentials = this.props.state.nextCloudCredentials;
-        let route: string = this.props.state.route;
-        route = isAnythingLoading(this.props.state)
-            ? Routes.loading
-            : !nextCloudCredentials
-                ? Routes.login
-                : route;
 
         const logoutButton = isAnythingLoading(this.props.state)
             ? null
@@ -159,19 +155,41 @@ class App extends React.Component<IAppProps, any> {
                 ))}
             </List>;
 
+        console.info(`nextCloudCredentials: ${JSON.stringify(nextCloudCredentials)}`);
+        console.info(`route 1: ${JSON.stringify(this.props.state.route)}`);
+        console.info(`isAnythingLoading: ${isAnythingLoading(this.props.state)}`);
+
+        let route: string = this.props.state.route;
+        route = isAnythingLoading(this.props.state)
+            ? Routes.loading
+            : !nextCloudCredentials
+                ? Routes.login
+                : (route === Routes.loading && !isAnythingLoading(this.props.state)) || route === ""
+                    ? Routes.areas
+                    : route;
+
+        console.info(`route 2: ${JSON.stringify(route)}`);
+
         let contentComponent = null;
         switch (route) {
             case Routes.login:
                 contentComponent = <Login></Login>;
                 break;
+            case Routes.areas:
+                contentComponent = <Areas></Areas>;
+                break;
+            case Routes.periodicTasks:
+                contentComponent = <PeriodicTasks></PeriodicTasks>;
+                break;
+            case Routes.wirelessSockets:
+                contentComponent = <WirelessSockets></WirelessSockets>;
+                break;
             case Routes.loading:
                 contentComponent = <Loading></Loading>;
                 break;
             case Routes.notFound:
-                contentComponent = <NotFound></NotFound>;
-                break;
             default:
-                contentComponent = <Content></Content>
+                contentComponent = <NotFound></NotFound>
                 break;
         }
         this.props.dispatch(routeSet(route));
