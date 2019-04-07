@@ -30,13 +30,13 @@ class Login extends React.Component<ILoginProps, any> {
         }
 
         let userNameInput;
-        let userNameformFeedback;
+        let userNameFormFeedback;
         if (!this.validateUserName()) {
             userNameInput = <Input invalid type="text" name="userName" id="userName" placeholder="Enter your user name" onChange={this.handleChange} value={this.state.userName} />;
-            userNameformFeedback = <FormFeedback>Invalid user name</FormFeedback>;
+            userNameFormFeedback = <FormFeedback>Invalid user name</FormFeedback>;
         } else {
             userNameInput = <Input valid type="text" name="userName" id="userName" placeholder="Enter your user name" onChange={this.handleChange} value={this.state.userName} />;
-            userNameformFeedback = <div></div>;
+            userNameFormFeedback = <div></div>;
         }
 
         let passPhraseInput;
@@ -61,7 +61,7 @@ class Login extends React.Component<ILoginProps, any> {
                     <FormGroup>
                         <Label for="userName">UserName</Label>
                         {userNameInput}
-                        {userNameformFeedback}
+                        {userNameFormFeedback}
                     </FormGroup>
                     <FormGroup>
                         <Label for="passPhrase">Password</Label>
@@ -90,21 +90,10 @@ class Login extends React.Component<ILoginProps, any> {
         });
     }
 
-    private validateNextCloudUrl(): boolean {
-        return this.state.baseUrl.length > 0;
-    }
-
-    private validatePassPhrase(): boolean {
-        return this.state.passPhrase.length > 0;
-    }
-
-    private validateUserName(): boolean {
-        return this.state.userName.length > 0;
-    }
-
-    private validateForm(): boolean {
-        return this.validateNextCloudUrl() && this.validatePassPhrase() && this.validateUserName();
-    }
+    private validateNextCloudUrl = (): boolean => this.state.baseUrl.length > 0;
+    private validatePassPhrase = (): boolean => this.state.passPhrase.length > 0;
+    private validateUserName = (): boolean => this.state.userName.length > 0;
+    private validateForm = (): boolean => this.validateNextCloudUrl() && this.validatePassPhrase() && this.validateUserName();
 }
 
 const mapStateToProps = (state) => {
