@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { PeriodicTask } from "../../models";
 import { periodicTaskSelectSuccessful } from "../../store/actions";
 import { getPeriodicTasksForWirelessSocket } from "../../store/selectors";
+import { getDateTimeString } from "../../utils/periodic-tasks.utils";
 import { IPeriodicTasksProps } from "./IPeriodicTasksProps";
 
 class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
@@ -17,12 +18,15 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
 
     public render() {
         const periodicTasks: PeriodicTask[] = getPeriodicTasksForWirelessSocket(this.props.state);
+        if (!periodicTasks.some(periodicTask => this.props.state.periodicTaskSelected !== null && periodicTask.id === this.props.state.periodicTaskSelected.id)) {
+            this.handlePeriodicTaskSelect(periodicTasks.length > 0 ? periodicTasks[0] : null);
+        }
 
         const periodicTaskList = periodicTasks.length > 0
             ? <List>
                 {periodicTasks.map((periodicTask: PeriodicTask, _) => (
-                    <ListItem button key={periodicTask.id} onClick={() => this.handlePeriodicTaskSelect(periodicTask)}>
-                        <ListItemText primary={periodicTask.name} />
+                    <ListItem button key={periodicTask.id} onClick={() => this.handlePeriodicTaskSelect(periodicTask)} selected={this.isSelected(periodicTask)}>
+                        <ListItemText primary={periodicTask.name} secondary={getDateTimeString(periodicTask)} />
                     </ListItem>
                 ))}
             </List>
@@ -33,7 +37,8 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
         </div>;
     }
 
-    private handlePeriodicTaskSelect = (periodicTask: PeriodicTask) => this.props.dispatch(periodicTaskSelectSuccessful(periodicTask));
+    private handlePeriodicTaskSelect = (periodicTask: PeriodicTask): void => this.props.dispatch(periodicTaskSelectSuccessful(periodicTask));
+    private isSelected = (periodicTask: PeriodicTask): boolean => this.props.state.periodicTaskSelected !== null && this.props.state.periodicTaskSelected.id === periodicTask.id;
 }
 
 const mapStateToProps = (state) => {

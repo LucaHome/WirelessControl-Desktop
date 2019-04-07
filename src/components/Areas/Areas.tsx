@@ -20,7 +20,7 @@ class Areas extends React.Component<IAreasProps, any> {
         const areaList = areas.length > 0
             ? <List>
                 {areas.map((area: Area, _) => (
-                    <ListItem button key={area.id} onClick={() => this.handleAreaSelect(area)}>
+                    <ListItem button key={area.id} onClick={() => this.handleAreaSelect(area)} selected={this.isSelected(area)}>
                         <ListItemText primary={area.name} />
                     </ListItem>
                 ))}
@@ -32,7 +32,8 @@ class Areas extends React.Component<IAreasProps, any> {
         </div>;
     }
 
-    private handleAreaSelect = (area: Area) => this.props.dispatch(areaSelectSuccessful(area));
+    private handleAreaSelect = (area: Area): void => this.props.dispatch(areaSelectSuccessful(area));
+    private isSelected = (area: Area): boolean => this.props.state.areaSelected.id === area.id;
 }
 
 const mapStateToProps = (state) => {

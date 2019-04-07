@@ -17,12 +17,15 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
 
     public render() {
         const wirelessSockets: WirelessSocket[] = getWirelessSocketsForArea(this.props.state);
+        if (!wirelessSockets.some(wirelessSocket => this.props.state.wirelessSocketSelected !== null && wirelessSocket.id === this.props.state.wirelessSocketSelected.id)) {
+            this.handleWirelessSocketSelect(wirelessSockets.length > 0 ? wirelessSockets[0] : null);
+        }
 
         const wirelessSocketList = wirelessSockets.length > 0
             ? <List>
                 {wirelessSockets.map((wirelessSocket: WirelessSocket, _) => (
-                    <ListItem button key={wirelessSocket.id} onClick={() => this.handleWirelessSocketSelect(wirelessSocket)}>
-                        <ListItemText primary={wirelessSocket.name} />
+                    <ListItem button key={wirelessSocket.id} onClick={() => this.handleWirelessSocketSelect(wirelessSocket)} selected={this.isSelected(wirelessSocket)}>
+                        <ListItemText primary={wirelessSocket.name} secondary={wirelessSocket.code} />
                     </ListItem>
                 ))}
             </List>
@@ -33,7 +36,8 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
         </div>;
     }
 
-    private handleWirelessSocketSelect = (wirelessSocket: WirelessSocket) => this.props.dispatch(wirelessSocketSelectSuccessful(wirelessSocket));
+    private handleWirelessSocketSelect = (wirelessSocket: WirelessSocket): void => this.props.dispatch(wirelessSocketSelectSuccessful(wirelessSocket));
+    private isSelected = (wirelessSocket: WirelessSocket): boolean => this.props.state.wirelessSocketSelected !== null && this.props.state.wirelessSocketSelected.id === wirelessSocket.id;
 }
 
 const mapStateToProps = (state) => {
