@@ -40,7 +40,9 @@ const areasReducer = (areas: Area[] = [], action: any): Area[] => {
 
 const areaSelectReducer = (area: Area = null, action: any): Area => {
     switch (action.type) {
+        case AREA_ADD_SUCCESSFUL:
         case AREA_SELECT_SUCCESSFUL:
+        case AREA_UPDATE_SUCCESSFUL:
             return action.payload.area;
         case AREAS_LOAD_SUCCESSFUL:
         case AREA_DELETE_SUCCESSFUL:

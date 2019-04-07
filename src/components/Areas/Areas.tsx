@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { Button as RsButton, Form, FormFeedback, FormGroup, Input, Label } from "reactstrap";
 
 import { Area } from "../../models";
+import { clone } from "../../utils/areas.utils";
 import { areaDelete, areaSelectSuccessful, areaUpdate } from "../../store/actions";
 import { IAreasProps } from "./IAreasProps";
 import "./Areas.css";
@@ -37,7 +38,7 @@ class Areas extends React.Component<IAreasProps, any> {
                         {area.deletable === 1
                             ? <ListItemSecondaryAction>
                                 <IconButton aria-label="Edit" onClick={() => this.handleAreaEdit(area)}>
-                                    <EditIcon color={area === this.state.areaInEdit ? "secondary" : "primary"} />
+                                    <EditIcon color={(this.state.areaInEdit !== null && area.id === this.state.areaInEdit.id) ? "secondary" : "primary"} />
                                 </IconButton>
                             </ListItemSecondaryAction>
                             : null}
@@ -59,19 +60,19 @@ class Areas extends React.Component<IAreasProps, any> {
         let deleteButton = <div></div>;
 
         if (this.areaSelected !== null) {
-            if (this.areaSelected === this.state.areaInEdit && this.areaSelected.deletable === 1) {
+            if ((this.state.areaInEdit !== null && this.areaSelected.id === this.state.areaInEdit.id) && this.areaSelected.deletable === 1) {
                 if (!this.validateName()) {
-                    nameInput = <Input invalid type="text" name="name" id="name" placeholder="Enter a name" onChange={(event) => this.state.areaInEdit.name = event.target.value} value={this.state.areaInEdit.name} />;
+                    nameInput = <Input invalid type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleAreaChange} value={this.state.areaInEdit.name} />;
                     nameFormFeedback = <FormFeedback>Invalid name</FormFeedback>;
                 } else {
-                    nameInput = <Input valid type="text" name="name" id="name" placeholder="Enter a name" onChange={(event) => this.state.areaInEdit.name = event.target.value} value={this.state.areaInEdit.name} />;
+                    nameInput = <Input valid type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleAreaChange} value={this.state.areaInEdit.name} />;
                 }
 
                 if (!this.validateFilter()) {
-                    filterInput = <Input invalid type="text" name="filter" id="filter" placeholder="Enter a filter" onChange={(event) => this.state.areaInEdit.filter = event.target.value} value={this.state.areaInEdit.filter} />;
+                    filterInput = <Input invalid type="text" name="filter" id="filter" placeholder="Enter a filter" onChange={this.handleAreaChange} value={this.state.areaInEdit.filter} />;
                     filterFormFeedback = <FormFeedback>Invalid name</FormFeedback>;
                 } else {
-                    filterInput = <Input valid type="text" name="filter" id="filter" placeholder="Enter a filter" onChange={(event) => this.state.areaInEdit.filter = event.target.value} value={this.state.areaInEdit.filter} />;
+                    filterInput = <Input valid type="text" name="filter" id="filter" placeholder="Enter a filter" onChange={this.handleAreaChange} value={this.state.areaInEdit.filter} />;
                 }
 
                 submitButton = <RsButton className="area-button-submit" disabled={!this.validateForm()} type="submit">Save</RsButton>;
@@ -132,7 +133,12 @@ class Areas extends React.Component<IAreasProps, any> {
 
     private handleAreaEdit = (area: Area): void => {
         this.props.dispatch(areaSelectSuccessful(area));
-        this.setState({ areaInEdit: area });
+        this.setState({ areaInEdit: clone(area) });
+    };
+    private handleAreaChange = (event) => {
+        const area = this.state.areaInEdit;
+        area[event.target.id] = event.target.value;
+        this.setState({ areaInEdit: clone(area) });
     };
 
     private handleSubmit = (event) => {
