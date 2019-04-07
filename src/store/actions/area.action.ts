@@ -1,6 +1,6 @@
 import { Area } from "../../models";
 import {
-    AREA_ADD, AREA_ADD_FAIL, AREA_ADD_ON_SERVER, AREA_ADD_SUCCESSFUL,
+    AREA_ADD, AREA_ADD_FAIL, AREA_ADD_LOCAL, AREA_ADD_ON_SERVER, AREA_ADD_SUCCESSFUL,
     AREA_DELETE, AREA_DELETE_FAIL, AREA_DELETE_ON_SERVER, AREA_DELETE_SUCCESSFUL,
     AREA_SELECT, AREA_SELECT_FAIL, AREA_SELECT_SUCCESSFUL,
     AREA_UPDATE, AREA_UPDATE_FAIL, AREA_UPDATE_ON_SERVER, AREA_UPDATE_SUCCESSFUL,
@@ -62,6 +62,14 @@ export const areaAdd = (area: Area): AreaAction => ({
         error: null,
     },
     type: AREA_ADD,
+});
+
+export const areaAddLocal = (area: Area): AreaAction => ({
+    payload: {
+        area,
+        error: null,
+    },
+    type: AREA_ADD_LOCAL,
 });
 
 export const areaAddOnServer = (area: Area): AreaAction => ({
