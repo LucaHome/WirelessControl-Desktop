@@ -42,6 +42,8 @@ const areaSelectReducer = (area: Area = null, action: any): Area => {
     switch (action.type) {
         case AREA_SELECT_SUCCESSFUL:
             return action.payload.area;
+        case AREAS_LOAD_SUCCESSFUL:
+            return areaAll;
         default:
             return area;
     }

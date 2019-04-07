@@ -35,6 +35,8 @@ const periodicTaskSelectReducer = (periodicTask: PeriodicTask = null, action: an
     switch (action.type) {
         case PERIODIC_TASK_SELECT_SUCCESSFUL:
             return action.payload.periodicTask;
+        case PERIODIC_TASKS_LOAD_SUCCESSFUL:
+            return action.payload.list.length > 0 ? action.payload.list[0] : null;
         default:
             return periodicTask;
     }

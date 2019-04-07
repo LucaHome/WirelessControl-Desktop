@@ -35,6 +35,8 @@ const wirelessSocketSelectReducer = (wirelessSocket: WirelessSocket = null, acti
     switch (action.type) {
         case WIRELESS_SOCKET_SELECT_SUCCESSFUL:
             return action.payload.wirelessSocket;
+        case WIRELESS_SOCKETS_LOAD_SUCCESSFUL:
+            return action.payload.list.length > 0 ? action.payload.list[0] : null;
         default:
             return wirelessSocket;
     }
