@@ -38,7 +38,7 @@ export const mockServerGetData = (url: string): any => {
                     wirelessSocketState: 1,
                     weekday: 1,
                     hour: 10,
-                    minute: 25,
+                    minute: 3,
                     periodic: 1,
                     active: 1
                 }
