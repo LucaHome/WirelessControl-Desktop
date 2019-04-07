@@ -43,6 +43,7 @@ const areaSelectReducer = (area: Area = null, action: any): Area => {
         case AREA_SELECT_SUCCESSFUL:
             return action.payload.area;
         case AREAS_LOAD_SUCCESSFUL:
+        case AREA_DELETE_SUCCESSFUL:
             return areaAll;
         default:
             return area;
