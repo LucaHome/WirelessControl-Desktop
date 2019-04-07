@@ -3,23 +3,22 @@
 - [x] Store data
 - [ ] Display content
     - [x] login possibility
-    - [ ] areas
+    - [x] areas
     - [ ] wireless sockets
     - [ ] periodic tasks
     - [ ] settings
         - [x] change credentials => Logout-Button
         - [ ] change theme
-- [x] Load content (use actions)
+- [ ] Load content (use actions)
     - [x] credentials
-    - [x] areas
-    - [x] wireless sockets
-    - [x] periodic tasks
-- [ ] Add, Update, Delete entries
     - [ ] areas
     - [ ] wireless sockets
     - [ ] periodic tasks
-- [ ] Navigating
-- [ ] Display content
+- [ ] Add, Update, Delete entries
+    - [x] areas
+    - [ ] wireless sockets
+    - [ ] periodic tasks
+- [x] Navigating
 - [ ] Bugs
     - [ ] 302 error loading areas, wireless sockets or periodic tasks after successful login
 - [ ] ...
