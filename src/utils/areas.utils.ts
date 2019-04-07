@@ -8,3 +8,7 @@ export const clone = (area: Area): Area => {
         deletable: area.deletable,
     };
 }
+
+export const maxId = (areas: Area[]): number => {
+    return Math.max(...areas.map(area => area.id));
+}
