@@ -1,14 +1,16 @@
 import {
-    Button as MatButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText,
+    Button as MatButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText,
 } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Button as RsButton, Form, FormFeedback, FormGroup, Input, Label } from "reactstrap";
 
+import { EditMode } from "../../enums";
 import { Area } from "../../models";
-import { clone } from "../../utils/areas.utils";
-import { areaDelete, areaSelectSuccessful, areaUpdate } from "../../store/actions";
+import { clone, maxId } from "../../utils/areas.utils";
+import { areaAdd, areaAddLocal, areaDelete, areaSelectSuccessful, areaUpdate } from "../../store/actions";
 import { IAreasProps } from "./IAreasProps";
 import "./Areas.css";
 
@@ -17,6 +19,7 @@ class Areas extends React.Component<IAreasProps, any> {
     state = {
         areaInEdit: null,
         deleteDialogOpen: false,
+        editMode: EditMode.Null
     };
 
     private areas: Area[] = [];
@@ -53,7 +56,6 @@ class Areas extends React.Component<IAreasProps, any> {
         let nameFormFeedback = <div></div>;
 
         let filterInput = <div></div>;
-        let filterFormFeedback = <div></div>;
 
         let submitButton = <div></div>;
         let cancelEditButton = <div></div>;
@@ -68,12 +70,7 @@ class Areas extends React.Component<IAreasProps, any> {
                     nameInput = <Input valid type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleAreaChange} value={this.state.areaInEdit.name} />;
                 }
 
-                if (!this.validateFilter()) {
-                    filterInput = <Input invalid type="text" name="filter" id="filter" placeholder="Enter a filter" onChange={this.handleAreaChange} value={this.state.areaInEdit.filter} />;
-                    filterFormFeedback = <FormFeedback>Invalid name</FormFeedback>;
-                } else {
-                    filterInput = <Input valid type="text" name="filter" id="filter" placeholder="Enter a filter" onChange={this.handleAreaChange} value={this.state.areaInEdit.filter} />;
-                }
+                filterInput = <Input disabled type="text" name="filter" id="filter" value={this.state.areaInEdit.filter} />;
 
                 submitButton = <RsButton className="area-button-submit" disabled={!this.validateForm()} type="submit">Save</RsButton>;
                 cancelEditButton = <RsButton className="area-button-submit" type="button" onClick={() => this.setState({ areaInEdit: null })}>Cancel</RsButton>;
@@ -102,13 +99,15 @@ class Areas extends React.Component<IAreasProps, any> {
                     <FormGroup>
                         <Label for="filter">Filter</Label>
                         {filterInput}
-                        {filterFormFeedback}
                     </FormGroup>
                     {submitButton}
                     {cancelEditButton}
                     {deleteButton}
                 </Form>
             </div>
+            <Fab color="primary" aria-label="Add" className="area-button-add" onClick={this.handleAreaAdd}>
+                <AddIcon />
+            </Fab>
             <Dialog
                 open={this.state.deleteDialogOpen}
                 onClose={() => this.setState({ deleteDialogOpen: false })}
@@ -131,27 +130,56 @@ class Areas extends React.Component<IAreasProps, any> {
     private handleAreaSelect = (area: Area): void => this.props.dispatch(areaSelectSuccessful(area));
     private isSelected = (area: Area): boolean => this.areaSelected !== null && this.areaSelected.id === area.id;
 
+    private handleAreaAdd = (): void => {
+        const area: Area = {
+            id: maxId(this.props.state.areas) + 1,
+            name: "",
+            filter: "",
+            deletable: 1,
+        };
+        this.props.dispatch(areaAddLocal(area));
+        this.setState({
+            areaInEdit: area,
+            editMode: EditMode.Add
+        });
+    };
+
     private handleAreaEdit = (area: Area): void => {
         this.props.dispatch(areaSelectSuccessful(area));
-        this.setState({ areaInEdit: clone(area) });
+        this.setState({
+            areaInEdit: clone(area),
+            editMode: EditMode.Edit
+        });
     };
     private handleAreaChange = (event) => {
-        const area = this.state.areaInEdit;
-        area[event.target.id] = event.target.value;
+        const area: Area = this.state.areaInEdit;
+        area.name = event.target.value;
+        area.filter = event.target.value;
         this.setState({ areaInEdit: clone(area) });
     };
 
     private handleSubmit = (event) => {
         event.preventDefault();
-        this.props.dispatch(areaUpdate(this.state.areaInEdit));
-        this.setState({ areaInEdit: null });
+
+        switch (this.state.editMode) {
+            case EditMode.Add:
+                this.props.dispatch(areaAdd(this.state.areaInEdit));
+                break;
+            case EditMode.Edit:
+                this.props.dispatch(areaUpdate(this.state.areaInEdit));
+                break;
+        }
+
+        this.setState({
+            areaInEdit: null,
+            editMode: EditMode.Null
+        });
     };
-    private validateName = (): boolean => this.areaSelected !== null && (this.areaSelected.deletable === 0 || this.areaSelected.name.length > 0);
-    private validateFilter = (): boolean => this.areaSelected !== null && (this.areaSelected.deletable === 0 || this.areaSelected.filter.length > 0);
-    private validateForm = (): boolean => this.validateName() && this.validateFilter();
+    private validateName = (): boolean => this.state.areaInEdit !== null && (this.state.areaInEdit.deletable === 0 || this.state.areaInEdit.name.length > 0);
+    private validateForm = (): boolean => this.validateName();
 
     private handleDelete = (): void => {
-        this.props.dispatch(areaDelete(this.areaSelected));
+        this.props.dispatch(areaDelete(this.state.areaInEdit));
         this.setState({ areaInEdit: null, deleteDialogOpen: false });
     };
 }

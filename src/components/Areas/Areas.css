@@ -1,11 +1,20 @@
 .area-list-container {
   float: left;
   width: 33%;
+  height: 85vh;
+  overflow: auto;
 }
 
 .area-form-container {
   float: right;
   width: 66%;
+  height: 85vh;
+}
+
+.area-button-add {
+  bottom: 1rem;
+  right: 1rem;
+  position: absolute !important;
 }
 
 .area-button-submit {
