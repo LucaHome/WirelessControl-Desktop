@@ -1,11 +1,11 @@
 import {
-    AppBar, Button, CssBaseline, Divider, Drawer, Icon, IconButton, List, ListItem, ListItemText, Snackbar, Toolbar, Typography, withStyles,
+    Avatar, List, ListItem, ListItemSecondaryAction, ListItemText, Switch,
 } from "@material-ui/core";
 import * as React from "react";
 import { connect } from "react-redux";
 
 import { WirelessSocket } from "../../models";
-import { wirelessSocketSelectSuccessful } from "../../store/actions";
+import { wirelessSocketSelectSuccessful, wirelessSocketUpdate } from "../../store/actions";
 import { getWirelessSocketsForArea } from "../../store/selectors";
 import { IWirelessSocketsProps } from "./IWirelessSocketsProps";
 
@@ -25,7 +25,13 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
             ? <List>
                 {wirelessSockets.map((wirelessSocket: WirelessSocket, _) => (
                     <ListItem button key={wirelessSocket.id} onClick={() => this.handleWirelessSocketSelect(wirelessSocket)} selected={this.isSelected(wirelessSocket)}>
+                        <Avatar>
+                            <i className={wirelessSocket.icon}></i>
+                        </Avatar>
                         <ListItemText primary={wirelessSocket.name} secondary={wirelessSocket.code} />
+                        <ListItemSecondaryAction>
+                            <Switch onChange={() => this.handleToggle(wirelessSocket)} checked={wirelessSocket.state === 0} />
+                        </ListItemSecondaryAction>
                     </ListItem>
                 ))}
             </List>
@@ -38,6 +44,10 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
 
     private handleWirelessSocketSelect = (wirelessSocket: WirelessSocket): void => this.props.dispatch(wirelessSocketSelectSuccessful(wirelessSocket));
     private isSelected = (wirelessSocket: WirelessSocket): boolean => this.props.state.wirelessSocketSelected !== null && this.props.state.wirelessSocketSelected.id === wirelessSocket.id;
+    private handleToggle = (wirelessSocket: WirelessSocket): void => {
+        wirelessSocket.state = wirelessSocket.state === 0 ? 1 : 0;
+        this.props.dispatch(wirelessSocketUpdate(wirelessSocket));
+    }
 }
 
 const mapStateToProps = (state) => {
