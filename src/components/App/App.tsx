@@ -109,9 +109,9 @@ class App extends React.Component<IAppProps, any> {
     };
 
     private readonly drawerList: DrawerEntity[] = [
-        { id: 0, title: "Areas", icon: "map", iconColor: "primary", action: () => this.props.dispatch(routeSet(Routes.areas)) },
-        { id: 1, title: "WirelessSockets", icon: "wifi_tethering", iconColor: "primary", action: () => this.props.dispatch(routeSet(Routes.wirelessSockets)) },
-        { id: 2, title: "PeriodicTasks", icon: "alarm", iconColor: "primary", action: () => this.props.dispatch(routeSet(Routes.periodicTasks)) },
+        { id: 0, title: "Areas", icon: "map", route: "/areas", action: () => this.props.dispatch(routeSet(Routes.areas)) },
+        { id: 1, title: "WirelessSockets", icon: "wifi_tethering", route: "/wirelessSockets", action: () => this.props.dispatch(routeSet(Routes.wirelessSockets)) },
+        { id: 2, title: "PeriodicTasks", icon: "alarm", route: "/periodicTasks", action: () => this.props.dispatch(routeSet(Routes.periodicTasks)) },
     ];
 
     constructor(props: IAppProps) {
@@ -144,24 +144,13 @@ class App extends React.Component<IAppProps, any> {
                 <MenuIcon />
             </IconButton>;
 
-        const drawerButtonList = !nextCloudCredentials
-            ? <List></List>
-            : <List>
-                {this.drawerList.map((entity, _) => (
-                    <ListItem button key={entity.id} onClick={entity.action}>
-                        <Icon color={entity.iconColor}>{entity.icon}</Icon>
-                        <ListItemText primary={entity.title} />
-                    </ListItem>
-                ))}
-            </List>;
-
         let route: string = this.props.state.route;
         route = isAnythingLoading(this.props.state)
             ? Routes.loading
             : !nextCloudCredentials
                 ? Routes.login
                 : (route === Routes.loading && !isAnythingLoading(this.props.state)) || route === ""
-                    ? Routes.areas
+                    ? Routes.wirelessSockets
                     : route;
 
         let contentComponent = null;
@@ -187,6 +176,17 @@ class App extends React.Component<IAppProps, any> {
                 break;
         }
         this.props.dispatch(routeSet(route));
+
+        const drawerButtonList = !nextCloudCredentials
+            ? <List></List>
+            : <List>
+                {this.drawerList.map((entity, _) => (
+                    <ListItem button key={entity.id} onClick={entity.action} selected={entity.route === route}>
+                        <Icon color={entity.route === route ? "secondary" : "primary"}>{entity.icon}</Icon>
+                        <ListItemText primary={entity.title} />
+                    </ListItem>
+                ))}
+            </List>;
 
         return <div className={this.props.classes.root}>
             <CssBaseline />
