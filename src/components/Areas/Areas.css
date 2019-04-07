@@ -1,0 +1,18 @@
+.area-list-container {
+  float: left;
+  width: 33%;
+}
+
+.area-form-container {
+  float: right;
+  width: 66%;
+}
+
+.area-button-submit {
+  float: left;
+  margin-right: 0.5rem;
+}
+
+.area-button-delete {
+  float: right;
+}
