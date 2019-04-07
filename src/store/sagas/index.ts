@@ -20,8 +20,6 @@ import { wirelessSocketAdd, wirelessSocketDelete, wirelessSocketsLoad, wirelessS
 function* sagas() {
   // Starts areasLoad on each dispatched AREAS_LOAD action.
   yield takeEvery(AREAS_LOAD, areasLoad);
-  // Starts areasLoad on each dispatched NEXT_CLOUD_CREDENTIALS_LOGIN_SUCCESSFUL action.
-  // yield takeEvery(NEXT_CLOUD_CREDENTIALS_LOGIN_SUCCESSFUL, areasLoad);
   // Starts areaAdd on each dispatched AREA_ADD action.
   yield takeEvery(AREA_ADD, areaAdd);
   // Starts areaUpdate on each dispatched AREA_UPDATE action.
@@ -36,8 +34,6 @@ function* sagas() {
 
   // Starts periodicTasksLoad on each dispatched PERIODIC_TASKS_LOAD action.
   yield takeEvery(PERIODIC_TASKS_LOAD, periodicTasksLoad);
-  // Starts periodicTasksLoad on each dispatched NEXT_CLOUD_CREDENTIALS_LOGIN_SUCCESSFUL action.
-  // yield takeEvery(NEXT_CLOUD_CREDENTIALS_LOGIN_SUCCESSFUL, periodicTasksLoad);
   // Starts periodicTaskAdd on each dispatched PERIODIC_TASK_ADD action.
   yield takeEvery(PERIODIC_TASK_ADD, periodicTaskAdd);
   // Starts periodicTaskUpdate on each dispatched PERIODIC_TASK_UPDATE action.
@@ -47,8 +43,6 @@ function* sagas() {
 
   // Starts wirelessSocketsLoad on each dispatched WIRELESS_SOCKETS_LOAD action.
   yield takeEvery(WIRELESS_SOCKETS_LOAD, wirelessSocketsLoad);
-  // Starts wirelessSocketsLoad on each dispatched NEXT_CLOUD_CREDENTIALS_LOGIN_SUCCESSFUL action.
-  // yield takeEvery(NEXT_CLOUD_CREDENTIALS_LOGIN_SUCCESSFUL, wirelessSocketsLoad);
   // Starts wirelessSocketAdd on each dispatched WIRELESS_SOCKET_ADD action.
   yield takeEvery(WIRELESS_SOCKET_ADD, wirelessSocketAdd);
   // Starts wirelessSocketUpdate on each dispatched WIRELESS_SOCKET_UPDATE action.
