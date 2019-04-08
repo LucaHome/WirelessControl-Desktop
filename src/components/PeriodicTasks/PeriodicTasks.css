@@ -1,0 +1,27 @@
+.periodic-task-list-container {
+    float: left;
+    width: 33%;
+    height: 85vh;
+    overflow: auto;
+}
+
+.periodic-task-form-container {
+    float: right;
+    width: 66%;
+    height: 85vh;
+}
+
+.periodic-task-button-add {
+    bottom: 1rem;
+    right: 1rem;
+    position: absolute !important;
+}
+
+.periodic-task-button-submit {
+    float: left;
+    margin-right: 0.5rem;
+}
+
+.periodic-task-button-delete {
+    float: right;
+}

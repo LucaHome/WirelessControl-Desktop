@@ -1,6 +1,6 @@
 import { PeriodicTask } from "../../models";
 import {
-    PERIODIC_TASK_ADD, PERIODIC_TASK_ADD_FAIL, PERIODIC_TASK_ADD_ON_SERVER, PERIODIC_TASK_ADD_SUCCESSFUL,
+    PERIODIC_TASK_ADD, PERIODIC_TASK_ADD_FAIL, PERIODIC_TASK_ADD_LOCAL, PERIODIC_TASK_ADD_ON_SERVER, PERIODIC_TASK_ADD_SUCCESSFUL,
     PERIODIC_TASK_DELETE, PERIODIC_TASK_DELETE_FAIL, PERIODIC_TASK_DELETE_ON_SERVER, PERIODIC_TASK_DELETE_SUCCESSFUL,
     PERIODIC_TASK_SELECT, PERIODIC_TASK_SELECT_FAIL, PERIODIC_TASK_SELECT_SUCCESSFUL,
     PERIODIC_TASK_UPDATE, PERIODIC_TASK_UPDATE_FAIL, PERIODIC_TASK_UPDATE_ON_SERVER, PERIODIC_TASK_UPDATE_SUCCESSFUL,
@@ -62,6 +62,14 @@ export const periodicTaskAdd = (periodicTask: PeriodicTask): PeriodicTaskAction 
         periodicTask,
     },
     type: PERIODIC_TASK_ADD,
+});
+
+export const periodicTaskAddLocal = (periodicTask: PeriodicTask): PeriodicTaskAction => ({
+    payload: {
+        error: null,
+        periodicTask,
+    },
+    type: PERIODIC_TASK_ADD_LOCAL,
 });
 
 export const periodicTaskAddOnServer = (periodicTask: PeriodicTask): PeriodicTaskAction => ({

@@ -1,6 +1,6 @@
 import { PeriodicTask } from "../../models";
 import {
-    PERIODIC_TASK_ADD, PERIODIC_TASK_ADD_FAIL, PERIODIC_TASK_ADD_ON_SERVER, PERIODIC_TASK_ADD_SUCCESSFUL,
+    PERIODIC_TASK_ADD, PERIODIC_TASK_ADD_FAIL, PERIODIC_TASK_ADD_LOCAL, PERIODIC_TASK_ADD_ON_SERVER, PERIODIC_TASK_ADD_SUCCESSFUL,
     /*PERIODIC_TASK_DELETE,*/ PERIODIC_TASK_DELETE_FAIL, PERIODIC_TASK_DELETE_ON_SERVER, PERIODIC_TASK_DELETE_SUCCESSFUL,
     /*PERIODIC_TASK_SELECT,*/ /*PERIODIC_TASK_SELECT_FAIL,*/ PERIODIC_TASK_SELECT_SUCCESSFUL,
     /*PERIODIC_TASK_UPDATE,*/ PERIODIC_TASK_UPDATE_FAIL, PERIODIC_TASK_UPDATE_ON_SERVER, PERIODIC_TASK_UPDATE_SUCCESSFUL,
@@ -12,6 +12,7 @@ const periodicTasksReducer = (periodicTasks: PeriodicTask[] = [], action: any): 
         case PERIODIC_TASKS_LOAD_SUCCESSFUL: {
             return action.payload.list;
         }
+        case PERIODIC_TASK_ADD_LOCAL:
         case PERIODIC_TASK_ADD_SUCCESSFUL: {
             return [...periodicTasks, action.payload.area];
         }
@@ -21,6 +22,7 @@ const periodicTasksReducer = (periodicTasks: PeriodicTask[] = [], action: any): 
             periodicTasks[index] = periodicTask;
             return periodicTasks;
         }
+        case PERIODIC_TASK_ADD:
         case PERIODIC_TASK_DELETE_SUCCESSFUL: {
             const periodicTask: PeriodicTask = action.payload.periodicTask;
             periodicTasks.splice(periodicTasks.indexOf(periodicTask), 1);
@@ -33,8 +35,13 @@ const periodicTasksReducer = (periodicTasks: PeriodicTask[] = [], action: any): 
 
 const periodicTaskSelectReducer = (periodicTask: PeriodicTask = null, action: any): PeriodicTask => {
     switch (action.type) {
+        case PERIODIC_TASK_ADD_LOCAL:
+        case PERIODIC_TASK_ADD_SUCCESSFUL:
         case PERIODIC_TASK_SELECT_SUCCESSFUL:
+        case PERIODIC_TASK_UPDATE_SUCCESSFUL:
             return action.payload.periodicTask;
+        case PERIODIC_TASK_DELETE_SUCCESSFUL:
+            return null;
         case PERIODIC_TASKS_LOAD_SUCCESSFUL:
             return action.payload.list.length > 0 ? action.payload.list[0] : null;
         default:
