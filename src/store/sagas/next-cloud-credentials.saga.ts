@@ -29,6 +29,7 @@ export function* login(action: any) {
                 break;
         }
     } catch (error) {
+        // tslint:disable
         console.error(error);
         yield put(nextCloudCredentialsLoginFail(`Unknown error: ${error.message}`));
         yield put(routeSet(Routes.login));
@@ -42,6 +43,7 @@ export function* logout(action: any) {
         yield put(nextCloudCredentialsLogoutSuccessful());
         yield put(routeSet(Routes.login));
     } catch (error) {
+        // tslint:disable
         console.error(error);
         yield put(nextCloudCredentialsLogoutFail(`Unknown error: ${error.message}`));
     }

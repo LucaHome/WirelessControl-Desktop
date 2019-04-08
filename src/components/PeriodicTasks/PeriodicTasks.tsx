@@ -1,5 +1,5 @@
 import {
-    AppBar, Button, CssBaseline, Divider, Drawer, Icon, IconButton, List, ListItem, ListItemText, Snackbar, Toolbar, Typography, withStyles,
+    List, ListItem, ListItemText,
 } from "@material-ui/core";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -18,7 +18,7 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
 
     public render() {
         const periodicTasks: PeriodicTask[] = getPeriodicTasksForWirelessSocket(this.props.state);
-        if (!periodicTasks.some(periodicTask => this.props.state.periodicTaskSelected !== null && periodicTask.id === this.props.state.periodicTaskSelected.id)) {
+        if (!periodicTasks.some((periodicTask) => this.props.state.periodicTaskSelected !== null && periodicTask.id === this.props.state.periodicTaskSelected.id)) {
             this.handlePeriodicTaskSelect(periodicTasks.length > 0 ? periodicTasks[0] : null);
         }
 
@@ -30,7 +30,7 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
                     </ListItem>
                 ))}
             </List>
-            : <List></List>
+            : <List></List>;
 
         return <div>
             {periodicTaskList}

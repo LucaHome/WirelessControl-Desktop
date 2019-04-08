@@ -1,6 +1,6 @@
 import { call, put } from "redux-saga/effects";
 import { Area, NextCloudCredentials } from "../../models";
-import { serverGet, serverPost, serverPut, serverDestroy } from "../../services/request.service";
+import { serverDestroy, serverGet, serverPost, serverPut } from "../../services/request.service";
 import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
 import {
     areaAddFail, areaAddSuccessful,
@@ -32,6 +32,7 @@ export function* areasLoad(action: any) {
             }
         }
     } catch (error) {
+        // tslint:disable
         console.error(error);
         yield put(areasLoadFail(`Unknown error: ${error.message}`));
     }
@@ -58,6 +59,7 @@ export function* areaAdd(action: any) {
             }
         }
     } catch (error) {
+        // tslint:disable
         console.error(error);
         yield put(areaAddFail(`Unknown error: ${error.message}`));
     }
@@ -83,6 +85,7 @@ export function* areaUpdate(action: any) {
             }
         }
     } catch (error) {
+        // tslint:disable
         console.error(error);
         yield put(areaUpdateFail(`Unknown error: ${error.message}`));
     }
@@ -108,6 +111,7 @@ export function* areaDelete(action: any) {
             }
         }
     } catch (error) {
+        // tslint:disable
         console.error(error);
         yield put(areaDeleteFail(`Unknown error: ${error.message}`));
     }

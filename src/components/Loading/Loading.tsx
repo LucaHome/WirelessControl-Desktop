@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Spinner } from 'reactstrap';
+import { Spinner } from "reactstrap";
 import { ILoadingProps } from "./ILoadingProps";
 import "./Loading.css";
 

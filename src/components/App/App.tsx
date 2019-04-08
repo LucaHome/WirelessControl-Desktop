@@ -3,7 +3,7 @@ import {
 } from "@material-ui/core";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from "@material-ui/icons/Close";
 import MenuIcon from "@material-ui/icons/Menu";
 
 import classNames from "classnames";
@@ -74,10 +74,10 @@ const styles = (theme: any) => ({
         display: "none",
     },
     logoutButton: {
-        right: 24,
-        position: "absolute",
-        top: 18,
         color: "white",
+        position: "absolute",
+        right: 24,
+        top: 18,
     },
     menuButton: {
         marginLeft: 12,
@@ -172,7 +172,7 @@ class App extends React.Component<IAppProps, any> {
                 break;
             case Routes.notFound:
             default:
-                contentComponent = <NotFound></NotFound>
+                contentComponent = <NotFound></NotFound>;
                 break;
         }
         this.props.dispatch(routeSet(route));
@@ -231,15 +231,15 @@ class App extends React.Component<IAppProps, any> {
             <Snackbar
                 key={this.state.snackbarMessageInfo.key}
                 anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
+                    horizontal: "center",
+                    vertical: "bottom",
                 }}
                 open={this.state.snackbarDisplay}
                 autoHideDuration={3000}
                 onClose={this.handleSnackbarHide}
                 onExited={this.handleSnackbarExited}
                 ContentProps={{
-                    'aria-describedby': 'message-id',
+                    "aria-describedby": "message-id",
                 }}
                 message={<span id="message-id">{this.state.snackbarMessageInfo.message}</span>}
                 action={[
@@ -269,7 +269,8 @@ class App extends React.Component<IAppProps, any> {
         } else {
             this.processSnackbarQueue();
         }
-    };
+    }
+
     private handleSnackbarHide = () => this.setState({ snackbarDisplay: false });
     private handleSnackbarExited = () => this.processSnackbarQueue();
     private processSnackbarQueue = () => {
@@ -279,7 +280,7 @@ class App extends React.Component<IAppProps, any> {
                 snackbarMessageInfo: this.snackbarQueue.shift(),
             });
         }
-    };
+    }
 }
 
 const mapStateToProps = (state) => {

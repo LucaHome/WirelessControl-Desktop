@@ -1,1 +1,5 @@
-export enum EditMode { Null, Add, Edit }
+export enum EditMode {
+    Null,
+    Add,
+    Edit,
+}

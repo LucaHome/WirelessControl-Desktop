@@ -1,6 +1,6 @@
 import { call, put } from "redux-saga/effects";
 import { NextCloudCredentials, WirelessSocket } from "../../models";
-import { serverGet, serverPost, serverPut, serverDestroy } from "../../services/request.service";
+import { serverDestroy, serverGet, serverPost, serverPut } from "../../services/request.service";
 import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
 import {
     periodicTasksLoad,
@@ -32,6 +32,7 @@ export function* wirelessSocketsLoad(action: any) {
             }
         }
     } catch (error) {
+        // tslint:disable
         console.error(error);
         yield put(wirelessSocketsLoadFail(`Unknown error: ${error.message}`));
     }
@@ -58,6 +59,7 @@ export function* wirelessSocketAdd(action: any) {
             }
         }
     } catch (error) {
+        // tslint:disable
         console.error(error);
         yield put(wirelessSocketAddFail(`Unknown error: ${error.message}`));
     }
@@ -83,6 +85,7 @@ export function* wirelessSocketUpdate(action: any) {
             }
         }
     } catch (error) {
+        // tslint:disable
         console.error(error);
         yield put(wirelessSocketUpdateFail(`Unknown error: ${error.message}`));
     }
@@ -108,6 +111,7 @@ export function* wirelessSocketDelete(action: any) {
             }
         }
     } catch (error) {
+        // tslint:disable
         console.error(error);
         yield put(wirelessSocketDeleteFail(`Unknown error: ${error.message}`));
     }

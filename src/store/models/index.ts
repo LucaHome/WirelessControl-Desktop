@@ -1,6 +1,7 @@
 import { Severity } from "../../enums";
 import { Area, NextCloudCredentials, PeriodicTask, WirelessSocket } from "../../models";
 
+// tslint:disable
 export interface AppState {
     route: string;
 

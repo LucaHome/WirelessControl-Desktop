@@ -99,7 +99,7 @@ const snackbarMessageReducer = (snackbarMessage: string = "", action: any): stri
         default:
             return "";
     }
-}
+};
 
 const snackbarSeverityReducer = (snackbarSeverity: Severity = Severity.Null, action: any): Severity => {
     switch (action.type) {
@@ -146,9 +146,9 @@ const snackbarSeverityReducer = (snackbarSeverity: Severity = Severity.Null, act
         default:
             return Severity.Null;
     }
-}
+};
 
 export default {
     snackbarMessageReducer,
     snackbarSeverityReducer,
-}
+};

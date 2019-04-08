@@ -5,5 +5,5 @@ export const getWirelessSocketsForArea = (state: AppState): WirelessSocket[] =>
     !!state.areaSelected
         ? state.areaSelected.filter === ""
             ? state.wirelessSockets
-            : state.wirelessSockets.filter(wirelessSocket => wirelessSocket.area === state.areaSelected.filter)
+            : state.wirelessSockets.filter((wirelessSocket) => wirelessSocket.area === state.areaSelected.filter)
         : [];

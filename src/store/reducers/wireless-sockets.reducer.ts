@@ -29,7 +29,7 @@ const wirelessSocketsReducer = (wirelessSockets: WirelessSocket[] = [], action: 
         default:
             return wirelessSockets;
     }
-}
+};
 
 const wirelessSocketSelectReducer = (wirelessSocket: WirelessSocket = null, action: any): WirelessSocket => {
     switch (action.type) {
@@ -40,7 +40,7 @@ const wirelessSocketSelectReducer = (wirelessSocket: WirelessSocket = null, acti
         default:
             return wirelessSocket;
     }
-}
+};
 
 const wirelessSocketAddReducer = (wirelessSocket: WirelessSocket = null, action: any): WirelessSocket => {
     switch (action.type) {
@@ -53,7 +53,7 @@ const wirelessSocketAddReducer = (wirelessSocket: WirelessSocket = null, action:
         default:
             return wirelessSocket;
     }
-}
+};
 
 const wirelessSocketLoadingReducer = (wirelessSocketLoading: boolean = false, action: any): boolean => {
     switch (action.type) {
@@ -74,11 +74,11 @@ const wirelessSocketLoadingReducer = (wirelessSocketLoading: boolean = false, ac
         default:
             return wirelessSocketLoading;
     }
-}
+};
 
 export default {
     wirelessSocketAddReducer,
     wirelessSocketLoadingReducer,
     wirelessSocketSelectReducer,
     wirelessSocketsReducer,
-}
+};

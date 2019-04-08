@@ -15,7 +15,7 @@ store.runSaga(rootSaga);
 
 const nextCloudCredentials = loadNextCloudCredentialsFromStore();
 if (!!nextCloudCredentials) {
-    store.dispatch(nextCloudCredentialsLogin(nextCloudCredentials))
+    store.dispatch(nextCloudCredentialsLogin(nextCloudCredentials));
 }
 
 ReactDom.render(

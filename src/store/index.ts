@@ -12,5 +12,5 @@ export default function configureStore(preloadedState?: any): any {
             applyMiddleware(sagaMiddleware),
         ),
         runSaga: sagaMiddleware.run,
-    }
+    };
 }

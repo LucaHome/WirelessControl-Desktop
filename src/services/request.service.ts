@@ -19,9 +19,9 @@ const createHeader = (nextCloudCredentials: NextCloudCredentials): any => {
 export const serverGet = async <K>(url: string, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
     if (useMockData) {
         const mockApiResponse: ApiResponse<K> = {
-            status: "success",
             data: mockServerGetData(url),
-            message: ""
+            message: "",
+            status: "success",
         };
         return mockApiResponse;
     }
@@ -45,6 +45,7 @@ export const serverGet = async <K>(url: string, nextCloudCredentials: NextCloudC
                 case 200:
                     return Promise.resolve(response.data);
                 default:
+                    // tslint:disable
                     console.warn(JSON.stringify(response));
                     return Promise.resolve(`Unknown error: ${response.statusText}`);
             }
@@ -88,6 +89,7 @@ export const serverPost = async <T extends Entity, K>(url: string, data: T, next
                 case 200:
                     return Promise.resolve(response.data);
                 default:
+                    // tslint:disable
                     console.warn(JSON.stringify(response));
                     return Promise.resolve(`Unknown error: ${response.statusText}`);
             }
@@ -130,6 +132,7 @@ export const serverPut = async <T extends Entity, K>(url: string, data: T, nextC
                 case 200:
                     return Promise.resolve(response.data);
                 default:
+                    // tslint:disable
                     console.warn(JSON.stringify(response));
                     return Promise.resolve(`Unknown error: ${response.statusText}`);
             }
@@ -170,6 +173,7 @@ export const serverDestroy = async <K>(url: string, id: number, nextCloudCredent
                 case 200:
                     return Promise.resolve(response.data);
                 default:
+                    // tslint:disable
                     console.warn(JSON.stringify(response));
                     return Promise.resolve(`Unknown error: ${response.statusText}`);
             }

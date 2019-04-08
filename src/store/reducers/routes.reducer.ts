@@ -7,8 +7,8 @@ const routeReducer = (route: string = "", action: any): string => {
         default:
             return route;
     }
-}
+};
 
 export default {
     routeReducer,
-}
+};

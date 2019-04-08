@@ -9,17 +9,18 @@ import { Button as RsButton, Form, FormFeedback, FormGroup, Input, Label } from 
 
 import { EditMode } from "../../enums";
 import { Area } from "../../models";
-import { clone, maxId } from "../../utils/areas.utils";
 import { areaAdd, areaAddLocal, areaDelete, areaSelectSuccessful, areaUpdate } from "../../store/actions";
+import { clone, maxId } from "../../utils/areas.utils";
 import { IAreasProps } from "./IAreasProps";
+
 import "./Areas.css";
 
 class Areas extends React.Component<IAreasProps, any> {
 
-    state = {
+    public state = {
         areaInEdit: null,
         deleteDialogOpen: false,
-        editMode: EditMode.Null
+        editMode: EditMode.Null,
     };
 
     private areas: Area[] = [];
@@ -48,9 +49,9 @@ class Areas extends React.Component<IAreasProps, any> {
                     </ListItem>
                 ))}
             </List>
-            : <List></List>
+            : <List></List>;
 
-        let idInput = <Input disabled type="text" name="name" id="name" value={this.areaSelected.id} />;
+        const idInput = <Input disabled type="text" name="name" id="name" value={this.areaSelected.id} />;
 
         let nameInput = <div></div>;
         let nameFormFeedback = <div></div>;
@@ -132,31 +133,32 @@ class Areas extends React.Component<IAreasProps, any> {
 
     private handleAreaAdd = (): void => {
         const area: Area = {
+            deletable: 1,
+            filter: "",
             id: maxId(this.props.state.areas) + 1,
             name: "",
-            filter: "",
-            deletable: 1,
         };
         this.props.dispatch(areaAddLocal(area));
         this.setState({
             areaInEdit: area,
-            editMode: EditMode.Add
+            editMode: EditMode.Add,
         });
-    };
+    }
 
     private handleAreaEdit = (area: Area): void => {
         this.props.dispatch(areaSelectSuccessful(area));
         this.setState({
             areaInEdit: clone(area),
-            editMode: EditMode.Edit
+            editMode: EditMode.Edit,
         });
-    };
+    }
+
     private handleAreaChange = (event) => {
         const area: Area = this.state.areaInEdit;
         area.name = event.target.value;
         area.filter = event.target.value;
         this.setState({ areaInEdit: clone(area) });
-    };
+    }
 
     private handleSubmit = (event) => {
         event.preventDefault();
@@ -172,16 +174,17 @@ class Areas extends React.Component<IAreasProps, any> {
 
         this.setState({
             areaInEdit: null,
-            editMode: EditMode.Null
+            editMode: EditMode.Null,
         });
-    };
+    }
+
     private validateName = (): boolean => this.state.areaInEdit !== null && (this.state.areaInEdit.deletable === 0 || this.state.areaInEdit.name.length > 0);
     private validateForm = (): boolean => this.validateName();
 
     private handleDelete = (): void => {
         this.props.dispatch(areaDelete(this.state.areaInEdit));
         this.setState({ areaInEdit: null, deleteDialogOpen: false });
-    };
+    }
 }
 
 const mapStateToProps = (state) => {

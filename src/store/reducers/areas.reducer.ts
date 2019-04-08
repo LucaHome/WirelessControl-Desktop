@@ -8,10 +8,10 @@ import {
 } from "../action-types";
 
 const areaAll: Area = {
+    deletable: 0,
+    filter: "",
     id: 0,
     name: "All",
-    filter: "",
-    deletable: 0
 };
 
 const areasReducer = (areas: Area[] = [], action: any): Area[] => {
@@ -38,7 +38,7 @@ const areasReducer = (areas: Area[] = [], action: any): Area[] => {
         default:
             return areas;
     }
-}
+};
 
 const areaSelectReducer = (area: Area = null, action: any): Area => {
     switch (action.type) {
@@ -53,7 +53,7 @@ const areaSelectReducer = (area: Area = null, action: any): Area => {
         default:
             return area;
     }
-}
+};
 
 const areaAddReducer = (area: Area = null, action: any): Area => {
     switch (action.type) {
@@ -66,7 +66,7 @@ const areaAddReducer = (area: Area = null, action: any): Area => {
         default:
             return area;
     }
-}
+};
 
 const areaLoadingReducer = (areaLoading: boolean = false, action: any): boolean => {
     switch (action.type) {
@@ -87,11 +87,11 @@ const areaLoadingReducer = (areaLoading: boolean = false, action: any): boolean 
         default:
             return areaLoading;
     }
-}
+};
 
 export default {
     areaAddReducer,
     areaLoadingReducer,
     areaSelectReducer,
     areasReducer,
-}
+};

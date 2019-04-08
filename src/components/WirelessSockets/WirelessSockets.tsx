@@ -17,7 +17,7 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
 
     public render() {
         const wirelessSockets: WirelessSocket[] = getWirelessSocketsForArea(this.props.state);
-        if (!wirelessSockets.some(wirelessSocket => this.props.state.wirelessSocketSelected !== null && wirelessSocket.id === this.props.state.wirelessSocketSelected.id)) {
+        if (!wirelessSockets.some((wirelessSocket) => this.props.state.wirelessSocketSelected !== null && wirelessSocket.id === this.props.state.wirelessSocketSelected.id)) {
             this.handleWirelessSocketSelect(wirelessSockets.length > 0 ? wirelessSockets[0] : null);
         }
 
@@ -35,7 +35,7 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                     </ListItem>
                 ))}
             </List>
-            : <List></List>
+            : <List></List>;
 
         return <div>
             {wirelessSocketList}

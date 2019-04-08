@@ -29,7 +29,7 @@ const periodicTasksReducer = (periodicTasks: PeriodicTask[] = [], action: any): 
         default:
             return periodicTasks;
     }
-}
+};
 
 const periodicTaskSelectReducer = (periodicTask: PeriodicTask = null, action: any): PeriodicTask => {
     switch (action.type) {
@@ -40,7 +40,7 @@ const periodicTaskSelectReducer = (periodicTask: PeriodicTask = null, action: an
         default:
             return periodicTask;
     }
-}
+};
 
 const periodicTaskAddReducer = (periodicTask: PeriodicTask = null, action: any): PeriodicTask => {
     switch (action.type) {
@@ -53,7 +53,7 @@ const periodicTaskAddReducer = (periodicTask: PeriodicTask = null, action: any):
         default:
             return periodicTask;
     }
-}
+};
 
 const periodicTaskLoadingReducer = (periodicTaskLoading: boolean = false, action: any): boolean => {
     switch (action.type) {
@@ -74,11 +74,11 @@ const periodicTaskLoadingReducer = (periodicTaskLoading: boolean = false, action
         default:
             return periodicTaskLoading;
     }
-}
+};
 
 export default {
     periodicTaskAddReducer,
     periodicTaskLoadingReducer,
     periodicTaskSelectReducer,
     periodicTasksReducer,
-}
+};

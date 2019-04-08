@@ -15,18 +15,18 @@ export default () => combineReducers({
     nextCloudCredentials: nextCloudCredentialsReducer.nextCloudCredentialsReducer,
     nextCloudCredentialsLoading: nextCloudCredentialsReducer.nextCloudCredentialsLoadingReducer,
 
-    areas: areasReducer.areasReducer,
+    areaLoading: areasReducer.areaLoadingReducer,
     areaSelected: areasReducer.areaSelectReducer,
     areaToBeAdded: areasReducer.areaAddReducer,
-    areaLoading: areasReducer.areaLoadingReducer,
+    areas: areasReducer.areasReducer,
 
-    wirelessSockets: wirelessSocketsReducer.wirelessSocketsReducer,
+    wirelessSocketLoading: wirelessSocketsReducer.wirelessSocketLoadingReducer,
     wirelessSocketSelected: wirelessSocketsReducer.wirelessSocketSelectReducer,
     wirelessSocketToBeAdded: wirelessSocketsReducer.wirelessSocketAddReducer,
-    wirelessSocketLoading: wirelessSocketsReducer.wirelessSocketLoadingReducer,
+    wirelessSockets: wirelessSocketsReducer.wirelessSocketsReducer,
 
-    periodicTasks: periodicTasksReducer.periodicTasksReducer,
+    periodicTaskLoading: periodicTasksReducer.periodicTaskLoadingReducer,
     periodicTaskSelected: periodicTasksReducer.periodicTaskSelectReducer,
     periodicTaskToBeAdded: periodicTasksReducer.periodicTaskAddReducer,
-    periodicTaskLoading: periodicTasksReducer.periodicTaskLoadingReducer,
+    periodicTasks: periodicTasksReducer.periodicTasksReducer,
 });

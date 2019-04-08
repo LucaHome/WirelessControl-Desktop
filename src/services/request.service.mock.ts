@@ -3,128 +3,128 @@ export const mockServerGetData = (url: string): any => {
         case "area":
             return [
                 {
+                    deletable: 1,
+                    filter: "Sleeping Room",
                     id: 1,
-                    filter: 'Sleeping Room',
-                    name: 'Sleeping Room',
-                    deletable: 1
+                    name: "Sleeping Room",
                 },
                 {
+                    deletable: 1,
+                    filter: "Living Room",
                     id: 2,
-                    filter: 'Living Room',
-                    name: 'Living Room',
-                    deletable: 1
+                    name: "Living Room",
                 },
                 {
+                    deletable: 1,
+                    filter: "Working Room",
                     id: 3,
-                    filter: 'Working Room',
-                    name: 'Working Room',
-                    deletable: 1
+                    name: "Working Room",
                 },
                 {
+                    deletable: 1,
+                    filter: "Kitchen",
                     id: 4,
-                    filter: 'Kitchen',
-                    name: 'Kitchen',
-                    deletable: 1
-                }
+                    name: "Kitchen",
+                },
             ];
         case "ping":
             return "OK";
         case "periodic_task":
             return [
                 {
+                    active: 1,
+                    hour: 10,
                     id: 0,
+                    minute: 3,
                     name: "Periodic Task 1",
+                    periodic: 1,
+                    weekday: 1,
                     wirelessSocketId: 0,
                     wirelessSocketState: 1,
-                    weekday: 1,
-                    hour: 10,
-                    minute: 3,
-                    periodic: 1,
-                    active: 1
-                }
+                },
             ];
         case "wireless_socket":
             return [
                 {
+                    area: "Sleeping Room",
+                    code: "11010A",
+                    deletable: 1,
+                    description: "",
+                    icon: "fas fa-lightbulb",
                     id: 0,
-                    icon: 'fas fa-lightbulb',
-                    name: 'Light Sleeping',
-                    area: 'Sleeping Room',
-                    code: '11010A',
+                    name: "Light Sleeping",
                     state: 0,
-                    description: '',
-                    deletable: 1
                 },
                 {
+                    area: "Living Room",
+                    code: "11010B",
+                    deletable: 1,
+                    description: "",
+                    icon: "fas fa-headphones",
                     id: 1,
-                    icon: 'fas fa-headphones',
-                    name: 'Sound TV',
-                    area: 'Living Room',
-                    code: '11010B',
+                    name: "Sound TV",
                     state: 0,
-                    description: '',
-                    deletable: 1
                 },
                 {
+                    area: "Living Room",
+                    code: "11010C",
+                    deletable: 1,
+                    description: "",
+                    icon: "fab fa-raspberry-pi",
                     id: 2,
-                    icon: 'fab fa-raspberry-pi',
-                    name: 'Raspberry Pi MediaCenter',
-                    area: 'Living Room',
-                    code: '11010C',
+                    name: "Raspberry Pi MediaCenter",
                     state: 0,
-                    description: '',
-                    deletable: 1
                 },
                 {
+                    area: "Living Room",
+                    code: "11010D",
+                    deletable: 1,
+                    description: "",
+                    icon: "fas fa-lightbulb",
                     id: 3,
-                    icon: 'fas fa-lightbulb',
-                    name: 'Light Couch',
-                    area: 'Living Room',
-                    code: '11010D',
+                    name: "Light Couch",
                     state: 1,
-                    description: '',
-                    deletable: 1
                 },
                 {
+                    area: "Working Room",
+                    code: "11010E",
+                    deletable: 1,
+                    description: "",
+                    icon: "fas fa-hdd",
                     id: 4,
-                    icon: 'fas fa-hdd',
-                    name: 'Backup Drive',
-                    area: 'Working Room',
-                    code: '11010E',
+                    name: "Backup Drive",
                     state: 0,
-                    description: '',
-                    deletable: 1
                 },
                 {
+                    area: "Kitchen",
+                    code: "11011A",
+                    deletable: 1,
+                    description: "",
+                    icon: "fas fa-tablet-alt",
                     id: 5,
-                    icon: 'fas fa-tablet-alt',
-                    name: 'Media Mirror Kitchen',
-                    area: 'Kitchen',
-                    code: '11011A',
+                    name: "Media Mirror Kitchen",
                     state: 1,
-                    description: '',
-                    deletable: 1
                 },
                 {
+                    area: "Living Room",
+                    code: "11000A",
+                    deletable: 1,
+                    description: "",
+                    icon: "fas fa-lightbulb",
                     id: 6,
-                    icon: 'fas fa-lightbulb',
-                    name: 'Light Ceiling',
-                    area: 'Living Room',
-                    code: '11000A',
+                    name: "Light Ceiling",
                     state: 0,
-                    description: '',
-                    deletable: 1
-                }
+                },
             ];
         default:
             return [];
     }
-}
+};
 
 export const mockServerPutData = (inputNumber: number): any => {
     return ++inputNumber;
-}
+};
 
 export const mockServerPostDeleteData = (): any => {
     return 0;
-} 
+};

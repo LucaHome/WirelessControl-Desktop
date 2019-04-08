@@ -17,7 +17,7 @@ const nextCloudCredentialsReducer = (nextCloudCredentials: NextCloudCredentials 
         default:
             return nextCloudCredentials;
     }
-}
+};
 
 const nextCloudCredentialsLoadingReducer = (nextCloudCredentialsLoading: boolean = false, action: any): boolean => {
     switch (action.type) {
@@ -32,9 +32,9 @@ const nextCloudCredentialsLoadingReducer = (nextCloudCredentialsLoading: boolean
         default:
             return nextCloudCredentialsLoading;
     }
-}
+};
 
 export default {
     nextCloudCredentialsLoadingReducer,
     nextCloudCredentialsReducer,
-}
+};

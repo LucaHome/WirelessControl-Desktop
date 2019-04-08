@@ -1,6 +1,6 @@
 import { call, put } from "redux-saga/effects";
 import { NextCloudCredentials, PeriodicTask } from "../../models";
-import { serverGet, serverPost, serverPut, serverDestroy } from "../../services/request.service";
+import { serverDestroy, serverGet, serverPost, serverPut } from "../../services/request.service";
 import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
 import {
     periodicTaskAddFail, periodicTaskAddSuccessful,
@@ -30,6 +30,7 @@ export function* periodicTasksLoad(action: any) {
             }
         }
     } catch (error) {
+        // tslint:disable
         console.error(error);
         yield put(periodicTasksLoadFail(`Unknown error: ${error.message}`));
     }
@@ -56,6 +57,7 @@ export function* periodicTaskAdd(action: any) {
             }
         }
     } catch (error) {
+        // tslint:disable
         console.error(error);
         yield put(periodicTaskAddFail(`Unknown error: ${error.message}`));
     }
@@ -81,6 +83,7 @@ export function* periodicTaskUpdate(action: any) {
             }
         }
     } catch (error) {
+        // tslint:disable
         console.error(error);
         yield put(periodicTaskUpdateFail(`Unknown error: ${error.message}`));
     }
@@ -106,6 +109,7 @@ export function* periodicTaskDelete(action: any) {
             }
         }
     } catch (error) {
+        // tslint:disable
         console.error(error);
         yield put(periodicTaskDeleteFail(`Unknown error: ${error.message}`));
     }
