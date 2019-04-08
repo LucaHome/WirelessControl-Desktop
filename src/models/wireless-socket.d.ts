@@ -4,8 +4,8 @@ export interface WirelessSocket extends Entity {
     name: string;
     code: string;
     area: string;
-    state: number;
+    state: 0 | 1;
     description: string;
     icon: string;
-    deletable: number;
+    deletable: 0 | 1;
 }
