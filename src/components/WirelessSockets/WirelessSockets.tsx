@@ -1,5 +1,7 @@
 import {
-    Avatar, Button as MatButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, Switch,
+    Avatar, Button as MatButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+    Fab, IconButton, InputLabel, List, ListItem, ListItemSecondaryAction, ListItemText, MenuItem, Select,
+    Switch,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
@@ -8,7 +10,7 @@ import { connect } from "react-redux";
 import { Button as RsButton, Form, FormFeedback, FormGroup, Input, Label } from "reactstrap";
 
 import { EditMode } from "../../enums";
-import { WirelessSocket } from "../../models";
+import { Area, WirelessSocket } from "../../models";
 import { wirelessSocketAdd, wirelessSocketAddLocal, wirelessSocketDelete, wirelessSocketSelectSuccessful, wirelessSocketUpdate } from "../../store/actions";
 import { getWirelessSocketsForArea } from "../../store/selectors";
 import { clone, maxId } from "../../utils/wireless-sockets.utils";
@@ -33,17 +35,18 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
 
     public render() {
         this.wirelessSockets = getWirelessSocketsForArea(this.props.state);
+        this.wirelessSocketSelected = this.props.state.wirelessSocketSelected;
+
         // TODO fix bug after adding a new wireless socket using handleAdd (error thrown in .some ...)
-        if (!this.wirelessSockets.some((wirelessSocket) => this.props.state.wirelessSocketSelected !== null && wirelessSocket.id === this.props.state.wirelessSocketSelected.id)) {
+        if (!this.wirelessSockets.some((wirelessSocket: WirelessSocket) => this.wirelessSocketSelected !== null && wirelessSocket.id === this.wirelessSocketSelected.id)) {
             this.handleSelect(this.wirelessSockets.length > 0 ? this.wirelessSockets[0] : null);
         }
-        this.wirelessSocketSelected = this.props.state.wirelessSocketSelected;
 
         const wirelessSocketList = this.wirelessSockets.length > 0
             ? <List>
                 {this.wirelessSockets.map((wirelessSocket: WirelessSocket, _) => (
                     <ListItem button key={wirelessSocket.id} onClick={() => this.handleSelect(wirelessSocket)} selected={this.isSelected(wirelessSocket)}>
-                        <Avatar>
+                        <Avatar color={wirelessSocket.state === 1 ? "secondary" : "primary"}>
                             <i className={wirelessSocket.icon}></i>
                         </Avatar>
                         <ListItemText primary={wirelessSocket.name} secondary={wirelessSocket.code} />
@@ -68,6 +71,17 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
         let codeInput = <div></div>;
         let codeFormFeedback = <div></div>;
 
+        let descriptionInput = <div></div>;
+
+        let areaSelect = <div></div>;
+        let areaFormFeedback = <div></div>;
+
+        let stateSwitch = <div></div>;
+
+        let iconPreview = <div></div>;
+        let iconInput = <div></div>;
+        let iconFormFeedback = <div></div>;
+
         let submitButton = <div></div>;
         let cancelEditButton = <div></div>;
         let deleteButton = <div></div>;
@@ -90,60 +104,122 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                     codeInput = <Input valid type="text" name="code" id="code" placeholder="Enter the code" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.code} />;
                 }
 
+                descriptionInput = <Input type="text" name="description" id="description" placeholder="Enter a description" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.description} />;
+
+                areaSelect = <div>
+                    <Select
+                        value={this.state.wirelessSocketInEdit.area}
+                        onChange={this.handleChange}
+                        inputProps={{
+                            name: 'area',
+                            id: 'area',
+                        }} >
+                        <MenuItem value="">
+                            <em>None</em>
+                        </MenuItem>
+                        {this.props.state.areas.filter((area: Area) => area.filter !== "").map((area: Area, _) => (
+                            <MenuItem value={area.filter}>{area.name}</MenuItem>
+                        ))}
+                    </Select>
+                </div>;
+                if (!this.validateArea()) {
+                    areaFormFeedback = <FormFeedback>Invalid area</FormFeedback>;
+                }
+
+                stateSwitch = <Switch name="state" id="state" onChange={() => { this.wirelessSocketSelected.state = this.wirelessSocketSelected.state === 0 ? 1 : 0; this.setState({ wirelessSocketInEdit: clone(this.wirelessSocketSelected) }); }} checked={this.wirelessSocketSelected.state === 0} />;
+
+                iconPreview = <Avatar className="wireless-socket-icon-preview"><i className={this.state.wirelessSocketInEdit.icon}></i></Avatar>;
+                if (!this.validateIcon()) {
+                    iconInput = <Input className="wireless-socket-icon-input" invalid type="text" name="icon" id="icon" placeholder="Enter the icon" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.icon} />;
+                    iconFormFeedback = <FormFeedback>Invalid icon</FormFeedback>;
+                } else {
+                    iconInput = <Input className="wireless-socket-icon-input" valid type="text" name="icon" id="icon" placeholder="Enter the icon" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.icon} />;
+                }
+
                 submitButton = <RsButton className="wireless-socket-button-submit" disabled={!this.validateForm()} type="submit">Save</RsButton>;
                 cancelEditButton = <RsButton className="wireless-socket-button-submit" type="button" onClick={() => this.setState({ wirelessSocketInEdit: null })}>Cancel</RsButton>;
                 deleteButton = <RsButton className="wireless-socket-button-delete" type="button" color="danger" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</RsButton>;
             } else {
                 nameInput = <Input disabled type="text" name="name" id="name" value={this.wirelessSocketSelected.name} />;
                 codeInput = <Input disabled type="text" name="code" id="code" value={this.wirelessSocketSelected.code} />;
+                descriptionInput = <Input disabled type="text" name="description" id="description" value={this.wirelessSocketSelected.description} />;
+                areaSelect = <Input disabled type="text" name="area" id="area" value={this.wirelessSocketSelected.area} />;
+                stateSwitch = <Switch disabled name="state" id="state" checked={this.wirelessSocketSelected.state === 0} />;
+                iconPreview = <Avatar className="wireless-socket-icon-preview"><i className={this.wirelessSocketSelected.icon}></i></Avatar>;
+                iconInput = <Input className="wireless-socket-icon-input" disabled type="text" name="icon" id="icon" value={this.wirelessSocketSelected.icon} />;
             }
         }
 
-        return <div>
-            <div className="wireless-socket-list-container">
-                {wirelessSocketList}
-            </div>
-            <div className="wireless-socket-form-container">
-                <Form onSubmit={this.handleSubmit}>
-                    <FormGroup>
-                        <Label for="name">Id</Label>
-                        {idInput}
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="name">Name</Label>
-                        {nameInput}
-                        {nameFormFeedback}
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="code">Code</Label>
-                        {codeInput}
-                        {codeFormFeedback}
-                    </FormGroup>
-                    // TODO add further fields
-                    {submitButton}
-                    {cancelEditButton}
-                    {deleteButton}
-                </Form>
-            </div>
-            <Fab color="primary" aria-label="Add" className="area-button-add" onClick={this.handleAdd}>
-                <AddIcon />
-            </Fab>
-            <Dialog
-                open={this.state.deleteDialogOpen}
-                onClose={() => this.setState({ deleteDialogOpen: false })}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description" >
-                <DialogTitle id="alert-dialog-title">{"Delete the selected wireless socket?"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        If you delete this wireless socket, all associated periodic tasks will be deleted. This cannot be undone!
+        return <div>{
+            this.wirelessSocketSelected !== null
+                ? <div>
+                    <div className="wireless-socket-list-container">
+                        {wirelessSocketList}
+                    </div>
+                    <div className="wireless-socket-form-container">
+                        <Form onSubmit={this.handleSubmit}>
+                            <FormGroup>
+                                <Label for="id">Id</Label>
+                                {idInput}
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="name">Name</Label>
+                                {nameInput}
+                                {nameFormFeedback}
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="code">Code</Label>
+                                {codeInput}
+                                {codeFormFeedback}
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="description">Description</Label>
+                                {descriptionInput}
+                            </FormGroup>
+                            <FormGroup>
+                                <InputLabel htmlFor="area">Area</InputLabel>
+                                {areaSelect}
+                                {areaFormFeedback}
+                            </FormGroup>
+                            <FormGroup>
+                                <Label className="wireless-socket-full-width" for="state">State</Label>
+                                {stateSwitch}
+                            </FormGroup>
+                            <FormGroup>
+                                <Label className="wireless-socket-full-width" for="icon">Icon</Label>
+                                {iconPreview}
+                                {iconInput}
+                                {iconFormFeedback}
+                            </FormGroup>
+                            <div className="wireless-socket-button-container">
+                                {submitButton}
+                                {cancelEditButton}
+                                {deleteButton}
+                            </div>
+                        </Form>
+                    </div>
+                    <Fab color="primary" aria-label="Add" className="area-button-add" onClick={this.handleAdd}>
+                        <AddIcon />
+                    </Fab>
+                    <Dialog
+                        open={this.state.deleteDialogOpen}
+                        onClose={() => this.setState({ deleteDialogOpen: false })}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description" >
+                        <DialogTitle id="alert-dialog-title">{"Delete the selected wireless socket?"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                If you delete this wireless socket, all associated periodic tasks will be deleted. This cannot be undone!
                     </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <MatButton onClick={() => this.setState({ deleteDialogOpen: false })} color="primary" autoFocus>Cancel</MatButton>
-                    <MatButton onClick={this.handleDelete} color="secondary">Delete</MatButton>
-                </DialogActions>
-            </Dialog>
+                        </DialogContent>
+                        <DialogActions>
+                            <MatButton onClick={() => this.setState({ deleteDialogOpen: false })} color="primary" autoFocus>Cancel</MatButton>
+                            <MatButton onClick={this.handleDelete} color="secondary">Delete</MatButton>
+                        </DialogActions>
+                    </Dialog>
+                </div>
+                : null
+        }
         </div>;
     }
 
@@ -183,7 +259,7 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
 
     private handleChange = (event) => {
         const wirelessSocket: WirelessSocket = this.state.wirelessSocketInEdit;
-        wirelessSocket[event.target.id] = event.target.value;
+        wirelessSocket[event.target.name] = event.target.value;
         this.setState({ wirelessSocketInEdit: clone(wirelessSocket) });
     }
 
@@ -200,14 +276,27 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
         }
 
         this.setState({
-            areaInEdit: null,
+            wirelessSocketInEdit: null,
             editMode: EditMode.Null,
         });
     }
 
-    private validateName = (): boolean => this.state.wirelessSocketInEdit !== null && (this.state.wirelessSocketInEdit.deletable === 0 || this.state.wirelessSocketInEdit.name.length > 0);
-    private validateCode = (): boolean => this.state.wirelessSocketInEdit !== null && (this.state.wirelessSocketInEdit.deletable === 0 || this.state.wirelessSocketInEdit.code.length === 6);
-    private validateForm = (): boolean => this.validateName() && this.validateCode();
+    private validateName = (): boolean => this.state.wirelessSocketInEdit !== null
+        && (this.state.wirelessSocketInEdit.deletable === 0
+            || (this.state.wirelessSocketInEdit.name.length >= 3
+                && this.state.wirelessSocketInEdit.name.length <= 128));
+    private validateCode = (): boolean => this.state.wirelessSocketInEdit !== null
+        && (this.state.wirelessSocketInEdit.deletable === 0
+            || (this.state.wirelessSocketInEdit.code.length === 6
+                && new RegExp("^([01]{5}[ABCDE]{1})$").test(this.state.wirelessSocketInEdit.code)));
+    private validateArea = (): boolean => this.state.wirelessSocketInEdit !== null
+        && (this.state.wirelessSocketInEdit.deletable === 0
+            || (this.state.wirelessSocketInEdit.area.length > 0
+                && this.props.state.areas.find((area: Area) => area.filter === this.state.wirelessSocketInEdit.area)));
+    private validateIcon = (): boolean => this.state.wirelessSocketInEdit !== null
+        && (this.state.wirelessSocketInEdit.deletable === 0 || this.state.wirelessSocketInEdit.icon.length > 0);
+
+    private validateForm = (): boolean => this.validateName() && this.validateCode() && this.validateArea() && this.validateIcon();
 
     private handleDelete = (): void => {
         this.props.dispatch(wirelessSocketDelete(this.state.wirelessSocketInEdit));
