@@ -25,3 +25,9 @@
 .periodic-task-button-delete {
     float: right;
 }
+
+.periodic-task-button-container {
+  float: left;
+  margin-top: 1rem;
+  width: 100%;
+}

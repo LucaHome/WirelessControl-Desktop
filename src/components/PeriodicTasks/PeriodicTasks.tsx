@@ -89,7 +89,7 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
             <div className="periodic-task-form-container">
                 <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
-                        <Label for="name">Id</Label>
+                        <Label for="id">Id</Label>
                         {idInput}
                     </FormGroup>
                     <FormGroup>
@@ -98,9 +98,11 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
                         {nameFormFeedback}
                     </FormGroup>
                     // TODO add further fields
-                    {submitButton}
-                    {cancelEditButton}
-                    {deleteButton}
+                    <div className="periodic-task-button-container">
+                        {submitButton}
+                        {cancelEditButton}
+                        {deleteButton}
+                    </div>
                 </Form>
             </div>
             <Fab color="primary" aria-label="Add" className="area-button-add" onClick={this.handleAdd}>

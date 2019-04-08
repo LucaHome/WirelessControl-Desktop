@@ -89,7 +89,7 @@ class Areas extends React.Component<IAreasProps, any> {
             <div className="area-form-container">
                 <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
-                        <Label for="name">Id</Label>
+                        <Label for="id">Id</Label>
                         {idInput}
                     </FormGroup>
                     <FormGroup>
@@ -101,9 +101,11 @@ class Areas extends React.Component<IAreasProps, any> {
                         <Label for="filter">Filter</Label>
                         {filterInput}
                     </FormGroup>
-                    {submitButton}
-                    {cancelEditButton}
-                    {deleteButton}
+                    <div className="area-button-container">
+                        {submitButton}
+                        {cancelEditButton}
+                        {deleteButton}
+                    </div>
                 </Form>
             </div>
             <Fab color="primary" aria-label="Add" className="area-button-add" onClick={this.handleAdd}>

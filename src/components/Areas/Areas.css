@@ -25,3 +25,9 @@
 .area-button-delete {
   float: right;
 }
+
+.area-button-container {
+  float: left;
+  margin-top: 1rem;
+  width: 100%;
+}
