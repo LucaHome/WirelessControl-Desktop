@@ -4,6 +4,9 @@ import * as React from "react";
 import * as ReactDom from "react-dom";
 import { Provider, ReactReduxContext } from "react-redux";
 
+import MomentUtils from "@date-io/moment";
+import { MuiPickersUtilsProvider } from "material-ui-pickers";
+
 import App from "../components/App/App";
 import { loadNextCloudCredentialsFromStore } from "../services/storage.service";
 import configureStore from "../store";
@@ -19,8 +22,10 @@ if (!!nextCloudCredentials) {
 }
 
 ReactDom.render(
-    <Provider store={store} context={ReactReduxContext}>
-        <App context={ReactReduxContext} />
-    </Provider>,
+    <MuiPickersUtilsProvider utils={MomentUtils}>
+        <Provider store={store} context={ReactReduxContext}>
+            <App context={ReactReduxContext} />
+        </Provider>
+    </MuiPickersUtilsProvider>,
     document.getElementById("app"),
 );
