@@ -21,4 +21,8 @@
 - [x] Navigating
 - [ ] Bugs
     - [ ] 302 error loading areas, wireless sockets or periodic tasks after successful login
+    - [ ] error adding new wireless socket using handleAdd throws null exception in .some ...
+- [ ] unifying
+    - [ ] styles
+    - [ ] method dupications => more generic
 - [ ] ...
