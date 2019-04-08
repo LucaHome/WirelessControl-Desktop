@@ -87,7 +87,7 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                     codeInput = <Input invalid type="text" name="code" id="code" placeholder="Enter the code" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.code} />;
                     codeFormFeedback = <FormFeedback>Invalid code</FormFeedback>;
                 } else {
-                    nameInput = <Input valid type="text" name="code" id="code" placeholder="Enter the code" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.code} />;
+                    codeInput = <Input valid type="text" name="code" id="code" placeholder="Enter the code" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.code} />;
                 }
 
                 submitButton = <RsButton className="wireless-socket-button-submit" disabled={!this.validateForm()} type="submit">Save</RsButton>;
