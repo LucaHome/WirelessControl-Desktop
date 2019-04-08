@@ -16,7 +16,9 @@ Electron client to remotely control wireless sockets and switches using Nextclou
 ## Screenshots
 
 ![alt tag](/screenshots/1_login.jpg)
-![alt tag](/screenshots/2_2_area_edit.jpg)
+![alt tag](/screenshots/2_1_area_readonly.jpg)
+![alt tag](/screenshots/3_2_wireless_socket_edit.jpg)
+![alt tag](/screenshots/4_3_periodic_Task_delete.jpg)
 
 ## License
 

@@ -5,7 +5,7 @@
     - [x] login possibility
     - [x] areas
     - [x] wireless sockets
-    - [ ] periodic tasks
+    - [x] periodic tasks
     - [ ] settings
         - [x] change credentials => Logout-Button
         - [ ] change theme
@@ -14,17 +14,17 @@
     - [ ] areas
     - [ ] wireless sockets
     - [ ] periodic tasks
-- [ ] Add, Update, Delete entries
+- [x] Add, Update, Delete entries
     - [x] areas
     - [x] wireless sockets
-    - [ ] periodic tasks
+    - [x] periodic tasks
 - [x] Navigating
 - [ ] Bugs
     - [ ] 302 error loading areas, wireless sockets or periodic tasks after successful login
     - [x] error adding new wireless socket using handleAdd throws null exception in .some ...
     - [x] error adding new periodic task using handleAdd throws null exception in .some ...
     - [ ] fix deletion bug in reducers
-    - [ ] fix layout in periodic tasks if nothing selected
+    - [x] fix layout in periodic tasks if nothing selected
 - [ ] unifying
     - [ ] styles
     - [ ] method duplications => more generic
