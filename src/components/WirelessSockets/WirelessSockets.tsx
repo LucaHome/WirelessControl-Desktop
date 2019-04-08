@@ -37,7 +37,6 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
         this.wirelessSockets = getWirelessSocketsForArea(this.props.state);
         this.wirelessSocketSelected = this.props.state.wirelessSocketSelected;
 
-        // TODO fix bug after adding a new wireless socket using handleAdd (error thrown in .some ...)
         if (!this.wirelessSockets.some((wirelessSocket: WirelessSocket) => this.wirelessSocketSelected !== null && wirelessSocket.id === this.wirelessSocketSelected.id)) {
             this.handleSelect(this.wirelessSockets.length > 0 ? this.wirelessSockets[0] : null);
         }
