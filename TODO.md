@@ -4,7 +4,7 @@
 - [ ] Display content
     - [x] login possibility
     - [x] areas
-    - [ ] wireless sockets
+    - [x] wireless sockets
     - [ ] periodic tasks
     - [ ] settings
         - [x] change credentials => Logout-Button
@@ -16,7 +16,7 @@
     - [ ] periodic tasks
 - [ ] Add, Update, Delete entries
     - [x] areas
-    - [ ] wireless sockets
+    - [x] wireless sockets
     - [ ] periodic tasks
 - [x] Navigating
 - [ ] Bugs
