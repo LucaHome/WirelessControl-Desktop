@@ -181,14 +181,14 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                                 {areaFormFeedback}
                             </FormGroup>
                             <FormGroup>
-                                <Label className="wireless-socket-full-width" for="state">State</Label>
-                                {stateSwitch}
-                            </FormGroup>
-                            <FormGroup>
                                 <Label className="wireless-socket-full-width" for="icon">Icon</Label>
                                 {iconPreview}
                                 {iconInput}
                                 {iconFormFeedback}
+                            </FormGroup>
+                            <FormGroup>
+                                <Label className="wireless-socket-full-width" for="state">State</Label>
+                                {stateSwitch}
                             </FormGroup>
                             <div className="wireless-socket-button-container">
                                 {submitButton}
