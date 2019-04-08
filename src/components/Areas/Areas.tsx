@@ -37,11 +37,11 @@ class Areas extends React.Component<IAreasProps, any> {
         const areaList = this.areas.length > 0
             ? <List>
                 {this.areas.map((area: Area, _) => (
-                    <ListItem button key={area.id} onClick={() => this.handleAreaSelect(area)} selected={this.isSelected(area)}>
+                    <ListItem button key={area.id} onClick={() => this.handleSelect(area)} selected={this.isSelected(area)}>
                         <ListItemText primary={area.name} />
                         {area.deletable === 1
                             ? <ListItemSecondaryAction>
-                                <IconButton aria-label="Edit" onClick={() => this.handleAreaEdit(area)}>
+                                <IconButton aria-label="Edit" onClick={() => this.handleEdit(area)}>
                                     <EditIcon color={(this.state.areaInEdit !== null && area.id === this.state.areaInEdit.id) ? "secondary" : "primary"} />
                                 </IconButton>
                             </ListItemSecondaryAction>
@@ -51,7 +51,7 @@ class Areas extends React.Component<IAreasProps, any> {
             </List>
             : <List></List>;
 
-        const idInput = <Input disabled type="text" name="name" id="name" value={this.areaSelected.id} />;
+        const idInput = <Input disabled type="text" name="id" id="id" value={this.areaSelected.id} />;
 
         let nameInput = <div></div>;
         let nameFormFeedback = <div></div>;
@@ -65,10 +65,10 @@ class Areas extends React.Component<IAreasProps, any> {
         if (this.areaSelected !== null) {
             if ((this.state.areaInEdit !== null && this.areaSelected.id === this.state.areaInEdit.id) && this.areaSelected.deletable === 1) {
                 if (!this.validateName()) {
-                    nameInput = <Input invalid type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleAreaChange} value={this.state.areaInEdit.name} />;
+                    nameInput = <Input invalid type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.areaInEdit.name} />;
                     nameFormFeedback = <FormFeedback>Invalid name</FormFeedback>;
                 } else {
-                    nameInput = <Input valid type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleAreaChange} value={this.state.areaInEdit.name} />;
+                    nameInput = <Input valid type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.areaInEdit.name} />;
                 }
 
                 filterInput = <Input disabled type="text" name="filter" id="filter" value={this.state.areaInEdit.filter} />;
@@ -106,7 +106,7 @@ class Areas extends React.Component<IAreasProps, any> {
                     {deleteButton}
                 </Form>
             </div>
-            <Fab color="primary" aria-label="Add" className="area-button-add" onClick={this.handleAreaAdd}>
+            <Fab color="primary" aria-label="Add" className="area-button-add" onClick={this.handleAdd}>
                 <AddIcon />
             </Fab>
             <Dialog
@@ -128,10 +128,10 @@ class Areas extends React.Component<IAreasProps, any> {
         </div>;
     }
 
-    private handleAreaSelect = (area: Area): void => this.props.dispatch(areaSelectSuccessful(area));
+    private handleSelect = (area: Area): void => this.props.dispatch(areaSelectSuccessful(area));
     private isSelected = (area: Area): boolean => this.areaSelected !== null && this.areaSelected.id === area.id;
 
-    private handleAreaAdd = (): void => {
+    private handleAdd = (): void => {
         const area: Area = {
             deletable: 1,
             filter: "",
@@ -145,7 +145,7 @@ class Areas extends React.Component<IAreasProps, any> {
         });
     }
 
-    private handleAreaEdit = (area: Area): void => {
+    private handleEdit = (area: Area): void => {
         this.props.dispatch(areaSelectSuccessful(area));
         this.setState({
             areaInEdit: clone(area),
@@ -153,7 +153,7 @@ class Areas extends React.Component<IAreasProps, any> {
         });
     }
 
-    private handleAreaChange = (event) => {
+    private handleChange = (event) => {
         const area: Area = this.state.areaInEdit;
         area.name = event.target.value;
         area.filter = event.target.value;
