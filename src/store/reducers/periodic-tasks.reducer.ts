@@ -14,7 +14,7 @@ const periodicTasksReducer = (periodicTasks: PeriodicTask[] = [], action: any): 
         }
         case PERIODIC_TASK_ADD_LOCAL:
         case PERIODIC_TASK_ADD_SUCCESSFUL: {
-            return [...periodicTasks, action.payload.area];
+            return [...periodicTasks, action.payload.periodicTask];
         }
         case PERIODIC_TASK_UPDATE_SUCCESSFUL: {
             const periodicTask: PeriodicTask = action.payload.periodicTask;

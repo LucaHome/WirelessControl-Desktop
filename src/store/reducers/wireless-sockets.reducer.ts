@@ -14,7 +14,7 @@ const wirelessSocketsReducer = (wirelessSockets: WirelessSocket[] = [], action: 
         }
         case WIRELESS_SOCKET_ADD_LOCAL:
         case WIRELESS_SOCKET_ADD_SUCCESSFUL: {
-            return [...wirelessSockets, action.payload.area];
+            return [...wirelessSockets, action.payload.wirelessSocket];
         }
         case WIRELESS_SOCKET_UPDATE_SUCCESSFUL: {
             const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
