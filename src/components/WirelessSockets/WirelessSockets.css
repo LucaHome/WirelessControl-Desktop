@@ -1,0 +1,27 @@
+.wireless-socket-list-container {
+    float: left;
+    width: 33%;
+    height: 85vh;
+    overflow: auto;
+}
+
+.wireless-socket-form-container {
+    float: right;
+    width: 66%;
+    height: 85vh;
+}
+
+.wireless-socket-button-add {
+    bottom: 1rem;
+    right: 1rem;
+    position: absolute !important;
+}
+
+.wireless-socket-button-submit {
+    float: left;
+    margin-right: 0.5rem;
+}
+
+.wireless-socket-button-delete {
+    float: right;
+}

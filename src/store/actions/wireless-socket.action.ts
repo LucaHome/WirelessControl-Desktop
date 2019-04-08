@@ -1,6 +1,6 @@
 import { WirelessSocket } from "../../models";
 import {
-    WIRELESS_SOCKET_ADD, WIRELESS_SOCKET_ADD_FAIL, WIRELESS_SOCKET_ADD_ON_SERVER, WIRELESS_SOCKET_ADD_SUCCESSFUL,
+    WIRELESS_SOCKET_ADD, WIRELESS_SOCKET_ADD_FAIL, WIRELESS_SOCKET_ADD_LOCAL, WIRELESS_SOCKET_ADD_ON_SERVER, WIRELESS_SOCKET_ADD_SUCCESSFUL,
     WIRELESS_SOCKET_DELETE, WIRELESS_SOCKET_DELETE_FAIL, WIRELESS_SOCKET_DELETE_ON_SERVER, WIRELESS_SOCKET_DELETE_SUCCESSFUL,
     WIRELESS_SOCKET_SELECT, WIRELESS_SOCKET_SELECT_FAIL, WIRELESS_SOCKET_SELECT_SUCCESSFUL,
     WIRELESS_SOCKET_UPDATE, WIRELESS_SOCKET_UPDATE_FAIL, WIRELESS_SOCKET_UPDATE_ON_SERVER, WIRELESS_SOCKET_UPDATE_SUCCESSFUL,
@@ -62,6 +62,14 @@ export const wirelessSocketAdd = (wirelessSocket: WirelessSocket): WirelessSocke
         wirelessSocket,
     },
     type: WIRELESS_SOCKET_ADD,
+});
+
+export const  wirelessSocketAddLocal = (wirelessSocket: WirelessSocket): WirelessSocketAction => ({
+    payload: {
+        error: null,
+        wirelessSocket,
+    },
+    type: WIRELESS_SOCKET_ADD_LOCAL,
 });
 
 export const wirelessSocketAddOnServer = (wirelessSocket: WirelessSocket): WirelessSocketAction => ({
