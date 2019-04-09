@@ -9,6 +9,9 @@
     - [ ] settings
         - [x] change credentials => Logout-Button
         - [ ] change theme
+    - [ ] display filter for wireless sockets and periodic tasks
+        - [ ] wireless sockets
+        - [ ] periodic tasks
 - [ ] Load content (use actions)
     - [x] credentials
     - [ ] areas
