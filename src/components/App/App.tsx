@@ -1,5 +1,6 @@
 import {
-    AppBar, Button, CssBaseline, Divider, Drawer, Icon, IconButton, List, ListItem, ListItemText, Snackbar, Toolbar, Typography, withStyles,
+    AppBar, Button, CssBaseline, Divider, Drawer, Icon, IconButton, List,
+    ListItem, ListItemText, Snackbar, Toolbar, Typography, withStyles,
 } from "@material-ui/core";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
@@ -11,7 +12,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import * as Routes from "../../constants/routes.constants";
-import { DrawerEntity, NextCloudCredentials } from "../../models";
+import { DrawerEntity } from "../../models";
 import { nextCloudCredentialsLogout, routeSet } from "../../store/actions";
 import { isAnythingLoading, snackbarContent } from "../../store/selectors";
 
@@ -22,8 +23,6 @@ import NotFound from "../NotFound/NotFound";
 import PeriodicTasks from "../PeriodicTasks/PeriodicTasks";
 import WirelessSockets from "../WirelessSockets/WirelessSockets";
 import { IAppProps } from "./IAppProps";
-
-import "../../../styles/main.scss";
 
 const drawerWidth = 240;
 
@@ -119,74 +118,11 @@ class App extends React.Component<IAppProps, any> {
     }
 
     public render() {
+        const route = this.calculateRoute();
         const snackbarSelection: any = snackbarContent(this.props.state);
-        const nextCloudCredentials: NextCloudCredentials = this.props.state.nextCloudCredentials;
-
         if (snackbarSelection.display) {
             this.handleSnackbarDisplay(snackbarSelection.message);
         }
-
-        const logoutButton = isAnythingLoading(this.props.state)
-            ? null
-            : !nextCloudCredentials
-                ? null
-                : <Button className={this.props.classes.logoutButton} onClick={() => this.props.dispatch(nextCloudCredentialsLogout())}>Logout</Button>;
-
-        const drawerToggleButton = !nextCloudCredentials
-            ? null
-            : <IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={this.handleDrawerOpen}
-                className={classNames(this.props.classes.menuButton, {
-                    [this.props.classes.hide]: this.state.drawerOpen,
-                })} >
-                <MenuIcon />
-            </IconButton>;
-
-        let route: string = this.props.state.route;
-        route = isAnythingLoading(this.props.state)
-            ? Routes.loading
-            : !nextCloudCredentials
-                ? Routes.login
-                : (route === Routes.loading && !isAnythingLoading(this.props.state)) || route === ""
-                    ? Routes.wirelessSockets
-                    : route;
-
-        let contentComponent = null;
-        switch (route) {
-            case Routes.login:
-                contentComponent = <Login></Login>;
-                break;
-            case Routes.areas:
-                contentComponent = <Areas></Areas>;
-                break;
-            case Routes.periodicTasks:
-                contentComponent = <PeriodicTasks></PeriodicTasks>;
-                break;
-            case Routes.wirelessSockets:
-                contentComponent = <WirelessSockets></WirelessSockets>;
-                break;
-            case Routes.loading:
-                contentComponent = <Loading></Loading>;
-                break;
-            case Routes.notFound:
-            default:
-                contentComponent = <NotFound></NotFound>;
-                break;
-        }
-        this.props.dispatch(routeSet(route));
-
-        const drawerButtonList = !nextCloudCredentials
-            ? <List></List>
-            : <List>
-                {this.drawerList.map((entity, _) => (
-                    <ListItem button key={entity.id} onClick={entity.action} selected={entity.route === route}>
-                        <Icon color={entity.route === route ? "secondary" : "primary"}>{entity.icon}</Icon>
-                        <ListItemText primary={entity.title} />
-                    </ListItem>
-                ))}
-            </List>;
 
         return <div className={this.props.classes.root}>
             <CssBaseline />
@@ -197,10 +133,10 @@ class App extends React.Component<IAppProps, any> {
                 })}
             >
                 <Toolbar disableGutters={!this.state.drawerOpen}>
-                    {drawerToggleButton}
+                    {this.createDrawerToogleButton()}
                     <Typography variant="h6" color="inherit" noWrap />
                 </Toolbar>
-                {logoutButton}
+                {this.createLogoutButton()}
             </AppBar>
             <Drawer
                 variant="permanent"
@@ -222,11 +158,11 @@ class App extends React.Component<IAppProps, any> {
                     </IconButton>
                 </div>
                 <Divider />
-                {drawerButtonList}
+                {this.createDrawerButtonList(route)}
             </Drawer>
             <main className={this.props.classes.content}>
                 <div className={this.props.classes.toolbar} />
-                {contentComponent}
+                {this.findContentComponent(route)}
             </main>
             <Snackbar
                 key={this.state.snackbarMessageInfo.key}
@@ -254,6 +190,78 @@ class App extends React.Component<IAppProps, any> {
                 ]}
             />
         </div>;
+    }
+
+    private calculateRoute = (): string => {
+        let route: string = this.props.state.route;
+        route = isAnythingLoading(this.props.state)
+            ? Routes.loading
+            : !this.props.state.nextCloudCredentials
+                ? Routes.login
+                : (route === Routes.loading && !isAnythingLoading(this.props.state)) || route === ""
+                    ? Routes.wirelessSockets
+                    : route;
+        this.props.dispatch(routeSet(route));
+        return route;
+    }
+
+    private createDrawerToogleButton = (): any => {
+        return !this.props.state.nextCloudCredentials
+            ? null
+            : <IconButton
+                color="inherit"
+                aria-label="Open drawer"
+                onClick={this.handleDrawerOpen}
+                className={classNames(this.props.classes.menuButton, {
+                    [this.props.classes.hide]: this.state.drawerOpen,
+                })} >
+                <MenuIcon />
+            </IconButton>;
+    }
+
+    private createLogoutButton = (): any => {
+        return isAnythingLoading(this.props.state) || !this.props.state.nextCloudCredentials
+            ? null
+            : <Button className={this.props.classes.logoutButton} onClick={() => this.props.dispatch(nextCloudCredentialsLogout())}>Logout</Button>;
+    }
+
+    private createDrawerButtonList = (route: string): any => {
+        return !this.props.state.nextCloudCredentials
+            ? <List></List>
+            : <List>
+                {this.drawerList.map((entity, _) => (
+                    <ListItem button key={entity.id} onClick={entity.action} selected={entity.route === route}>
+                        <Icon color={entity.route === route ? "secondary" : "primary"}>{entity.icon}</Icon>
+                        <ListItemText primary={entity.title} />
+                    </ListItem>
+                ))}
+            </List>;
+    }
+
+    private findContentComponent = (route: string): any => {
+        let contentComponent = null;
+        switch (route) {
+            case Routes.login:
+                contentComponent = <Login></Login>;
+                break;
+            case Routes.areas:
+                contentComponent = <Areas></Areas>;
+                break;
+            case Routes.periodicTasks:
+                contentComponent = <PeriodicTasks></PeriodicTasks>;
+                break;
+            case Routes.wirelessSockets:
+                contentComponent = <WirelessSockets></WirelessSockets>;
+                break;
+            case Routes.loading:
+                contentComponent = <Loading></Loading>;
+                break;
+            case Routes.notFound:
+            default:
+                contentComponent = <NotFound></NotFound>;
+                break;
+        }
+        return contentComponent;
     }
 
     private handleDrawerOpen = () => this.setState({ drawerOpen: true });
