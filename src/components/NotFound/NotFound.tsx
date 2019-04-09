@@ -1,15 +1,9 @@
 import * as React from "react";
-import { INotFoundProps } from "./INotFoundProps";
-import "./NotFound.css";
+import "../../../styles/main.scss";
 
-export default class NotFound extends React.Component<INotFoundProps, any> {
-
-    constructor(props: INotFoundProps) {
-        super(props);
-    }
-
+export default class NotFound extends React.Component {
     public render() {
-        return <div className="not-found">
+        return <div className="wc-window-centered-display">
             <h3>Sorry, page not found!</h3>
         </div>;
     }
