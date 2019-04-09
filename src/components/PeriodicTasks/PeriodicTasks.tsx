@@ -95,6 +95,7 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
 
                 wirelessSocketSelect = <div>
                     <Select
+                        className="periodic-task-full-width"
                         value={this.state.periodicTaskInEdit.wirelessSocketId}
                         onChange={this.handleChangeWirelessSocket}
                         inputProps={{
@@ -121,6 +122,7 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
 
                 weekdaySelect = <div>
                     <Select
+                        className="periodic-task-full-width"
                         value={this.state.periodicTaskInEdit.weekday}
                         onChange={this.handleChange}
                         inputProps={{
@@ -144,6 +146,7 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
                 date.setMinutes(this.periodicTaskSelected.minute);
                 timePicker = <div className="picker">
                     <TimePicker
+                        className="periodic-task-full-width"
                         ampm={false}
                         value={date}
                         onChange={this.handleChangeTime}

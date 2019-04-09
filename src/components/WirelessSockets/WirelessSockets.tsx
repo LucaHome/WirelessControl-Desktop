@@ -75,8 +75,6 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
         let areaSelect = <div></div>;
         let areaFormFeedback = <div></div>;
 
-        let stateSwitch = <div></div>;
-
         let iconPreview = <div></div>;
         let iconInput = <div></div>;
         let iconFormFeedback = <div></div>;
@@ -107,6 +105,7 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
 
                 areaSelect = <div>
                     <Select
+                        className="wireless-socket-full-width"
                         value={this.state.wirelessSocketInEdit.area}
                         onChange={this.handleChange}
                         inputProps={{
@@ -124,12 +123,6 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                 if (!this.validateArea()) {
                     areaFormFeedback = <FormFeedback>Invalid area</FormFeedback>;
                 }
-
-                stateSwitch = <Switch name="state" id="state"
-                    onChange={() => {
-                        this.wirelessSocketSelected.state = this.wirelessSocketSelected.state === 0 ? 1 : 0; this.setState({ wirelessSocketInEdit: clone(this.wirelessSocketSelected) });
-                    }}
-                    checked={this.wirelessSocketSelected.state === 1} />;
 
                 iconPreview = <Avatar className="wireless-socket-icon-preview"><i className={this.state.wirelessSocketInEdit.icon}></i></Avatar>;
                 if (!this.validateIcon()) {
@@ -149,7 +142,6 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                 codeInput = <Input disabled type="text" name="code" id="code" value={this.wirelessSocketSelected.code} />;
                 descriptionInput = <Input disabled type="text" name="description" id="description" value={this.wirelessSocketSelected.description} />;
                 areaSelect = <Input disabled type="text" name="area" id="area" value={this.wirelessSocketSelected.area} />;
-                stateSwitch = <Switch disabled name="state" id="state" checked={this.wirelessSocketSelected.state === 1} />;
                 iconPreview = <Avatar className="wireless-socket-icon-preview"><i className={this.wirelessSocketSelected.icon}></i></Avatar>;
                 iconInput = <Input className="wireless-socket-icon-input" disabled type="text" name="icon" id="icon" value={this.wirelessSocketSelected.icon} />;
             }
@@ -191,10 +183,6 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                                 {iconPreview}
                                 {iconInput}
                                 {iconFormFeedback}
-                            </FormGroup>
-                            <FormGroup>
-                                <Label className="wireless-socket-full-width" for="state">State</Label>
-                                {stateSwitch}
                             </FormGroup>
                             <div className="wireless-socket-button-container">
                                 {submitButton}
