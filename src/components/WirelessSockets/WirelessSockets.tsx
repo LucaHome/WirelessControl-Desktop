@@ -110,8 +110,8 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                         value={this.state.wirelessSocketInEdit.area}
                         onChange={this.handleChange}
                         inputProps={{
-                            name: 'area',
-                            id: 'area',
+                            id: "area",
+                            name: "area",
                         }} >
                         <MenuItem value="">
                             <em>None</em>
@@ -125,14 +125,20 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                     areaFormFeedback = <FormFeedback>Invalid area</FormFeedback>;
                 }
 
-                stateSwitch = <Switch name="state" id="state" onChange={() => { this.wirelessSocketSelected.state = this.wirelessSocketSelected.state === 0 ? 1 : 0; this.setState({ wirelessSocketInEdit: clone(this.wirelessSocketSelected) }); }} checked={this.wirelessSocketSelected.state === 1} />;
+                stateSwitch = <Switch name="state" id="state"
+                    onChange={() => {
+                        this.wirelessSocketSelected.state = this.wirelessSocketSelected.state === 0 ? 1 : 0; this.setState({ wirelessSocketInEdit: clone(this.wirelessSocketSelected) });
+                    }}
+                    checked={this.wirelessSocketSelected.state === 1} />;
 
                 iconPreview = <Avatar className="wireless-socket-icon-preview"><i className={this.state.wirelessSocketInEdit.icon}></i></Avatar>;
                 if (!this.validateIcon()) {
-                    iconInput = <Input className="wireless-socket-icon-input" invalid type="text" name="icon" id="icon" placeholder="Enter the icon" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.icon} />;
+                    iconInput = <Input className="wireless-socket-icon-input" invalid type="text" name="icon" id="icon" placeholder="Enter the icon"
+                        onChange={this.handleChange} value={this.state.wirelessSocketInEdit.icon} />;
                     iconFormFeedback = <FormFeedback>Invalid icon</FormFeedback>;
                 } else {
-                    iconInput = <Input className="wireless-socket-icon-input" valid type="text" name="icon" id="icon" placeholder="Enter the icon" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.icon} />;
+                    iconInput = <Input className="wireless-socket-icon-input" valid type="text" name="icon" id="icon" placeholder="Enter the icon"
+                        onChange={this.handleChange} value={this.state.wirelessSocketInEdit.icon} />;
                 }
 
                 submitButton = <RsButton className="wireless-socket-button-submit" disabled={!this.validateForm()} type="submit">Save</RsButton>;
@@ -256,13 +262,13 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
         });
     }
 
-    private handleChange = (event) => {
+    private handleChange = (event: any) => {
         const wirelessSocket: WirelessSocket = this.state.wirelessSocketInEdit;
         wirelessSocket[event.target.name] = event.target.value;
         this.setState({ wirelessSocketInEdit: clone(wirelessSocket) });
     }
 
-    private handleSubmit = (event) => {
+    private handleSubmit = (event: any) => {
         event.preventDefault();
 
         switch (this.state.editMode) {
@@ -275,25 +281,25 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
         }
 
         this.setState({
-            wirelessSocketInEdit: null,
             editMode: EditMode.Null,
+            wirelessSocketInEdit: null,
         });
     }
 
     private validateName = (): boolean => this.state.wirelessSocketInEdit !== null
         && (this.state.wirelessSocketInEdit.deletable === 0
             || (this.state.wirelessSocketInEdit.name.length >= 3
-                && this.state.wirelessSocketInEdit.name.length <= 128));
+                && this.state.wirelessSocketInEdit.name.length <= 128))
     private validateCode = (): boolean => this.state.wirelessSocketInEdit !== null
         && (this.state.wirelessSocketInEdit.deletable === 0
             || (this.state.wirelessSocketInEdit.code.length === 6
-                && new RegExp("^([01]{5}[ABCDE]{1})$").test(this.state.wirelessSocketInEdit.code)));
+                && new RegExp("^([01]{5}[ABCDE]{1})$").test(this.state.wirelessSocketInEdit.code)))
     private validateArea = (): boolean => this.state.wirelessSocketInEdit !== null
         && (this.state.wirelessSocketInEdit.deletable === 0
             || (this.state.wirelessSocketInEdit.area.length > 0
-                && this.props.state.areas.find((area: Area) => area.filter === this.state.wirelessSocketInEdit.area)));
+                && this.props.state.areas.find((area: Area) => area.filter === this.state.wirelessSocketInEdit.area)))
     private validateIcon = (): boolean => this.state.wirelessSocketInEdit !== null
-        && (this.state.wirelessSocketInEdit.deletable === 0 || this.state.wirelessSocketInEdit.icon.length > 0);
+        && (this.state.wirelessSocketInEdit.deletable === 0 || this.state.wirelessSocketInEdit.icon.length > 0)
 
     private validateForm = (): boolean => this.validateName() && this.validateCode() && this.validateArea() && this.validateIcon();
 
@@ -303,13 +309,13 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
     return {
         state,
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
         dispatch,
     };
