@@ -28,7 +28,8 @@
     - [x] error adding new periodic task using handleAdd throws null exception in .some ...
     - [ ] fix deletion bug in reducers
     - [x] fix layout in periodic tasks if nothing selected
-- [x] unifying
+- [ ] unifying
     - [x] styles
     - [x] method duplications => more generic
+    - [ ] props for area, periodic task & wireless socket
 - [ ] remove bootstrap and reactstrap
