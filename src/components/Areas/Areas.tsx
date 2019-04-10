@@ -1,12 +1,11 @@
 import {
-    Button as MatButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, IconButton,
-    List, ListItem, ListItemSecondaryAction, ListItemText, Typography,
+    Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, FormControl, FormControlLabel,
+    FormGroup, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, TextField, Typography, withStyles,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
 import * as React from "react";
 import { connect } from "react-redux";
-import { Button as RsButton, Form, FormFeedback, FormGroup, Input, Label } from "reactstrap";
 
 import { EditMode } from "../../enums";
 import { Area } from "../../models";
@@ -14,7 +13,14 @@ import { areaAdd, areaAddLocal, areaDelete, areaSelectSuccessful, areaUpdate } f
 import { clone, maxId } from "../../utils/entity.utils";
 import { IAreasProps } from "./IAreasProps";
 
-import "./Areas.css";
+const styles = (theme: any) => ({
+    formControl: {
+        margin: theme.spacing.unit * 3,
+    },
+    root: {
+        display: "flex",
+    },
+});
 
 class Areas extends React.Component<IAreasProps, any> {
 
@@ -52,11 +58,8 @@ class Areas extends React.Component<IAreasProps, any> {
             </List>
             : <List></List>;
 
-        const idInput = <Input disabled type="text" name="id" id="id" value={this.areaSelected.id} />;
-
+        const idInput = <TextField fullWidth disabled label="Id" type="text" name="id" id="id" value={this.areaSelected.id} variant="outlined" />;
         let nameInput = <div></div>;
-        let nameFormFeedback = <div></div>;
-
         let filterInput = <div></div>;
 
         let submitButton = <div></div>;
@@ -66,20 +69,19 @@ class Areas extends React.Component<IAreasProps, any> {
         if (this.areaSelected !== null) {
             if ((this.state.areaInEdit !== null && this.areaSelected.id === this.state.areaInEdit.id) && this.areaSelected.deletable === 1) {
                 if (!this.validateName()) {
-                    nameInput = <Input invalid type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.areaInEdit.name} />;
-                    nameFormFeedback = <FormFeedback>Invalid name</FormFeedback>;
+                    nameInput = <TextField error fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.areaInEdit.name} />;
                 } else {
-                    nameInput = <Input valid type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.areaInEdit.name} />;
+                    nameInput = <TextField fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.areaInEdit.name} />;
                 }
 
-                filterInput = <Input disabled type="text" name="filter" id="filter" value={this.state.areaInEdit.filter} />;
+                filterInput = <TextField fullWidth disabled label="Filter" type="text" name="filter" id="filter" value={this.state.areaInEdit.filter} />;
 
-                submitButton = <RsButton className="wc-button-submit" disabled={!this.validateForm()} type="submit">Save</RsButton>;
-                cancelEditButton = <RsButton className="wc-button-submit" type="button" onClick={() => this.setState({ areaInEdit: null })}>Cancel</RsButton>;
-                deleteButton = <RsButton className="wc-button-delete" type="button" color="danger" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</RsButton>;
+                submitButton = <Button className="wc-button-submit" disabled={!this.validateForm()} type="submit" color="primary">Save</Button>;
+                cancelEditButton = <Button className="wc-button-submit" type="button" color="primary" onClick={() => this.setState({ areaInEdit: null })}>Cancel</Button>;
+                deleteButton = <Button className="wc-button-delete" type="button" color="secondary" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>;
             } else {
-                nameInput = <Input disabled type="text" name="name" id="name" value={this.areaSelected.name} />;
-                filterInput = <Input disabled type="text" name="filter" id="filter" value={this.areaSelected.filter} />;
+                nameInput = <TextField fullWidth disabled label="Name" type="text" name="name" id="name" value={this.areaSelected.name} variant="outlined" />;
+                filterInput = <TextField fullWidth disabled label="Filter" type="text" name="filter" id="filter" value={this.areaSelected.filter} variant="outlined" />;
             }
         }
 
@@ -89,26 +91,24 @@ class Areas extends React.Component<IAreasProps, any> {
                 {areaList}
             </div>
             <div className="wc-form-container">
-                <Form onSubmit={this.handleSubmit}>
-                    <FormGroup>
-                        <Label for="id">Id</Label>
-                        {idInput}
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="name">Name</Label>
-                        {nameInput}
-                        {nameFormFeedback}
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="filter">Filter</Label>
-                        {filterInput}
-                    </FormGroup>
-                    <div className="wc-button-container">
-                        {submitButton}
-                        {cancelEditButton}
-                        {deleteButton}
-                    </div>
-                </Form>
+                <div className={this.props.classes.root}>
+                    <FormControl fullWidth onSubmit={this.handleSubmit} className={this.props.classes.formControl}>
+                        <FormGroup>
+                            <FormControlLabel label="" control={idInput} />
+                        </FormGroup>
+                        <FormGroup>
+                            <FormControlLabel label="" control={nameInput} />
+                        </FormGroup>
+                        <FormGroup>
+                            <FormControlLabel label="" control={filterInput} />
+                        </FormGroup>
+                        <div className="wc-button-container">
+                            {submitButton}
+                            {cancelEditButton}
+                            {deleteButton}
+                        </div>
+                    </FormControl>
+                </div>
             </div>
             <Fab color="primary" aria-label="Add" className="wc-button-add" onClick={this.handleAdd}>
                 <AddIcon />
@@ -125,8 +125,8 @@ class Areas extends React.Component<IAreasProps, any> {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <MatButton onClick={() => this.setState({ deleteDialogOpen: false })} color="primary" autoFocus>Cancel</MatButton>
-                    <MatButton onClick={this.handleDelete} color="secondary">Delete</MatButton>
+                    <Button onClick={() => this.setState({ deleteDialogOpen: false })} color="primary" autoFocus>Cancel</Button>
+                    <Button onClick={this.handleDelete} color="secondary">Delete</Button>
                 </DialogActions>
             </Dialog>
         </div>;
@@ -203,4 +203,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Areas);
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(Areas));
