@@ -7,20 +7,12 @@ import EditIcon from "@material-ui/icons/Edit";
 import * as React from "react";
 import { connect } from "react-redux";
 
+import { formStyles } from "../../constants/style.constants";
 import { EditMode } from "../../enums";
 import { Area } from "../../models";
 import { areaAdd, areaAddLocal, areaDelete, areaSelectSuccessful, areaUpdate } from "../../store/actions";
 import { clone, maxId } from "../../utils/entity.utils";
 import { IAreasProps } from "./IAreasProps";
-
-const styles = (theme: any) => ({
-    formControl: {
-        margin: theme.spacing.unit * 3,
-    },
-    root: {
-        display: "flex",
-    },
-});
 
 class Areas extends React.Component<IAreasProps, any> {
 
@@ -203,4 +195,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(Areas));
+export default withStyles(formStyles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(Areas));
