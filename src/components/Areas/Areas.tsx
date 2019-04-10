@@ -1,5 +1,6 @@
 import {
-    Button as MatButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText,
+    Button as MatButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, IconButton,
+    List, ListItem, ListItemSecondaryAction, ListItemText, Typography,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
@@ -83,6 +84,7 @@ class Areas extends React.Component<IAreasProps, any> {
         }
 
         return <div>
+            <Typography className="wc-full-width" component="h5" variant="h5" gutterBottom>Wireless Control</Typography>
             <div className="wc-list-container">
                 {areaList}
             </div>

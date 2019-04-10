@@ -1,6 +1,7 @@
 import {
     Button as MatButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab,
     IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, MenuItem, Select, Switch,
+    Typography,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
@@ -180,8 +181,9 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
             }
         }
 
-        return <div>{
-            this.periodicTaskSelected !== null
+        return <div>
+            <Typography className="wc-full-width" component="h5" variant="h5" gutterBottom>{this.props.state.wirelessSocketSelected ? this.props.state.wirelessSocketSelected.name : ""}</Typography>
+            {this.periodicTaskSelected !== null
                 ? <div>
                     <div className="wc-list-container">
                         {periodicTaskList}
@@ -258,7 +260,7 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
                     </Dialog>
                 </div>
                 : null
-        }
+            }
         </div>;
     }
 

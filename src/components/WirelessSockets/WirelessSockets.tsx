@@ -1,7 +1,7 @@
 import {
     Avatar, Button as MatButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
     Fab, IconButton, InputLabel, List, ListItem, ListItemSecondaryAction, ListItemText, MenuItem, Select,
-    Switch,
+    Switch, Typography,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
@@ -147,8 +147,9 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
             }
         }
 
-        return <div>{
-            this.wirelessSocketSelected !== null
+        return <div>
+            <Typography className="wc-full-width" component="h5" variant="h5" gutterBottom>{this.props.state.areaSelected ? this.props.state.areaSelected.name : ""}</Typography>
+            {this.wirelessSocketSelected !== null
                 ? <div>
                     <div className="wc-list-container">
                         {wirelessSocketList}
@@ -212,7 +213,7 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                     </Dialog>
                 </div>
                 : null
-        }
+            }
         </div>;
     }
 
