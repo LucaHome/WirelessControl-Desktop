@@ -31,3 +31,4 @@
 - [x] unifying
     - [x] styles
     - [x] method duplications => more generic
+- [ ] remove bootstrap and reactstrap
