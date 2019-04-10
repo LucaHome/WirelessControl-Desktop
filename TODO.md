@@ -28,6 +28,7 @@
     - [x] error adding new periodic task using handleAdd throws null exception in .some ...
     - [ ] fix deletion bug in reducers
     - [x] fix layout in periodic tasks if nothing selected
+    - [ ] fix login submit bug
 - [ ] unifying
     - [x] styles
     - [x] method duplications => more generic
