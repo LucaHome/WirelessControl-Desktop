@@ -74,17 +74,17 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
         let deleteButton = <div></div>;
 
         if (this.periodicTaskSelected !== null) {
-            idInput = <TextField fullWidth disabled type="text" name="id" id="id" value={this.periodicTaskSelected.id} variant="outlined" />;
+            idInput = <TextField fullWidth disabled label="Id" type="text" name="id" id="id" value={this.periodicTaskSelected.id} variant="outlined" />;
 
             if (this.state.periodicTaskInEdit !== null && this.periodicTaskSelected.id === this.state.periodicTaskInEdit.id) {
                 if (!this.validateName()) {
-                    nameInput = <TextField error fullWidth type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.periodicTaskInEdit.name} variant="outlined" />;
+                    nameInput = <TextField error fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.periodicTaskInEdit.name} variant="outlined" />;
                 } else {
-                    nameInput = <TextField fullWidth type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.periodicTaskInEdit.name} variant="outlined" />;
+                    nameInput = <TextField fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.periodicTaskInEdit.name} variant="outlined" />;
                 }
 
                 if (!this.validateWirelessSocket()) {
-                    wirelessSocketSelect = <Select
+                    wirelessSocketSelect = <Select 
                         error
                         fullWidth
                         value={this.state.periodicTaskInEdit.wirelessSocketId}
@@ -179,6 +179,7 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
                         <TimePicker
                             error
                             fullWidth
+                            label="Time"
                             className="wc-full-width"
                             ampm={false}
                             value={date}
@@ -190,6 +191,7 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
                     timePicker = <div className="picker">
                         <TimePicker
                             fullWidth
+                            label="Time"
                             className="wc-full-width"
                             ampm={false}
                             value={date}
@@ -211,12 +213,12 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
                 cancelEditButton = <Button className="wc-button-submit" type="button" color="primary" onClick={() => this.setState({ periodicTaskInEdit: null })}>Cancel</Button>;
                 deleteButton = <Button className="wc-button-delete" type="button" color="secondary" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>;
             } else {
-                nameInput = <TextField fullWidth disabled type="text" name="name" id="name" value={this.periodicTaskSelected.name} variant="outlined" />;
+                nameInput = <TextField fullWidth disabled label="Name" type="text" name="name" id="name" value={this.periodicTaskSelected.name} variant="outlined" />;
                 const wirelessSocket: WirelessSocket = this.props.state.wirelessSockets.find((x: WirelessSocket) => x.id === this.periodicTaskSelected.wirelessSocketId);
-                wirelessSocketSelect = <TextField fullWidth disabled type="text" name="wirelessSocket" id="wirelessSocket" value={wirelessSocket.name} variant="outlined" />;
+                wirelessSocketSelect = <TextField fullWidth disabled label="WirelessSocket" type="text" name="wirelessSocket" id="wirelessSocket" value={wirelessSocket.name} variant="outlined" />;
                 wirelessSocketStateSwitch = <Switch disabled name="wirelessSocketState" id="wirelessSocketState" checked={this.periodicTaskSelected.wirelessSocketState === 1} />;
-                weekdaySelect = <TextField fullWidth disabled type="text" name="weekday" id="weekday" value={weekdayArray[this.periodicTaskSelected.weekday]} variant="outlined" />;
-                timePicker = <TextField fullWidth disabled type="text" name="time" id="time" value={getTimeString(this.periodicTaskSelected)} variant="outlined" />;
+                weekdaySelect = <TextField fullWidth disabled label="Weekday" type="text" name="weekday" id="weekday" value={weekdayArray[this.periodicTaskSelected.weekday]} variant="outlined" />;
+                timePicker = <TextField fullWidth disabled label="Time" type="text" name="time" id="time" value={getTimeString(this.periodicTaskSelected)} variant="outlined" />;
                 periodicSwitch = <Switch disabled name="periodic" id="periodic" checked={this.periodicTaskSelected.periodic === 1} />;
                 activeSwitch = <Switch disabled name="active" id="active" checked={this.periodicTaskSelected.active === 1} />;
             }

@@ -75,22 +75,22 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
         let deleteButton = <div></div>;
 
         if (this.wirelessSocketSelected !== null) {
-            idInput = <TextField fullWidth disabled type="text" name="id" id="id" value={this.wirelessSocketSelected.id} variant="outlined" />;
+            idInput = <TextField fullWidth disabled label="Id" type="text" name="id" id="id" value={this.wirelessSocketSelected.id} variant="outlined" />;
 
             if ((this.state.wirelessSocketInEdit !== null && this.wirelessSocketSelected.id === this.state.wirelessSocketInEdit.id) && this.wirelessSocketSelected.deletable === 1) {
                 if (!this.validateName()) {
-                    nameInput = <TextField error fullWidth type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.name} variant="outlined" />;
+                    nameInput = <TextField error fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.name} variant="outlined" />;
                 } else {
-                    nameInput = <TextField fullWidth type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.name} variant="outlined" />;
+                    nameInput = <TextField fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.name} variant="outlined" />;
                 }
 
                 if (!this.validateCode()) {
-                    codeInput = <TextField error fullWidth type="text" name="code" id="code" placeholder="Enter the code" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.code} variant="outlined" />;
+                    codeInput = <TextField error fullWidth label="Code" type="text" name="code" id="code" placeholder="Enter the code" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.code} variant="outlined" />;
                 } else {
-                    codeInput = <TextField fullWidth type="text" name="code" id="code" placeholder="Enter the code" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.code} variant="outlined" />;
+                    codeInput = <TextField fullWidth label="Code" type="text" name="code" id="code" placeholder="Enter the code" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.code} variant="outlined" />;
                 }
 
-                descriptionInput = <TextField fullWidth type="text" name="description" id="description" placeholder="Enter a description" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.description} variant="outlined" />;
+                descriptionInput = <TextField fullWidth label="Description" type="text" name="description" id="description" placeholder="Enter a description" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.description} variant="outlined" />;
 
                 if (!this.validateArea()) {
                     areaSelect = <Select
@@ -135,10 +135,10 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
 
                 iconPreview = <Avatar className="wireless-socket-icon-preview"><i className={this.state.wirelessSocketInEdit.icon}></i></Avatar>;
                 if (!this.validateIcon()) {
-                    iconInput = <TextField error fullWidth className="wireless-socket-icon-input" type="text" name="icon" id="icon" placeholder="Enter the icon"
+                    iconInput = <TextField error fullWidth label="Icon" className="wireless-socket-icon-input" type="text" name="icon" id="icon" placeholder="Enter the icon"
                         onChange={this.handleChange} value={this.state.wirelessSocketInEdit.icon} variant="outlined" />;
                 } else {
-                    iconInput = <TextField fullWidth className="wireless-socket-icon-input" type="text" name="icon" id="icon" placeholder="Enter the icon"
+                    iconInput = <TextField fullWidth label="Icon" className="wireless-socket-icon-input" type="text" name="icon" id="icon" placeholder="Enter the icon"
                         onChange={this.handleChange} value={this.state.wirelessSocketInEdit.icon} variant="outlined" />;
                 }
 
@@ -146,12 +146,12 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                 cancelEditButton = <Button className="wc-button-submit" type="button" color="primary" onClick={() => this.setState({ wirelessSocketInEdit: null })}>Cancel</Button>;
                 deleteButton = <Button className="wc-button-delete" type="button" color="secondary" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>;
             } else {
-                nameInput = <TextField fullWidth disabled type="text" name="name" id="name" value={this.wirelessSocketSelected.name} variant="outlined" />;
-                codeInput = <TextField fullWidth disabled type="text" name="code" id="code" value={this.wirelessSocketSelected.code} variant="outlined" />;
-                descriptionInput = <TextField fullWidth disabled type="text" name="description" id="description" value={this.wirelessSocketSelected.description} variant="outlined" />;
-                areaSelect = <TextField fullWidth disabled type="text" name="area" id="area" value={this.wirelessSocketSelected.area} variant="outlined" />;
+                nameInput = <TextField fullWidth disabled label="Name" type="text" name="name" id="name" value={this.wirelessSocketSelected.name} variant="outlined" />;
+                codeInput = <TextField fullWidth disabled label="Code" type="text" name="code" id="code" value={this.wirelessSocketSelected.code} variant="outlined" />;
+                descriptionInput = <TextField fullWidth disabled label="Description" type="text" name="description" id="description" value={this.wirelessSocketSelected.description} variant="outlined" />;
+                areaSelect = <TextField fullWidth disabled label="Area" type="text" name="area" id="area" value={this.wirelessSocketSelected.area} variant="outlined" />;
                 iconPreview = <Avatar className="wireless-socket-icon-preview"><i className={this.wirelessSocketSelected.icon}></i></Avatar>;
-                iconInput = <TextField fullWidth className="wireless-socket-icon-input" disabled type="text" name="icon" id="icon" value={this.wirelessSocketSelected.icon} variant="outlined" />;
+                iconInput = <TextField fullWidth label="Icon" className="wireless-socket-icon-input" disabled type="text" name="icon" id="icon" value={this.wirelessSocketSelected.icon} variant="outlined" />;
             }
         }
 
