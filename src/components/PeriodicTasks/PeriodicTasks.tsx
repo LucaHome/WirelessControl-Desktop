@@ -14,7 +14,8 @@ import { EditMode } from "../../enums";
 import { PeriodicTask, WirelessSocket } from "../../models";
 import { periodicTaskAdd, periodicTaskAddLocal, periodicTaskDelete, periodicTaskSelectSuccessful, periodicTaskUpdate } from "../../store/actions";
 import { getPeriodicTasksForWirelessSocket } from "../../store/selectors";
-import { clone, getDateTimeString, getTimeString, maxId } from "../../utils/periodic-tasks.utils";
+import { clone, maxId } from "../../utils/entity.utils";
+import { getDateTimeString, getTimeString } from "../../utils/periodic-tasks.utils";
 import { IPeriodicTasksProps } from "./IPeriodicTasksProps";
 
 import "./PeriodicTasks.css";

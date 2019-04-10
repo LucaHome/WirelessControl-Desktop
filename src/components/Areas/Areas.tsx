@@ -10,7 +10,7 @@ import { Button as RsButton, Form, FormFeedback, FormGroup, Input, Label } from 
 import { EditMode } from "../../enums";
 import { Area } from "../../models";
 import { areaAdd, areaAddLocal, areaDelete, areaSelectSuccessful, areaUpdate } from "../../store/actions";
-import { clone, maxId } from "../../utils/areas.utils";
+import { clone, maxId } from "../../utils/entity.utils";
 import { IAreasProps } from "./IAreasProps";
 
 import "./Areas.css";

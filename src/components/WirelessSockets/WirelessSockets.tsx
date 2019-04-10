@@ -13,7 +13,7 @@ import { EditMode } from "../../enums";
 import { Area, WirelessSocket } from "../../models";
 import { wirelessSocketAdd, wirelessSocketAddLocal, wirelessSocketDelete, wirelessSocketSelectSuccessful, wirelessSocketUpdate } from "../../store/actions";
 import { getWirelessSocketsForArea } from "../../store/selectors";
-import { clone, maxId } from "../../utils/wireless-sockets.utils";
+import { clone, maxId } from "../../utils/entity.utils";
 import { IWirelessSocketsProps } from "./IWirelessSocketsProps";
 
 import "./WirelessSockets.css";
