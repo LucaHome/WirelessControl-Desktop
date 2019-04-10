@@ -1,12 +1,12 @@
-@media all and (min-width: 30rem) {
-    .login form {
-        margin: 0 auto;
-        max-width: 20rem;
-    }
+.login-container {
+  text-align: center;
+  width: 100%;
+}
 
-    .login img {
-        margin-left: 45%;
-        width: 6rem;
-        height: 6rem;
-    }
+.login-image {
+  height: 6rem;
+}
+
+.login-form {
+  min-width: 20rem !important;
 }

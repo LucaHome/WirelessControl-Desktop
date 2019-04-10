@@ -1,6 +1,8 @@
+import { Button, FormControl, FormControlLabel, FormGroup, TextField, withStyles } from "@material-ui/core";
 import * as React from "react";
 import { connect } from "react-redux";
-import { Button, Form, FormFeedback, FormGroup, Input, Label } from "reactstrap";
+
+import { formStyles } from "../../constants/style.constants";
 import { NextCloudCredentials } from "../../models";
 import { nextCloudCredentialsLogin } from "../../store/actions";
 import { ILoginProps } from "./ILoginProps";
@@ -20,53 +22,45 @@ class Login extends React.Component<ILoginProps, any> {
 
     public render() {
         let urlInput = <div></div>;
-        let urlFormFeedback = <div></div>;
         if (!this.validateNextCloudUrl()) {
-            urlInput = <Input invalid type="url" name="baseUrl" id="baseUrl" placeholder="Enter your server address" onChange={this.handleChange} value={this.state.baseUrl} />;
-            urlFormFeedback = <FormFeedback>Invalid Url</FormFeedback>;
+            urlInput = <TextField error fullWidth label="Url" type="url" name="baseUrl" id="baseUrl" placeholder="Enter your server address" onChange={this.handleChange} value={this.state.baseUrl} variant="outlined" />;
         } else {
-            urlInput = <Input valid type="url" name="baseUrl" id="baseUrl" placeholder="Enter your server address" onChange={this.handleChange} value={this.state.baseUrl} />;
+            urlInput = <TextField fullWidth label="Url" type="url" name="baseUrl" id="baseUrl" placeholder="Enter your server address" onChange={this.handleChange} value={this.state.baseUrl} variant="outlined" />;
         }
 
         let userNameInput = <div></div>;
-        let userNameFormFeedback = <div></div>;
         if (!this.validateUserName()) {
-            userNameInput = <Input invalid type="text" name="userName" id="userName" placeholder="Enter your user name" onChange={this.handleChange} value={this.state.userName} />;
-            userNameFormFeedback = <FormFeedback>Invalid user name</FormFeedback>;
+            userNameInput = <TextField error fullWidth label="UserName" type="text" name="userName" id="userName" placeholder="Enter your user name" onChange={this.handleChange} value={this.state.userName} variant="outlined" />;
         } else {
-            userNameInput = <Input valid type="text" name="userName" id="userName" placeholder="Enter your user name" onChange={this.handleChange} value={this.state.userName} />;
+            userNameInput = <TextField fullWidth label="UserName" type="text" name="userName" id="userName" placeholder="Enter your user name" onChange={this.handleChange} value={this.state.userName} variant="outlined" />;
         }
 
         let passPhraseInput = <div></div>;
-        let passPhraseFormFeedback = <div></div>;
         if (!this.validatePassPhrase()) {
-            passPhraseInput = <Input invalid type="password" name="passPhrase" id="passPhrase" placeholder="Enter your password" onChange={this.handleChange} value={this.state.passPhrase} />;
-            passPhraseFormFeedback = <FormFeedback>Invalid password</FormFeedback>;
+            passPhraseInput = <TextField error fullWidth label="Password" type="password" name="passPhrase" id="passPhrase" placeholder="Enter your password" onChange={this.handleChange} value={this.state.passPhrase} variant="outlined" />;
         } else {
-            passPhraseInput = <Input valid type="password" name="passPhrase" id="passPhrase" placeholder="Enter your password" onChange={this.handleChange} value={this.state.passPhrase} />;
+            passPhraseInput = <TextField fullWidth label="Password" type="password" name="passPhrase" id="passPhrase" placeholder="Enter your password" onChange={this.handleChange} value={this.state.passPhrase} variant="outlined" />;
         }
 
         return (
-            <div className="login">
-                <img src="../assets/images/logo.png"></img>
-                <Form onSubmit={this.handleSubmit}>
-                    <FormGroup>
-                        <Label for="baseUrl">NextCloudUrl</Label>
-                        {urlInput}
-                        {urlFormFeedback}
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="userName">UserName</Label>
-                        {userNameInput}
-                        {userNameFormFeedback}
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="passPhrase">Password</Label>
-                        {passPhraseInput}
-                        {passPhraseFormFeedback}
-                    </FormGroup>
-                    <Button disabled={!this.validateForm()} type="submit">Login</Button>
-                </Form>
+            <div>
+                <div className="login-container">
+                    <img className="login-image" src="../assets/images/logo.png"></img>
+                </div>
+                <div className="login-container">
+                    <FormControl onSubmit={this.handleSubmit} className="login-form">
+                        <FormGroup>
+                            <FormControlLabel label="" control={urlInput} />
+                        </FormGroup>
+                        <FormGroup>
+                            <FormControlLabel label="" control={userNameInput} />
+                        </FormGroup>
+                        <FormGroup>
+                            <FormControlLabel label="" control={passPhraseInput} />
+                        </FormGroup>
+                        <Button disabled={!this.validateForm()} color="primary" type="submit">Login</Button>
+                    </FormControl>
+                </div>
             </div>
         );
     }
@@ -106,4 +100,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default withStyles(formStyles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(Login));
