@@ -1,16 +1,16 @@
 import {
-    Button as MatButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab,
-    IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, MenuItem, Select, Switch,
-    Typography,
+    Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, FormControl, FormControlLabel,
+    FormGroup, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, MenuItem, OutlinedInput, Select,
+    Switch, TextField, Typography, withStyles,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
 import { TimePicker } from "material-ui-pickers";
 import * as React from "react";
 import { connect } from "react-redux";
-import { Button as RsButton, Form, FormFeedback, FormGroup, Input, Label } from "reactstrap";
 
 import { weekdayArray } from "../../constants/periodic-tasks.constants";
+import { formStyles } from "../../constants/style.constants";
 import { EditMode } from "../../enums";
 import { PeriodicTask, WirelessSocket } from "../../models";
 import { periodicTaskAdd, periodicTaskAddLocal, periodicTaskDelete, periodicTaskSelectSuccessful, periodicTaskUpdate } from "../../store/actions";
@@ -61,23 +61,12 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
             : <List></List>;
 
         let idInput = <div></div>;
-
         let nameInput = <div></div>;
-        let nameFormFeedback = <div></div>;
-
         let wirelessSocketSelect = <div></div>;
-        let wirelessSocketFormFeedback = <div></div>;
-
         let wirelessSocketStateSwitch = <div></div>;
-
         let weekdaySelect = <div></div>;
-        let weekdayFormFeedback = <div></div>;
-
         let timePicker = <div></div>;
-        let timeFormFeedback = <div></div>;
-
         let periodicSwitch = <div></div>;
-
         let activeSwitch = <div></div>;
 
         let submitButton = <div></div>;
@@ -85,35 +74,54 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
         let deleteButton = <div></div>;
 
         if (this.periodicTaskSelected !== null) {
-            idInput = <Input disabled type="text" name="id" id="id" value={this.periodicTaskSelected.id} />;
+            idInput = <TextField fullWidth disabled type="text" name="id" id="id" value={this.periodicTaskSelected.id} variant="outlined" />;
 
             if (this.state.periodicTaskInEdit !== null && this.periodicTaskSelected.id === this.state.periodicTaskInEdit.id) {
                 if (!this.validateName()) {
-                    nameInput = <Input invalid type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.periodicTaskInEdit.name} />;
-                    nameFormFeedback = <FormFeedback>Invalid name</FormFeedback>;
+                    nameInput = <TextField error fullWidth type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.periodicTaskInEdit.name} variant="outlined" />;
                 } else {
-                    nameInput = <Input valid type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.periodicTaskInEdit.name} />;
+                    nameInput = <TextField fullWidth type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.periodicTaskInEdit.name} variant="outlined" />;
                 }
 
-                wirelessSocketSelect = <div>
-                    <Select
-                        className="wc-full-width"
+                if (!this.validateWirelessSocket()) {
+                    wirelessSocketSelect = <Select
+                        error
+                        fullWidth
                         value={this.state.periodicTaskInEdit.wirelessSocketId}
                         onChange={this.handleChangeWirelessSocket}
-                        inputProps={{
-                            id: "wirelessSocket",
-                            name: "wirelessSocket",
-                        }} >
+                        input={
+                            <OutlinedInput
+                                id="wirelessSocket"
+                                labelWidth={0}
+                                name="wirelessSocket"
+                            />
+                        } >
                         <MenuItem value={-1}>
                             <em>None</em>
                         </MenuItem>
                         {this.props.state.wirelessSockets.map((wirelessSocket: WirelessSocket, _) => (
                             <MenuItem value={wirelessSocket.id}>{wirelessSocket.name}</MenuItem>
                         ))}
-                    </Select>
-                </div>;
-                if (!this.validateWirelessSocket()) {
-                    wirelessSocketFormFeedback = <FormFeedback>Invalid wireless socket</FormFeedback>;
+                    </Select>;
+                } else {
+                    wirelessSocketSelect = <Select
+                        fullWidth
+                        value={this.state.periodicTaskInEdit.wirelessSocketId}
+                        onChange={this.handleChangeWirelessSocket}
+                        input={
+                            <OutlinedInput
+                                id="wirelessSocket"
+                                labelWidth={0}
+                                name="wirelessSocket"
+                            />
+                        } >
+                        <MenuItem value={-1}>
+                            <em>None</em>
+                        </MenuItem>
+                        {this.props.state.wirelessSockets.map((wirelessSocket: WirelessSocket, _) => (
+                            <MenuItem value={wirelessSocket.id}>{wirelessSocket.name}</MenuItem>
+                        ))}
+                    </Select>;
                 }
 
                 wirelessSocketStateSwitch = <Switch name="wirelessSocketState" id="wirelessSocketState"
@@ -122,40 +130,73 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
                     }}
                     checked={this.periodicTaskSelected.wirelessSocketState === 1} />;
 
-                weekdaySelect = <div>
-                    <Select
-                        className="wc-full-width"
+                if (!this.validateWeekday()) {
+                    weekdaySelect = <Select
+                        error
+                        fullWidth
                         value={this.state.periodicTaskInEdit.weekday}
                         onChange={this.handleChange}
-                        inputProps={{
-                            id: "weekday",
-                            name: "weekday",
-                        }} >
+                        input={
+                            <OutlinedInput
+                                id="weekday"
+                                labelWidth={0}
+                                name="weekday"
+                            />
+                        } >
                         <MenuItem value={-1}>
                             <em>None</em>
                         </MenuItem>
                         {weekdayArray.map((weekday: string, index: number) => (
                             <MenuItem value={index}>{weekday}</MenuItem>
                         ))}
-                    </Select>
-                </div>;
-                if (!this.validateWeekday()) {
-                    weekdayFormFeedback = <FormFeedback>Invalid weekday</FormFeedback>;
+                    </Select>;
+                } else {
+                    weekdaySelect = <Select
+                        fullWidth
+                        value={this.state.periodicTaskInEdit.weekday}
+                        onChange={this.handleChange}
+                        input={
+                            <OutlinedInput
+                                id="weekday"
+                                labelWidth={0}
+                                name="weekday"
+                            />
+                        } >
+                        <MenuItem value={-1}>
+                            <em>None</em>
+                        </MenuItem>
+                        {weekdayArray.map((weekday: string, index: number) => (
+                            <MenuItem value={index}>{weekday}</MenuItem>
+                        ))}
+                    </Select>;
                 }
 
                 const date: Date = new Date(Date.now());
                 date.setHours(this.periodicTaskSelected.hour);
                 date.setMinutes(this.periodicTaskSelected.minute);
-                timePicker = <div className="picker">
-                    <TimePicker
-                        className="wc-full-width"
-                        ampm={false}
-                        value={date}
-                        onChange={this.handleChangeTime}
-                    />
-                </div>;
                 if (!this.validateTime()) {
-                    timeFormFeedback = <FormFeedback>Invalid time</FormFeedback>;
+                    timePicker = <div className="picker">
+                        <TimePicker
+                            error
+                            fullWidth
+                            className="wc-full-width"
+                            ampm={false}
+                            value={date}
+                            onChange={this.handleChangeTime}
+                            variant="outlined"
+                        />
+                    </div>;
+                } else {
+                    timePicker = <div className="picker">
+                        <TimePicker
+                            fullWidth
+                            className="wc-full-width"
+                            ampm={false}
+                            value={date}
+                            onChange={this.handleChangeTime}
+                            variant="outlined"
+                        />
+                    </div>;
                 }
 
                 periodicSwitch = <Switch name="periodic" id="periodic"
@@ -166,16 +207,16 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
                     onChange={() => { this.periodicTaskSelected.active = this.periodicTaskSelected.active === 0 ? 1 : 0; this.setState({ periodicTaskInEdit: clone(this.periodicTaskSelected) }); }}
                     checked={this.periodicTaskSelected.active === 1} />;
 
-                submitButton = <RsButton className="wc-button-submit" disabled={!this.validateForm()} type="submit">Save</RsButton>;
-                cancelEditButton = <RsButton className="wc-button-submit" type="button" onClick={() => this.setState({ periodicTaskInEdit: null })}>Cancel</RsButton>;
-                deleteButton = <RsButton className="wc-button-delete" type="button" color="danger" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</RsButton>;
+                submitButton = <Button className="wc-button-submit" disabled={!this.validateForm()} type="submit" color="primary">Save</Button>;
+                cancelEditButton = <Button className="wc-button-submit" type="button" color="primary" onClick={() => this.setState({ periodicTaskInEdit: null })}>Cancel</Button>;
+                deleteButton = <Button className="wc-button-delete" type="button" color="secondary" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>;
             } else {
-                nameInput = <Input disabled type="text" name="name" id="name" value={this.periodicTaskSelected.name} />;
+                nameInput = <TextField fullWidth disabled type="text" name="name" id="name" value={this.periodicTaskSelected.name} variant="outlined" />;
                 const wirelessSocket: WirelessSocket = this.props.state.wirelessSockets.find((x: WirelessSocket) => x.id === this.periodicTaskSelected.wirelessSocketId);
-                wirelessSocketSelect = <Input disabled type="text" name="wirelessSocket" id="wirelessSocket" value={wirelessSocket.name} />;
+                wirelessSocketSelect = <TextField fullWidth disabled type="text" name="wirelessSocket" id="wirelessSocket" value={wirelessSocket.name} variant="outlined" />;
                 wirelessSocketStateSwitch = <Switch disabled name="wirelessSocketState" id="wirelessSocketState" checked={this.periodicTaskSelected.wirelessSocketState === 1} />;
-                weekdaySelect = <Input disabled type="text" name="weekday" id="weekday" value={weekdayArray[this.periodicTaskSelected.weekday]} />;
-                timePicker = <Input disabled type="text" name="time" id="time" value={getTimeString(this.periodicTaskSelected)} />;
+                weekdaySelect = <TextField fullWidth disabled type="text" name="weekday" id="weekday" value={weekdayArray[this.periodicTaskSelected.weekday]} variant="outlined" />;
+                timePicker = <TextField fullWidth disabled type="text" name="time" id="time" value={getTimeString(this.periodicTaskSelected)} variant="outlined" />;
                 periodicSwitch = <Switch disabled name="periodic" id="periodic" checked={this.periodicTaskSelected.periodic === 1} />;
                 activeSwitch = <Switch disabled name="active" id="active" checked={this.periodicTaskSelected.active === 1} />;
             }
@@ -189,55 +230,45 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
                         {periodicTaskList}
                     </div>
                     <div className="wc-form-container">
-                        <Form onSubmit={this.handleSubmit}>
-                            <FormGroup>
-                                <Label for="id">Id</Label>
-                                {idInput}
-                            </FormGroup>
-                            <FormGroup>
-                                <Label for="name">Name</Label>
-                                {nameInput}
-                                {nameFormFeedback}
-                            </FormGroup>
-                            <div className="wc-full-width">
-                                <FormGroup className="wireless-socket-name-container">
-                                    <Label for="wirelessSocket">WirelessSocket</Label>
-                                    {wirelessSocketSelect}
-                                    {wirelessSocketFormFeedback}
+                        <div className={this.props.classes.root}>
+                            <FormControl fullWidth onSubmit={this.handleSubmit} className={this.props.classes.formControl}>
+                                <FormGroup>
+                                    <FormControlLabel label="" control={idInput} />
                                 </FormGroup>
-                                <FormGroup className="wireless-socket-state-container">
-                                    <Label className="wc-full-width" for="state">WirelessSocket State</Label>
-                                    {wirelessSocketStateSwitch}
+                                <FormGroup>
+                                    <FormControlLabel label="" control={nameInput} />
                                 </FormGroup>
-                            </div>
-                            <div className="wc-full-width">
-                                <FormGroup className="periodic-task-weekday-container">
-                                    <Label for="weekday">Weekday</Label>
-                                    {weekdaySelect}
-                                    {weekdayFormFeedback}
-                                </FormGroup>
-                                <FormGroup className="periodic-task-time-container">
-                                    <Label for="time">Time</Label>
-                                    {timePicker}
-                                    {timeFormFeedback}
-                                </FormGroup>
-                            </div>
-                            <div className="wc-full-width">
-                                <FormGroup className="periodic-task-periodic-container">
-                                    <Label className="wc-full-width" for="periodic">Periodic</Label>
-                                    {periodicSwitch}
-                                </FormGroup>
-                                <FormGroup className="periodic-task-active-container">
-                                    <Label className="wc-full-width" for="active">Active</Label>
-                                    {activeSwitch}
-                                </FormGroup>
-                            </div>
-                            <div className="wc-button-container">
-                                {submitButton}
-                                {cancelEditButton}
-                                {deleteButton}
-                            </div>
-                        </Form>
+                                <div className="wc-full-width">
+                                    <FormGroup className="wireless-socket-name-container">
+                                        <FormControlLabel label="" control={wirelessSocketSelect} />
+                                    </FormGroup>
+                                    <FormGroup className="wireless-socket-state-container">
+                                        <FormControlLabel label="" control={wirelessSocketStateSwitch} />
+                                    </FormGroup>
+                                </div>
+                                <div className="wc-full-width">
+                                    <FormGroup className="periodic-task-weekday-container">
+                                        <FormControlLabel label="" control={weekdaySelect} />
+                                    </FormGroup>
+                                    <FormGroup className="periodic-task-time-container">
+                                        <FormControlLabel label="" control={timePicker} />
+                                    </FormGroup>
+                                </div>
+                                <div className="wc-full-width">
+                                    <FormGroup className="periodic-task-periodic-container">
+                                        <FormControlLabel label="" control={periodicSwitch} />
+                                    </FormGroup>
+                                    <FormGroup className="periodic-task-active-container">
+                                        <FormControlLabel label="" control={activeSwitch} />
+                                    </FormGroup>
+                                </div>
+                                <div className="wc-button-container">
+                                    {submitButton}
+                                    {cancelEditButton}
+                                    {deleteButton}
+                                </div>
+                            </FormControl>
+                        </div>
                     </div>
                     <Fab color="primary" aria-label="Add" className="wc-button-add" onClick={this.handleAdd}>
                         <AddIcon />
@@ -254,8 +285,8 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            <MatButton onClick={() => this.setState({ deleteDialogOpen: false })} color="primary" autoFocus>Cancel</MatButton>
-                            <MatButton onClick={this.handleDelete} color="secondary">Delete</MatButton>
+                            <Button onClick={() => this.setState({ deleteDialogOpen: false })} color="primary" autoFocus>Cancel</Button>
+                            <Button onClick={this.handleDelete} color="secondary">Delete</Button>
                         </DialogActions>
                     </Dialog>
                 </div>
@@ -375,4 +406,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PeriodicTasks);
+export default withStyles(formStyles, { withTheme: true })(connect(mapStateToProps, mapDispatchToProps)(PeriodicTasks));
