@@ -73,9 +73,9 @@ class Areas extends React.Component<IAreasProps, any> {
 
                 filterInput = <Input disabled type="text" name="filter" id="filter" value={this.state.areaInEdit.filter} />;
 
-                submitButton = <RsButton className="area-button-submit" disabled={!this.validateForm()} type="submit">Save</RsButton>;
-                cancelEditButton = <RsButton className="area-button-submit" type="button" onClick={() => this.setState({ areaInEdit: null })}>Cancel</RsButton>;
-                deleteButton = <RsButton className="area-button-delete" type="button" color="danger" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</RsButton>;
+                submitButton = <RsButton className="wc-button-submit" disabled={!this.validateForm()} type="submit">Save</RsButton>;
+                cancelEditButton = <RsButton className="wc-button-submit" type="button" onClick={() => this.setState({ areaInEdit: null })}>Cancel</RsButton>;
+                deleteButton = <RsButton className="wc-button-delete" type="button" color="danger" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</RsButton>;
             } else {
                 nameInput = <Input disabled type="text" name="name" id="name" value={this.areaSelected.name} />;
                 filterInput = <Input disabled type="text" name="filter" id="filter" value={this.areaSelected.filter} />;
@@ -83,10 +83,10 @@ class Areas extends React.Component<IAreasProps, any> {
         }
 
         return <div>
-            <div className="area-list-container">
+            <div className="wc-list-container">
                 {areaList}
             </div>
-            <div className="area-form-container">
+            <div className="wc-form-container">
                 <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
                         <Label for="id">Id</Label>
@@ -101,14 +101,14 @@ class Areas extends React.Component<IAreasProps, any> {
                         <Label for="filter">Filter</Label>
                         {filterInput}
                     </FormGroup>
-                    <div className="area-button-container">
+                    <div className="wc-button-container">
                         {submitButton}
                         {cancelEditButton}
                         {deleteButton}
                     </div>
                 </Form>
             </div>
-            <Fab color="primary" aria-label="Add" className="area-button-add" onClick={this.handleAdd}>
+            <Fab color="primary" aria-label="Add" className="wc-button-add" onClick={this.handleAdd}>
                 <AddIcon />
             </Fab>
             <Dialog

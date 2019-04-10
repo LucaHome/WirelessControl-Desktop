@@ -1,46 +1,8 @@
-.wireless-socket-list-container {
-  float: left;
-  width: 33%;
-  height: 85vh;
-  overflow: auto;
-}
-
-.wireless-socket-form-container {
-  float: right;
-  width: 66%;
-  height: 85vh;
-}
-
-.wireless-socket-button-add {
-  bottom: 1rem;
-  right: 1rem;
-  position: absolute !important;
-}
-
-.wireless-socket-button-submit {
-  float: left;
-  margin-right: 0.5rem;
-}
-
-.wireless-socket-button-delete {
-  float: right;
-}
-
-.wireless-socket-full-width {
-  width: 100%;
-}
-
 .wireless-socket-icon-preview {
-  float: left;
+    float: left;
 }
 
 .wireless-socket-icon-input {
-  float: right;
-  width: 90%;
-}
-
-.wireless-socket-button-container {
-  float: left;
-  margin-top: 1rem;
-  width: 100%;
+    float: right;
+    width: 90%;
 }

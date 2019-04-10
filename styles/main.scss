@@ -2,3 +2,41 @@
     text-align: center;
     padding-top: 10rem;
 }
+
+.wc-list-container {
+    float: left;
+    width: 33%;
+    height: 85vh;
+    overflow: auto;
+}
+
+.wc-form-container {
+    float: right;
+    width: 66%;
+    height: 85vh;
+}
+
+.wc-button-container {
+    float: left;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.wc-button-add {
+    bottom: 1rem;
+    right: 1rem;
+    position: absolute !important;
+}
+
+.wc-button-submit {
+    float: left;
+    margin-right: 0.5rem;
+}
+
+.wc-button-delete {
+    float: right;
+}
+
+.wc-full-width {
+    width: 100%;
+}

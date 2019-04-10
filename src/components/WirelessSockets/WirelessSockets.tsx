@@ -105,7 +105,7 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
 
                 areaSelect = <div>
                     <Select
-                        className="wireless-socket-full-width"
+                        className="wc-full-width"
                         value={this.state.wirelessSocketInEdit.area}
                         onChange={this.handleChange}
                         inputProps={{
@@ -134,9 +134,9 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                         onChange={this.handleChange} value={this.state.wirelessSocketInEdit.icon} />;
                 }
 
-                submitButton = <RsButton className="wireless-socket-button-submit" disabled={!this.validateForm()} type="submit">Save</RsButton>;
-                cancelEditButton = <RsButton className="wireless-socket-button-submit" type="button" onClick={() => this.setState({ wirelessSocketInEdit: null })}>Cancel</RsButton>;
-                deleteButton = <RsButton className="wireless-socket-button-delete" type="button" color="danger" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</RsButton>;
+                submitButton = <RsButton className="wc-button-submit" disabled={!this.validateForm()} type="submit">Save</RsButton>;
+                cancelEditButton = <RsButton className="wc-button-submit" type="button" onClick={() => this.setState({ wirelessSocketInEdit: null })}>Cancel</RsButton>;
+                deleteButton = <RsButton className="wc-button-delete" type="button" color="danger" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</RsButton>;
             } else {
                 nameInput = <Input disabled type="text" name="name" id="name" value={this.wirelessSocketSelected.name} />;
                 codeInput = <Input disabled type="text" name="code" id="code" value={this.wirelessSocketSelected.code} />;
@@ -150,10 +150,10 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
         return <div>{
             this.wirelessSocketSelected !== null
                 ? <div>
-                    <div className="wireless-socket-list-container">
+                    <div className="wc-list-container">
                         {wirelessSocketList}
                     </div>
-                    <div className="wireless-socket-form-container">
+                    <div className="wc-form-container">
                         <Form onSubmit={this.handleSubmit}>
                             <FormGroup>
                                 <Label for="id">Id</Label>
@@ -179,19 +179,19 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                                 {areaFormFeedback}
                             </FormGroup>
                             <FormGroup>
-                                <Label className="wireless-socket-full-width" for="icon">Icon</Label>
+                                <Label className="wc-full-width" for="icon">Icon</Label>
                                 {iconPreview}
                                 {iconInput}
                                 {iconFormFeedback}
                             </FormGroup>
-                            <div className="wireless-socket-button-container">
+                            <div className="wc-button-container">
                                 {submitButton}
                                 {cancelEditButton}
                                 {deleteButton}
                             </div>
                         </Form>
                     </div>
-                    <Fab color="primary" aria-label="Add" className="area-button-add" onClick={this.handleAdd}>
+                    <Fab color="primary" aria-label="Add" className="wc-button-add" onClick={this.handleAdd}>
                         <AddIcon />
                     </Fab>
                     <Dialog
