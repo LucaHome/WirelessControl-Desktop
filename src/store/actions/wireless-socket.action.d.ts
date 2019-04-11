@@ -2,7 +2,7 @@ import { Action } from "redux";
 import { WirelessSocket } from "../../models";
 
 interface WirelessSocketPayload {
-    error: any,
+    error: any;
     wirelessSocket: WirelessSocket;
 }
 
@@ -11,10 +11,20 @@ export interface WirelessSocketAction extends Action {
 }
 
 interface WirelessSocketsPayload {
-    error: any,
+    error: any;
     list: WirelessSocket[];
 }
 
 export interface WirelessSocketsAction extends Action {
     payload: WirelessSocketsPayload;
+}
+
+interface WirelessSocketIdPayload {
+    error: any;
+    id: number;
+    list: WirelessSocket[];
+}
+
+export interface WirelessSocketIdaction extends Action {
+    payload: WirelessSocketIdPayload;
 }

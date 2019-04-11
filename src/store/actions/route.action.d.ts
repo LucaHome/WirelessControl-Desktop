@@ -1,7 +1,7 @@
 import { Action } from "redux";
 
 interface RoutePayload {
-    error: any,
+    error: any;
     route: string;
 }
 

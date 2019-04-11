@@ -2,7 +2,7 @@ import { Action } from "redux";
 import { PeriodicTask } from "../../models";
 
 interface PeriodicTaskPayload {
-    error: any,
+    error: any;
     periodicTask: PeriodicTask;
 }
 
@@ -11,7 +11,7 @@ export interface PeriodicTaskAction extends Action {
 }
 
 interface PeriodicTasksPayload {
-    error: any,
+    error: any;
     list: PeriodicTask[];
 }
 

@@ -2,7 +2,7 @@ import { Action } from "redux";
 import { NextCloudCredentials } from "../../models";
 
 interface NextCloudCredentialsPayload {
-    error: any,
+    error: any;
     nextCloudCredentials: NextCloudCredentials;
 }
 
