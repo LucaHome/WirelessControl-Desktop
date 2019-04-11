@@ -6,7 +6,8 @@ import { formStyles } from "../../constants/style.constants";
 import { NextCloudCredentials } from "../../models";
 import { nextCloudCredentialsLogin } from "../../store/actions";
 import { ILoginProps } from "./ILoginProps";
-import "./Login.css";
+
+import "./Login.scss";
 
 class Login extends React.Component<ILoginProps, any> {
 
@@ -23,23 +24,35 @@ class Login extends React.Component<ILoginProps, any> {
     public render() {
         let urlInput = <div></div>;
         if (!this.validateNextCloudUrl()) {
-            urlInput = <TextField error fullWidth label="Url" type="url" name="baseUrl" id="baseUrl" placeholder="Enter your server address" onChange={this.handleChange} value={this.state.baseUrl} variant="outlined" />;
+            urlInput = <TextField
+                error fullWidth label="Url" type="url" name="baseUrl" id="baseUrl" placeholder="Enter your server address" onChange={this.handleChange} value={this.state.baseUrl} variant="outlined"
+            />;
         } else {
-            urlInput = <TextField fullWidth label="Url" type="url" name="baseUrl" id="baseUrl" placeholder="Enter your server address" onChange={this.handleChange} value={this.state.baseUrl} variant="outlined" />;
+            urlInput = <TextField
+                fullWidth label="Url" type="url" name="baseUrl" id="baseUrl" placeholder="Enter your server address" onChange={this.handleChange} value={this.state.baseUrl} variant="outlined"
+            />;
         }
 
         let userNameInput = <div></div>;
         if (!this.validateUserName()) {
-            userNameInput = <TextField error fullWidth label="UserName" type="text" name="userName" id="userName" placeholder="Enter your user name" onChange={this.handleChange} value={this.state.userName} variant="outlined" />;
+            userNameInput = <TextField
+                error fullWidth label="UserName" type="text" name="userName" id="userName" placeholder="Enter your user name" onChange={this.handleChange} value={this.state.userName} variant="outlined"
+            />;
         } else {
-            userNameInput = <TextField fullWidth label="UserName" type="text" name="userName" id="userName" placeholder="Enter your user name" onChange={this.handleChange} value={this.state.userName} variant="outlined" />;
+            userNameInput = <TextField
+                fullWidth label="UserName" type="text" name="userName" id="userName" placeholder="Enter your user name" onChange={this.handleChange} value={this.state.userName} variant="outlined"
+            />;
         }
 
         let passPhraseInput = <div></div>;
         if (!this.validatePassPhrase()) {
-            passPhraseInput = <TextField error fullWidth label="Password" type="password" name="passPhrase" id="passPhrase" placeholder="Enter your password" onChange={this.handleChange} value={this.state.passPhrase} variant="outlined" />;
+            passPhraseInput = <TextField
+                error fullWidth label="Password" type="password" name="passPhrase" id="passPhrase" placeholder="Enter your password" onChange={this.handleChange} value={this.state.passPhrase} variant="outlined"
+            />;
         } else {
-            passPhraseInput = <TextField fullWidth label="Password" type="password" name="passPhrase" id="passPhrase" placeholder="Enter your password" onChange={this.handleChange} value={this.state.passPhrase} variant="outlined" />;
+            passPhraseInput = <TextField
+                fullWidth label="Password" type="password" name="passPhrase" id="passPhrase" placeholder="Enter your password" onChange={this.handleChange} value={this.state.passPhrase} variant="outlined"
+            />;
         }
 
         return (
@@ -50,13 +63,13 @@ class Login extends React.Component<ILoginProps, any> {
                 <div className="login-container">
                     <FormControl onSubmit={this.handleSubmit} className="login-form">
                         <FormGroup>
-                            <FormControlLabel label="" control={urlInput} />
+                            <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{urlInput}</div>} />
                         </FormGroup>
                         <FormGroup>
-                            <FormControlLabel label="" control={userNameInput} />
+                            <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{userNameInput}</div>} />
                         </FormGroup>
                         <FormGroup>
-                            <FormControlLabel label="" control={passPhraseInput} />
+                            <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{passPhraseInput}</div>} />
                         </FormGroup>
                         <Button disabled={!this.validateForm()} color="primary" type="submit">Login</Button>
                     </FormControl>

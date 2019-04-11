@@ -1,0 +1,19 @@
+.login-container {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.login-image {
+    height: 6rem;
+}
+
+.login-form {
+    min-width: 25rem !important;
+    margin-left: 2rem !important;
+
+    &>button {
+        margin-right: 2rem;
+    }
+}
