@@ -34,6 +34,6 @@
     - [x] method duplications => more generic
     - [ ] props for area, periodic task & wireless socket
     - [ ] remove duplicate html creation
-- [ ] remove bootstrap and reactstrap
+- [x] remove bootstrap and reactstrap
 - [ ] [create executable](https://github.com/electron/electron/blob/master/docs/tutorial/application-distribution.md)
     - [ ] use [electron-packager](https://github.com/electron-userland/electron-packager)
