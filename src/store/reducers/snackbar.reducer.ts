@@ -13,6 +13,7 @@ import {
     /*PERIODIC_TASK_UPDATE,*/ PERIODIC_TASK_UPDATE_FAIL, PERIODIC_TASK_UPDATE_ON_SERVER, PERIODIC_TASK_UPDATE_SUCCESSFUL,
     /*PERIODIC_TASKS_LOAD,*/ PERIODIC_TASKS_LOAD_FAIL, /*PERIODIC_TASKS_LOAD_SUCCESSFUL,*/
     /*ROUTE_SET,*/
+    SAVE_THEME,
     /*WIRELESS_SOCKET_ADD,*/ WIRELESS_SOCKET_ADD_FAIL, WIRELESS_SOCKET_ADD_ON_SERVER, WIRELESS_SOCKET_ADD_SUCCESSFUL,
     /*WIRELESS_SOCKET_DELETE,*/ WIRELESS_SOCKET_DELETE_FAIL, WIRELESS_SOCKET_DELETE_ON_SERVER, WIRELESS_SOCKET_DELETE_SUCCESSFUL,
     /*WIRELESS_SOCKET_SELECT,*/ WIRELESS_SOCKET_SELECT_FAIL, /*WIRELESS_SOCKET_SELECT_SUCCESSFUL,*/
@@ -46,6 +47,8 @@ const snackbarMessageReducer = (snackbarMessage: string = "", action: any): stri
             return "Update of periodic task failed!";
         case PERIODIC_TASKS_LOAD_FAIL:
             return "Load of periodic tasks failed!";
+        case SAVE_THEME:
+            return action.payload.message;
         case WIRELESS_SOCKET_ADD_FAIL:
             return "Add of wireless socket failed!";
         case WIRELESS_SOCKET_DELETE_FAIL:
@@ -127,6 +130,7 @@ const snackbarSeverityReducer = (snackbarSeverity: Severity = Severity.Null, act
         case PERIODIC_TASK_ADD_ON_SERVER:
         case PERIODIC_TASK_DELETE_ON_SERVER:
         case PERIODIC_TASK_UPDATE_ON_SERVER:
+        case SAVE_THEME:
         case WIRELESS_SOCKET_ADD_ON_SERVER:
         case WIRELESS_SOCKET_DELETE_ON_SERVER:
         case WIRELESS_SOCKET_UPDATE_ON_SERVER:

@@ -29,9 +29,9 @@ export const saveAppThemeInStore = (appTheme: AppTheme): void => {
 };
 
 export const loadAppThemeFromStore = (): AppTheme => {
-    const appThemeJSON = store.get(themeKey);
-    return !!appThemeJSON
-        ? JSON.parse(appThemeJSON)
+    const appTheme = store.get(themeKey);
+    return !!appTheme
+        ? appTheme
         : AppTheme.Light;
 };
 

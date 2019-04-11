@@ -21,8 +21,11 @@ import Loading from "../Loading/Loading";
 import Login from "../Login/Login";
 import NotFound from "../NotFound/NotFound";
 import PeriodicTasks from "../PeriodicTasks/PeriodicTasks";
+import Preferences from "../Preferences/Preferences";
 import WirelessSockets from "../WirelessSockets/WirelessSockets";
 import { IAppProps } from "./IAppProps";
+
+import "./App.scss";
 
 const drawerWidth = 240;
 
@@ -107,10 +110,14 @@ class App extends React.Component<IAppProps, any> {
         snackbarMessageInfo: { key: "", message: "" },
     };
 
-    private readonly drawerList: DrawerEntity[] = [
+    private readonly drawerButtonList: DrawerEntity[] = [
         { id: 0, title: "Areas", icon: "map", route: "/areas", action: () => this.props.dispatch(routeSet(Routes.areas)) },
         { id: 1, title: "WirelessSockets", icon: "wifi_tethering", route: "/wirelessSockets", action: () => this.props.dispatch(routeSet(Routes.wirelessSockets)) },
         { id: 2, title: "PeriodicTasks", icon: "alarm", route: "/periodicTasks", action: () => this.props.dispatch(routeSet(Routes.periodicTasks)) },
+    ];
+
+    private readonly drawerPreferencesList: DrawerEntity[] = [
+        { id: 10, title: "Preferences", icon: "settings", route: "/preferences", action: () => this.props.dispatch(routeSet(Routes.preferences)) },
     ];
 
     constructor(props: IAppProps) {
@@ -158,7 +165,8 @@ class App extends React.Component<IAppProps, any> {
                     </IconButton>
                 </div>
                 <Divider />
-                {this.createDrawerButtonList(route)}
+                {this.createDrawerButtonEntityList(route)}
+                {this.createDrawerPreferencesList(route)}
             </Drawer>
             <main className={this.props.classes.content}>
                 <div className={this.props.classes.toolbar} />
@@ -225,11 +233,24 @@ class App extends React.Component<IAppProps, any> {
             : <Button className={this.props.classes.logoutButton} onClick={() => this.props.dispatch(nextCloudCredentialsLogout())}>Logout</Button>;
     }
 
-    private createDrawerButtonList = (route: string): any => {
+    private createDrawerButtonEntityList = (route: string): any => {
         return !this.props.state.nextCloudCredentials
             ? <List></List>
             : <List>
-                {this.drawerList.map((entity, _) => (
+                {this.drawerButtonList.map((entity, _) => (
+                    <ListItem button key={entity.id} onClick={entity.action} selected={entity.route === route}>
+                        <Icon color={entity.route === route ? "secondary" : "primary"}>{entity.icon}</Icon>
+                        <ListItemText primary={entity.title} />
+                    </ListItem>
+                ))}
+            </List>;
+    }
+
+    private createDrawerPreferencesList = (route: string): any => {
+        return !this.props.state.nextCloudCredentials
+            ? <List></List>
+            : <List className="preferences-list">
+                {this.drawerPreferencesList.map((entity, _) => (
                     <ListItem button key={entity.id} onClick={entity.action} selected={entity.route === route}>
                         <Icon color={entity.route === route ? "secondary" : "primary"}>{entity.icon}</Icon>
                         <ListItemText primary={entity.title} />
@@ -252,6 +273,9 @@ class App extends React.Component<IAppProps, any> {
                 break;
             case Routes.wirelessSockets:
                 contentComponent = <WirelessSockets></WirelessSockets>;
+                break;
+            case Routes.preferences:
+                contentComponent = <Preferences></Preferences>;
                 break;
             case Routes.loading:
                 contentComponent = <Loading></Loading>;

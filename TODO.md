@@ -8,7 +8,8 @@
     - [x] periodic tasks
     - [ ] settings
         - [x] change credentials => Logout-Button
-        - [ ] change theme
+        - [x] change theme
+            - [ ] change theme on the fly
     - [x] display filter for wireless sockets and periodic tasks
         - [x] wireless sockets
         - [x] periodic tasks
