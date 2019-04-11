@@ -49,7 +49,6 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
                 {this.periodicTasks.map((periodicTask: PeriodicTask, _) => (
                     <ListItem button key={periodicTask.id} onClick={() => this.handleSelect(periodicTask)} selected={this.isSelected(periodicTask)}>
                         <ListItemText primary={periodicTask.name} secondary={getDateTimeString(periodicTask)} />
-                        <Switch onChange={() => this.handleToggle(periodicTask)} checked={periodicTask.active === 1} />
                         <ListItemSecondaryAction>
                             <IconButton aria-label="Edit" onClick={() => this.handleEdit(periodicTask)}>
                                 <EditIcon color={(this.state.periodicTaskInEdit !== null && periodicTask.id === this.state.periodicTaskInEdit.id) ? "secondary" : "primary"} />
@@ -78,13 +77,15 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
 
             if (this.state.periodicTaskInEdit !== null && this.periodicTaskSelected.id === this.state.periodicTaskInEdit.id) {
                 if (!this.validateName()) {
-                    nameInput = <TextField error fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.periodicTaskInEdit.name} variant="outlined" />;
+                    nameInput = <TextField
+                        error fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.periodicTaskInEdit.name} variant="outlined" />;
                 } else {
-                    nameInput = <TextField fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.periodicTaskInEdit.name} variant="outlined" />;
+                    nameInput = <TextField
+                        fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.periodicTaskInEdit.name} variant="outlined" />;
                 }
 
                 if (!this.validateWirelessSocket()) {
-                    wirelessSocketSelect = <Select 
+                    wirelessSocketSelect = <Select
                         error
                         fullWidth
                         value={this.state.periodicTaskInEdit.wirelessSocketId}
@@ -235,33 +236,33 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
                         <div className={this.props.classes.root}>
                             <FormControl fullWidth onSubmit={this.handleSubmit} className={this.props.classes.formControl}>
                                 <FormGroup>
-                                    <FormControlLabel label="" control={idInput} />
+                                    <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{idInput}</div>} />
                                 </FormGroup>
                                 <FormGroup>
-                                    <FormControlLabel label="" control={nameInput} />
+                                    <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{nameInput}</div>} />
                                 </FormGroup>
                                 <div className="wc-full-width">
                                     <FormGroup className="wireless-socket-name-container">
-                                        <FormControlLabel label="" control={wirelessSocketSelect} />
+                                        <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{wirelessSocketSelect}</div>} />
                                     </FormGroup>
                                     <FormGroup className="wireless-socket-state-container">
-                                        <FormControlLabel label="" control={wirelessSocketStateSwitch} />
+                                        <FormControlLabel label="State" control={<div className="wc-margin-bottom-1-rem">{wirelessSocketStateSwitch}</div>} />
                                     </FormGroup>
                                 </div>
                                 <div className="wc-full-width">
                                     <FormGroup className="periodic-task-weekday-container">
-                                        <FormControlLabel label="" control={weekdaySelect} />
+                                        <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{weekdaySelect}</div>} />
                                     </FormGroup>
                                     <FormGroup className="periodic-task-time-container">
-                                        <FormControlLabel label="" control={timePicker} />
+                                        <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{timePicker}</div>} />
                                     </FormGroup>
                                 </div>
                                 <div className="wc-full-width">
                                     <FormGroup className="periodic-task-periodic-container">
-                                        <FormControlLabel label="" control={periodicSwitch} />
+                                        <FormControlLabel label="Periodic" control={periodicSwitch} />
                                     </FormGroup>
                                     <FormGroup className="periodic-task-active-container">
-                                        <FormControlLabel label="" control={activeSwitch} />
+                                        <FormControlLabel label="Active" control={activeSwitch} />
                                     </FormGroup>
                                 </div>
                                 <div className="wc-button-container">
@@ -299,11 +300,6 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
 
     private handleSelect = (periodicTask: PeriodicTask): void => this.props.dispatch(periodicTaskSelectSuccessful(periodicTask));
     private isSelected = (periodicTask: PeriodicTask): boolean => this.periodicTaskSelected !== null && this.periodicTaskSelected.id === periodicTask.id;
-
-    private handleToggle = (periodicTask: PeriodicTask): void => {
-        periodicTask.active = periodicTask.active === 0 ? 1 : 0;
-        this.props.dispatch(periodicTaskUpdate(periodicTask));
-    }
 
     private handleAdd = (): void => {
         const now = new Date(Date.now());
