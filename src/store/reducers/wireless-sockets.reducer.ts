@@ -44,6 +44,11 @@ const wirelessSocketSelectReducer = (wirelessSocket: WirelessSocket = null, acti
             return null;
         case WIRELESS_SOCKETS_LOAD_SUCCESSFUL:
             return action.payload.list.length > 0 ? action.payload.list[0] : null;
+        case WIRELESS_SOCKET_SELECT_BY_ID: {
+            const wirelessSockets: WirelessSocket[] = action.payload.list;
+            const id: number = action.payload.id;
+            return wirelessSockets.find((wirelessSocket: WirelessSocket) => wirelessSocket.id === id);
+        }
         default:
             return wirelessSocket;
     }

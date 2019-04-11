@@ -1,12 +1,14 @@
 import { call, put } from "redux-saga/effects";
-import { NextCloudCredentials, PeriodicTask } from "../../models";
+import { Area, NextCloudCredentials, PeriodicTask, WirelessSocket } from "../../models";
 import { serverDestroy, serverGet, serverPost, serverPut } from "../../services/request.service";
 import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
 import {
+    areaSelectByFilter,
     periodicTaskAddFail, periodicTaskAddSuccessful,
     periodicTaskDeleteFail, periodicTaskDeleteSuccessful,
     periodicTasksLoadFail, periodicTasksLoadSuccessful,
     periodicTaskUpdateFail, periodicTaskUpdateSuccessful,
+    wirelessSocketSelectById
 } from "../actions";
 
 const subUrl: string = "periodic_task";
@@ -41,6 +43,8 @@ export function* periodicTaskAdd(action: any) {
     try {
         const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
         const periodicTask: PeriodicTask = action.payload.periodicTask;
+        const wirelessSockets: WirelessSocket[] = action.payload.wirelessSockets;
+        const areas: Area[] = action.payload.areas;
 
         if (!nextCloudCredentials) {
             yield put(periodicTaskAddFail("No Credentials available!"));
@@ -50,6 +54,8 @@ export function* periodicTaskAdd(action: any) {
                 case "success":
                     yield periodicTask.id = response.data;
                     yield put(periodicTaskAddSuccessful(periodicTask));
+                    yield put(wirelessSocketSelectById(periodicTask.wirelessSocketId, wirelessSockets));
+                    yield put(areaSelectByFilter(wirelessSockets.find((wirelessSocket: WirelessSocket) => wirelessSocket.id === periodicTask.wirelessSocketId).area, areas));
                     break;
                 default:
                     yield put(periodicTaskAddFail(response.message));

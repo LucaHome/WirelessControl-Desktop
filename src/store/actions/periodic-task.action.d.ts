@@ -1,5 +1,5 @@
 import { Action } from "redux";
-import { PeriodicTask } from "../../models";
+import { Area, PeriodicTask, WirelessSocket } from "../../models";
 
 interface PeriodicTaskPayload {
     error: any;
@@ -8,6 +8,17 @@ interface PeriodicTaskPayload {
 
 export interface PeriodicTaskAction extends Action {
     payload: PeriodicTaskPayload;
+}
+
+interface PeriodicTaskAddPayload {
+    areas: Area[];
+    error: any;
+    periodicTask: PeriodicTask;
+    wirelessSockets: WirelessSocket[];
+}
+
+export interface PeriodicTaskAddAction extends Action {
+    payload: PeriodicTaskAddPayload;
 }
 
 interface PeriodicTasksPayload {

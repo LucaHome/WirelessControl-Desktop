@@ -29,7 +29,7 @@
     - [ ] fix deletion bug in reducers
     - [x] fix layout in periodic tasks if nothing selected
     - [x] fix submit bug
-    - [ ] after adding new periodic task or wireless socket select used wireless socket or area
+    - [x] after adding new periodic task or wireless socket select used wireless socket or area
 - [ ] unifying
     - [x] styles
     - [x] method duplications => more generic

@@ -1,8 +1,9 @@
 import { call, put } from "redux-saga/effects";
-import { NextCloudCredentials, WirelessSocket } from "../../models";
+import { Area, NextCloudCredentials, WirelessSocket } from "../../models";
 import { serverDestroy, serverGet, serverPost, serverPut } from "../../services/request.service";
 import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
 import {
+    areaSelectByFilter,
     periodicTasksLoad,
     wirelessSocketAddFail, wirelessSocketAddSuccessful,
     wirelessSocketDeleteFail, wirelessSocketDeleteSuccessful,
@@ -43,6 +44,7 @@ export function* wirelessSocketAdd(action: any) {
     try {
         const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
         const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
+        const areas: Area[] = action.payload.areas;
 
         if (!nextCloudCredentials) {
             yield put(wirelessSocketAddFail("No Credentials available!"));
@@ -52,6 +54,7 @@ export function* wirelessSocketAdd(action: any) {
                 case "success":
                     yield wirelessSocket.id = response.data;
                     yield put(wirelessSocketAddSuccessful(wirelessSocket));
+                    yield(put(areaSelectByFilter(wirelessSocket.area, areas)));
                     break;
                 default:
                     yield put(wirelessSocketAddFail(response.message));

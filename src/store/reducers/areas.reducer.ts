@@ -50,6 +50,11 @@ const areaSelectReducer = (area: Area = null, action: any): Area => {
         case AREAS_LOAD_SUCCESSFUL:
         case AREA_DELETE_SUCCESSFUL:
             return areaAll;
+        case AREA_SELECT_BY_FILTER: {
+            const areas: Area[] = action.payload.list;
+            const filter: string = action.payload.filter;
+            return areas.find((area: Area) => area.filter === filter);
+        }
         default:
             return area;
     }

@@ -281,7 +281,7 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
 
         switch (this.state.editMode) {
             case EditMode.Add:
-                this.props.dispatch(wirelessSocketAdd(this.state.wirelessSocketInEdit));
+                this.props.dispatch(wirelessSocketAdd(this.state.wirelessSocketInEdit, this.props.state.areas));
                 break;
             case EditMode.Edit:
                 this.props.dispatch(wirelessSocketUpdate(this.state.wirelessSocketInEdit));

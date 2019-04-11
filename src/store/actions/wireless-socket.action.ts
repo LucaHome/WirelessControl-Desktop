@@ -1,12 +1,12 @@
-import { WirelessSocket } from "../../models";
+import { Area, WirelessSocket } from "../../models";
 import {
     WIRELESS_SOCKET_ADD, WIRELESS_SOCKET_ADD_FAIL, WIRELESS_SOCKET_ADD_LOCAL, WIRELESS_SOCKET_ADD_ON_SERVER, WIRELESS_SOCKET_ADD_SUCCESSFUL,
     WIRELESS_SOCKET_DELETE, WIRELESS_SOCKET_DELETE_FAIL, WIRELESS_SOCKET_DELETE_ON_SERVER, WIRELESS_SOCKET_DELETE_SUCCESSFUL,
-    WIRELESS_SOCKET_SELECT, WIRELESS_SOCKET_SELECT_FAIL, WIRELESS_SOCKET_SELECT_SUCCESSFUL,
+    WIRELESS_SOCKET_SELECT, WIRELESS_SOCKET_SELECT_BY_ID, WIRELESS_SOCKET_SELECT_FAIL, WIRELESS_SOCKET_SELECT_SUCCESSFUL,
     WIRELESS_SOCKET_UPDATE, WIRELESS_SOCKET_UPDATE_FAIL, WIRELESS_SOCKET_UPDATE_ON_SERVER, WIRELESS_SOCKET_UPDATE_SUCCESSFUL,
     WIRELESS_SOCKETS_LOAD, WIRELESS_SOCKETS_LOAD_FAIL, WIRELESS_SOCKETS_LOAD_SUCCESSFUL,
 } from "../action-types";
-import { WirelessSocketAction, WirelessSocketsAction } from "./wireless-socket.action.d";
+import { WirelessSocketAction, WirelessSocketAddAction, WirelessSocketIdAction, WirelessSocketsAction } from "./wireless-socket.action.d";
 
 export const wirelessSocketsLoad = (): WirelessSocketsAction => ({
     payload: {
@@ -40,6 +40,15 @@ export const wirelessSocketSelect = (): WirelessSocketAction => ({
     type: WIRELESS_SOCKET_SELECT,
 });
 
+export const wirelessSocketSelectById = (id: number, list: WirelessSocket[]): WirelessSocketIdAction => ({
+    payload: {
+        error: null,
+        id,
+        list,
+    },
+    type: WIRELESS_SOCKET_SELECT_BY_ID,
+});
+
 export const wirelessSocketSelectFail = (error: any): WirelessSocketAction => ({
     payload: {
         error,
@@ -56,15 +65,16 @@ export const wirelessSocketSelectSuccessful = (wirelessSocket: WirelessSocket): 
     type: WIRELESS_SOCKET_SELECT_SUCCESSFUL,
 });
 
-export const wirelessSocketAdd = (wirelessSocket: WirelessSocket): WirelessSocketAction => ({
+export const wirelessSocketAdd = (wirelessSocket: WirelessSocket, areas: Area[]): WirelessSocketAddAction => ({
     payload: {
         error: null,
         wirelessSocket,
+        areas,
     },
     type: WIRELESS_SOCKET_ADD,
 });
 
-export const  wirelessSocketAddLocal = (wirelessSocket: WirelessSocket): WirelessSocketAction => ({
+export const wirelessSocketAddLocal = (wirelessSocket: WirelessSocket): WirelessSocketAction => ({
     payload: {
         error: null,
         wirelessSocket,

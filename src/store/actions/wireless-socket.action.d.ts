@@ -1,5 +1,5 @@
 import { Action } from "redux";
-import { WirelessSocket } from "../../models";
+import { Area, WirelessSocket } from "../../models";
 
 interface WirelessSocketPayload {
     error: any;
@@ -19,12 +19,22 @@ export interface WirelessSocketsAction extends Action {
     payload: WirelessSocketsPayload;
 }
 
+interface WirelessSocketAddPayload {
+    error: any;
+    wirelessSocket: WirelessSocket;
+    areas: Area[];
+}
+
+export interface WirelessSocketAddAction extends Action {
+    payload: WirelessSocketAddPayload;
+}
+
 interface WirelessSocketIdPayload {
     error: any;
     id: number;
     list: WirelessSocket[];
 }
 
-export interface WirelessSocketIdaction extends Action {
+export interface WirelessSocketIdAction extends Action {
     payload: WirelessSocketIdPayload;
 }

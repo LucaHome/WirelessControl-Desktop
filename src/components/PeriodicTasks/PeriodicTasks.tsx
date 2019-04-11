@@ -329,7 +329,7 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
 
         switch (this.state.editMode) {
             case EditMode.Add:
-                this.props.dispatch(periodicTaskAdd(this.state.periodicTaskInEdit));
+                this.props.dispatch(periodicTaskAdd(this.state.periodicTaskInEdit, this.props.state.wirelessSockets, this.props.state.areas));
                 break;
             case EditMode.Edit:
                 this.props.dispatch(periodicTaskUpdate(this.state.periodicTaskInEdit));
