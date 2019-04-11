@@ -22,38 +22,44 @@ class Login extends React.Component<ILoginProps, any> {
     }
 
     public render() {
-        let urlInput = <div></div>;
-        if (!this.validateNextCloudUrl()) {
-            urlInput = <TextField
-                error fullWidth label="Url" type="url" name="baseUrl" id="baseUrl" placeholder="Enter your server address" onChange={this.handleChange} value={this.state.baseUrl} variant="outlined"
-            />;
-        } else {
-            urlInput = <TextField
-                fullWidth label="Url" type="url" name="baseUrl" id="baseUrl" placeholder="Enter your server address" onChange={this.handleChange} value={this.state.baseUrl} variant="outlined"
-            />;
-        }
+        const urlInput = <TextField
+            error={!this.validateNextCloudUrl()}
+            fullWidth
+            label="Url"
+            type="url"
+            name="baseUrl"
+            id="baseUrl"
+            placeholder="Enter your server address"
+            onChange={this.handleChange}
+            value={this.state.baseUrl}
+            variant="outlined"
+        />;
 
-        let userNameInput = <div></div>;
-        if (!this.validateUserName()) {
-            userNameInput = <TextField
-                error fullWidth label="UserName" type="text" name="userName" id="userName" placeholder="Enter your user name" onChange={this.handleChange} value={this.state.userName} variant="outlined"
-            />;
-        } else {
-            userNameInput = <TextField
-                fullWidth label="UserName" type="text" name="userName" id="userName" placeholder="Enter your user name" onChange={this.handleChange} value={this.state.userName} variant="outlined"
-            />;
-        }
+        const userNameInput = <TextField
+            error={!this.validateUserName()}
+            fullWidth
+            label="UserName"
+            type="text"
+            name="userName"
+            id="userName"
+            placeholder="Enter your user name"
+            onChange={this.handleChange}
+            value={this.state.userName}
+            variant="outlined"
+        />;
 
-        let passPhraseInput = <div></div>;
-        if (!this.validatePassPhrase()) {
-            passPhraseInput = <TextField
-                error fullWidth label="Password" type="password" name="passPhrase" id="passPhrase" placeholder="Enter your password" onChange={this.handleChange} value={this.state.passPhrase} variant="outlined"
-            />;
-        } else {
-            passPhraseInput = <TextField
-                fullWidth label="Password" type="password" name="passPhrase" id="passPhrase" placeholder="Enter your password" onChange={this.handleChange} value={this.state.passPhrase} variant="outlined"
-            />;
-        }
+        const passPhraseInput = <TextField
+            error={!this.validatePassPhrase()}
+            fullWidth
+            label="Password"
+            type="password"
+            name="passPhrase"
+            id="passPhrase"
+            placeholder="Enter your password"
+            onChange={this.handleChange}
+            value={this.state.passPhrase}
+            variant="outlined"
+        />;
 
         return (
             <div>
