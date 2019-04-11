@@ -12,16 +12,16 @@ import { connect } from "react-redux";
 import { weekdayArray } from "../../constants/periodic-tasks.constants";
 import { formStyles } from "../../constants/style.constants";
 import { EditMode } from "../../enums";
+import { IEntityProps } from "../../interfaces";
 import { PeriodicTask, WirelessSocket } from "../../models";
 import { periodicTaskAdd, periodicTaskAddLocal, periodicTaskDelete, periodicTaskSelectSuccessful, periodicTaskUpdate } from "../../store/actions";
 import { getPeriodicTasksForWirelessSocket } from "../../store/selectors";
 import { clone, maxId } from "../../utils/entity.utils";
 import { getDateTimeString, getTimeString } from "../../utils/periodic-tasks.utils";
-import { IPeriodicTasksProps } from "./IPeriodicTasksProps";
 
 import "./PeriodicTasks.scss";
 
-class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
+class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
 
     public state = {
         deleteDialogOpen: false,
@@ -32,7 +32,7 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
     private periodicTasks: PeriodicTask[] = [];
     private periodicTaskSelected: PeriodicTask = null;
 
-    constructor(props: IPeriodicTasksProps) {
+    constructor(props: IEntityProps<PeriodicTask>) {
         super(props);
     }
 

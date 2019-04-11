@@ -9,12 +9,12 @@ import { connect } from "react-redux";
 
 import { formStyles } from "../../constants/style.constants";
 import { EditMode } from "../../enums";
+import { IEntityProps } from "../../interfaces";
 import { Area } from "../../models";
 import { areaAdd, areaAddLocal, areaDelete, areaSelectSuccessful, areaUpdate } from "../../store/actions";
 import { clone, maxId } from "../../utils/entity.utils";
-import { IAreasProps } from "./IAreasProps";
 
-class Areas extends React.Component<IAreasProps, any> {
+class Areas extends React.Component<IEntityProps<Area>, any> {
 
     public state = {
         areaInEdit: null,
@@ -25,7 +25,7 @@ class Areas extends React.Component<IAreasProps, any> {
     private areas: Area[] = [];
     private areaSelected: Area = null;
 
-    constructor(props: IAreasProps) {
+    constructor(props: IEntityProps<Area>) {
         super(props);
     }
 

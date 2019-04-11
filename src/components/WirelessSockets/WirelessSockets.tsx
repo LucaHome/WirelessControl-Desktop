@@ -10,15 +10,15 @@ import { connect } from "react-redux";
 
 import { formStyles } from "../../constants/style.constants";
 import { EditMode } from "../../enums";
+import { IEntityProps } from "../../interfaces";
 import { Area, WirelessSocket } from "../../models";
 import { wirelessSocketAdd, wirelessSocketAddLocal, wirelessSocketDelete, wirelessSocketSelectSuccessful, wirelessSocketUpdate } from "../../store/actions";
 import { getWirelessSocketsForArea } from "../../store/selectors";
 import { clone, maxId } from "../../utils/entity.utils";
-import { IWirelessSocketsProps } from "./IWirelessSocketsProps";
 
 import "./WirelessSockets.scss";
 
-class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
+class WirelessSockets extends React.Component<IEntityProps<WirelessSocket>, any> {
 
     public state = {
         deleteDialogOpen: false,
@@ -29,7 +29,7 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
     private wirelessSockets: WirelessSocket[] = [];
     private wirelessSocketSelected: WirelessSocket = null;
 
-    constructor(props: IWirelessSocketsProps) {
+    constructor(props: IEntityProps<WirelessSocket>) {
         super(props);
     }
 

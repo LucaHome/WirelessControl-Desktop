@@ -30,10 +30,10 @@
     - [x] fix layout in periodic tasks if nothing selected
     - [x] fix submit bug
     - [x] after adding new periodic task or wireless socket select used wireless socket or area
-- [ ] unifying
+- [x] unifying
     - [x] styles
     - [x] method duplications => more generic
-    - [ ] props for area, periodic task & wireless socket
+    - [x] props for area, periodic task & wireless socket
     - [x] remove duplicate html creation
 - [x] remove bootstrap and reactstrap
 - [ ] [create executable](https://github.com/electron/electron/blob/master/docs/tutorial/application-distribution.md)
