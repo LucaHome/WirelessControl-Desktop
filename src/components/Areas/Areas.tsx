@@ -86,13 +86,13 @@ class Areas extends React.Component<IAreasProps, any> {
                 <div className={this.props.classes.root}>
                     <FormControl fullWidth onSubmit={this.handleSubmit} className={this.props.classes.formControl}>
                         <FormGroup>
-                            <FormControlLabel label="" control={idInput} />
+                            <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{idInput}</div>} />
                         </FormGroup>
                         <FormGroup>
-                            <FormControlLabel label="" control={nameInput} />
+                            <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{nameInput}</div>} />
                         </FormGroup>
                         <FormGroup>
-                            <FormControlLabel label="" control={filterInput} />
+                            <FormControlLabel label="" control={<div className="wc-full-width">{filterInput}</div>} />
                         </FormGroup>
                         <div className="wc-button-container">
                             {submitButton}
