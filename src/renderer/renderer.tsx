@@ -1,12 +1,9 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-
-import * as React from "react";
-import * as ReactDom from "react-dom";
-import { Provider, ReactReduxContext } from "react-redux";
-
 import MomentUtils from "@date-io/moment";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
+import * as React from "react";
+import * as ReactDom from "react-dom";
+import { Provider, ReactReduxContext } from "react-redux";
 
 import App from "../components/App/App";
 import { loadAppThemeFromStore, loadNextCloudCredentialsFromStore } from "../services/storage.service";
