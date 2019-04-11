@@ -79,18 +79,29 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
 
             if ((this.state.wirelessSocketInEdit !== null && this.wirelessSocketSelected.id === this.state.wirelessSocketInEdit.id) && this.wirelessSocketSelected.deletable === 1) {
                 if (!this.validateName()) {
-                    nameInput = <TextField error fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.name} variant="outlined" />;
+                    nameInput = <TextField
+                        error fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.name} variant="outlined"
+                    />;
                 } else {
-                    nameInput = <TextField fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.name} variant="outlined" />;
+                    nameInput = <TextField
+                        fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.name} variant="outlined"
+                    />;
                 }
 
                 if (!this.validateCode()) {
-                    codeInput = <TextField error fullWidth label="Code" type="text" name="code" id="code" placeholder="Enter the code" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.code} variant="outlined" />;
+                    codeInput = <TextField
+                        error fullWidth label="Code" type="text" name="code" id="code" placeholder="Enter the code" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.code} variant="outlined"
+                    />;
                 } else {
-                    codeInput = <TextField fullWidth label="Code" type="text" name="code" id="code" placeholder="Enter the code" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.code} variant="outlined" />;
+                    codeInput = <TextField
+                        fullWidth label="Code" type="text" name="code" id="code" placeholder="Enter the code" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.code} variant="outlined"
+                    />;
                 }
 
-                descriptionInput = <TextField fullWidth label="Description" type="text" name="description" id="description" placeholder="Enter a description" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.description} variant="outlined" />;
+                descriptionInput = <TextField
+                    fullWidth label="Description" type="text" name="description" id="description" placeholder="Enter a description" onChange={this.handleChange}
+                    value={this.state.wirelessSocketInEdit.description} variant="outlined"
+                />;
 
                 if (!this.validateArea()) {
                     areaSelect = <Select
@@ -166,19 +177,19 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                         <div className={this.props.classes.root}>
                             <FormControl fullWidth onSubmit={this.handleSubmit} className={this.props.classes.formControl}>
                                 <FormGroup>
-                                    <FormControlLabel label="" control={idInput} />
+                                    <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{idInput}</div>} />
                                 </FormGroup>
                                 <FormGroup>
-                                    <FormControlLabel label="" control={nameInput} />
+                                    <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{nameInput}</div>} />
                                 </FormGroup>
                                 <FormGroup>
-                                    <FormControlLabel label="" control={codeInput} />
+                                    <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{codeInput}</div>} />
                                 </FormGroup>
                                 <FormGroup>
-                                    <FormControlLabel label="" control={descriptionInput} />
+                                    <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{descriptionInput}</div>} />
                                 </FormGroup>
                                 <FormGroup>
-                                    <FormControlLabel label="" control={areaSelect} />
+                                    <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{areaSelect}</div>} />
                                 </FormGroup>
                                 <FormGroup>
                                     <FormControlLabel label="" control={<div className="wc-full-width">{iconPreview}{iconInput}</div>} />

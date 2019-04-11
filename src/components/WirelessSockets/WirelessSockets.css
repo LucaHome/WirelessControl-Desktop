@@ -1,8 +1,9 @@
 .wireless-socket-icon-preview {
-  float: left;
+    float: left;
+    top: .5rem;
 }
 
 .wireless-socket-icon-input {
-  float: right;
-  width: 90% !important;
+    float: right;
+    width: 90% !important;
 }
