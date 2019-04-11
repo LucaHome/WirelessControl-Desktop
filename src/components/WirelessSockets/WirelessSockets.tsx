@@ -1,7 +1,7 @@
 import {
     Avatar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, FormControl, FormControlLabel,
-    FormGroup, IconButton, InputLabel, List, ListItem, ListItemSecondaryAction, ListItemText, MenuItem, OutlinedInput, Select,
-    Switch, TextField, Typography, withStyles,
+    FormGroup, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, MenuItem, OutlinedInput, Select, Switch,
+    TextField, Typography, withStyles,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
@@ -75,94 +75,103 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
         let deleteButton = <div></div>;
 
         if (this.wirelessSocketSelected !== null) {
-            idInput = <TextField fullWidth disabled label="Id" type="text" name="id" id="id" value={this.wirelessSocketSelected.id} variant="outlined" />;
+            const canBeEdited = (this.state.wirelessSocketInEdit !== null && this.wirelessSocketSelected.id === this.state.wirelessSocketInEdit.id) && this.wirelessSocketSelected.deletable === 1;
 
-            if ((this.state.wirelessSocketInEdit !== null && this.wirelessSocketSelected.id === this.state.wirelessSocketInEdit.id) && this.wirelessSocketSelected.deletable === 1) {
-                if (!this.validateName()) {
-                    nameInput = <TextField
-                        error fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.name} variant="outlined"
-                    />;
-                } else {
-                    nameInput = <TextField
-                        fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.name} variant="outlined"
-                    />;
-                }
+            idInput = <TextField
+                fullWidth
+                disabled
+                label="Id"
+                type="text"
+                name="id"
+                id="id"
+                value={this.wirelessSocketSelected.id}
+                variant="outlined" />;
 
-                if (!this.validateCode()) {
-                    codeInput = <TextField
-                        error fullWidth label="Code" type="text" name="code" id="code" placeholder="Enter the code" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.code} variant="outlined"
-                    />;
-                } else {
-                    codeInput = <TextField
-                        fullWidth label="Code" type="text" name="code" id="code" placeholder="Enter the code" onChange={this.handleChange} value={this.state.wirelessSocketInEdit.code} variant="outlined"
-                    />;
-                }
+            nameInput = <TextField
+                error={!this.validateName()}
+                disabled={!canBeEdited}
+                fullWidth
+                label="Name"
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Enter a name"
+                onChange={this.handleChange}
+                value={canBeEdited ? this.state.wirelessSocketInEdit.name : this.wirelessSocketSelected.name}
+                variant="outlined"
+            />;
 
-                descriptionInput = <TextField
-                    fullWidth label="Description" type="text" name="description" id="description" placeholder="Enter a description" onChange={this.handleChange}
-                    value={this.state.wirelessSocketInEdit.description} variant="outlined"
-                />;
+            codeInput = <TextField
+                error={!this.validateCode()}
+                disabled={!canBeEdited}
+                fullWidth
+                label="Code"
+                type="text"
+                name="code"
+                id="code"
+                placeholder="Enter the code"
+                onChange={this.handleChange}
+                value={canBeEdited ? this.state.wirelessSocketInEdit.code : this.wirelessSocketSelected.code}
+                variant="outlined"
+            />;
 
-                if (!this.validateArea()) {
-                    areaSelect = <Select
-                        error
-                        fullWidth
-                        value={this.state.wirelessSocketInEdit.area}
-                        onChange={this.handleChange}
-                        input={
-                            <OutlinedInput
-                                id="area"
-                                labelWidth={0}
-                                name="area"
-                            />
-                        } >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        {this.props.state.areas.filter((area: Area) => area.filter !== "").map((area: Area, _) => (
-                            <MenuItem value={area.filter}>{area.name}</MenuItem>
-                        ))}
-                    </Select>;
-                } else {
-                    areaSelect = <Select
-                        fullWidth
-                        value={this.state.wirelessSocketInEdit.area}
-                        onChange={this.handleChange}
-                        input={
-                            <OutlinedInput
-                                id="area"
-                                labelWidth={0}
-                                name="area"
-                            />
-                        } >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        {this.props.state.areas.filter((area: Area) => area.filter !== "").map((area: Area, _) => (
-                            <MenuItem value={area.filter}>{area.name}</MenuItem>
-                        ))}
-                    </Select>;
-                }
+            descriptionInput = <TextField
+                disabled={!canBeEdited}
+                fullWidth
+                label="Description"
+                type="text"
+                name="description"
+                id="description"
+                placeholder="Enter a description"
+                onChange={this.handleChange}
+                value={canBeEdited ? this.state.wirelessSocketInEdit.description : this.wirelessSocketSelected.description}
+                variant="outlined"
+            />;
 
-                iconPreview = <Avatar className="wireless-socket-icon-preview"><i className={this.state.wirelessSocketInEdit.icon}></i></Avatar>;
-                if (!this.validateIcon()) {
-                    iconInput = <TextField error fullWidth label="Icon" className="wireless-socket-icon-input" type="text" name="icon" id="icon" placeholder="Enter the icon"
-                        onChange={this.handleChange} value={this.state.wirelessSocketInEdit.icon} variant="outlined" />;
-                } else {
-                    iconInput = <TextField fullWidth label="Icon" className="wireless-socket-icon-input" type="text" name="icon" id="icon" placeholder="Enter the icon"
-                        onChange={this.handleChange} value={this.state.wirelessSocketInEdit.icon} variant="outlined" />;
-                }
+            areaSelect = <Select
+                error={!this.validateArea()}
+                disabled={!canBeEdited}
+                fullWidth
+                value={canBeEdited ? this.state.wirelessSocketInEdit.area : this.wirelessSocketSelected.area}
+                onChange={this.handleChange}
+                input={
+                    <OutlinedInput
+                        id="area"
+                        labelWidth={0}
+                        name="area"
+                    />
+                } >
+                <MenuItem value="">
+                    <em>None</em>
+                </MenuItem>
+                {this.props.state.areas.filter((area: Area) => area.filter !== "").map((area: Area, _) => (
+                    <MenuItem value={area.filter}>{area.name}</MenuItem>
+                ))}
+            </Select>;
 
+            iconPreview = <Avatar
+                className="wireless-socket-icon-preview">
+                <i className={canBeEdited ? this.state.wirelessSocketInEdit.icon : this.wirelessSocketSelected.icon}></i>
+            </Avatar>;
+
+            iconInput = <TextField
+                error={!this.validateIcon()}
+                disabled={!canBeEdited}
+                fullWidth
+                label="Icon"
+                className="wireless-socket-icon-input"
+                type="text"
+                name="icon"
+                id="icon"
+                placeholder="Enter the icon"
+                onChange={this.handleChange}
+                value={canBeEdited ? this.state.wirelessSocketInEdit.icon : this.wirelessSocketSelected.icon}
+                variant="outlined" />;
+
+            if (canBeEdited) {
                 submitButton = <Button className="wc-button-submit" disabled={!this.validateForm()} type="button" color="primary" onClick={this.handleSubmit}>Save</Button>;
                 cancelEditButton = <Button className="wc-button-submit" type="button" color="primary" onClick={() => this.setState({ wirelessSocketInEdit: null })}>Cancel</Button>;
                 deleteButton = <Button className="wc-button-delete" type="button" color="secondary" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>;
-            } else {
-                nameInput = <TextField fullWidth disabled label="Name" type="text" name="name" id="name" value={this.wirelessSocketSelected.name} variant="outlined" />;
-                codeInput = <TextField fullWidth disabled label="Code" type="text" name="code" id="code" value={this.wirelessSocketSelected.code} variant="outlined" />;
-                descriptionInput = <TextField fullWidth disabled label="Description" type="text" name="description" id="description" value={this.wirelessSocketSelected.description} variant="outlined" />;
-                areaSelect = <TextField fullWidth disabled label="Area" type="text" name="area" id="area" value={this.wirelessSocketSelected.area} variant="outlined" />;
-                iconPreview = <Avatar className="wireless-socket-icon-preview"><i className={this.wirelessSocketSelected.icon}></i></Avatar>;
-                iconInput = <TextField fullWidth label="Icon" className="wireless-socket-icon-input" disabled type="text" name="icon" id="icon" value={this.wirelessSocketSelected.icon} variant="outlined" />;
             }
         }
 
@@ -285,20 +294,14 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
         });
     }
 
-    private validateName = (): boolean => this.state.wirelessSocketInEdit !== null
-        && (this.state.wirelessSocketInEdit.deletable === 0
-            || (this.state.wirelessSocketInEdit.name.length >= 3
-                && this.state.wirelessSocketInEdit.name.length <= 128))
-    private validateCode = (): boolean => this.state.wirelessSocketInEdit !== null
-        && (this.state.wirelessSocketInEdit.deletable === 0
-            || (this.state.wirelessSocketInEdit.code.length === 6
-                && new RegExp("^([01]{5}[ABCDE]{1})$").test(this.state.wirelessSocketInEdit.code)))
-    private validateArea = (): boolean => this.state.wirelessSocketInEdit !== null
-        && (this.state.wirelessSocketInEdit.deletable === 0
-            || (this.state.wirelessSocketInEdit.area.length > 0
-                && this.props.state.areas.find((area: Area) => area.filter === this.state.wirelessSocketInEdit.area)))
-    private validateIcon = (): boolean => this.state.wirelessSocketInEdit !== null
-        && (this.state.wirelessSocketInEdit.deletable === 0 || this.state.wirelessSocketInEdit.icon.length > 0)
+    private validateName = (): boolean => this.state.wirelessSocketInEdit === null
+        || (this.state.wirelessSocketInEdit.deletable === 0 || (this.state.wirelessSocketInEdit.name.length >= 3 && this.state.wirelessSocketInEdit.name.length <= 128))
+    private validateCode = (): boolean => this.state.wirelessSocketInEdit === null
+        || (this.state.wirelessSocketInEdit.deletable === 0 || (this.state.wirelessSocketInEdit.code.length === 6 && new RegExp("^([01]{5}[ABCDE]{1})$").test(this.state.wirelessSocketInEdit.code)))
+    private validateArea = (): boolean => this.state.wirelessSocketInEdit === null
+        || (this.state.wirelessSocketInEdit.deletable === 0 || (this.state.wirelessSocketInEdit.area.length > 0 && this.props.state.areas.find((area: Area) => area.filter === this.state.wirelessSocketInEdit.area)))
+    private validateIcon = (): boolean => this.state.wirelessSocketInEdit === null
+        || (this.state.wirelessSocketInEdit.deletable === 0 || this.state.wirelessSocketInEdit.icon.length > 0)
 
     private validateForm = (): boolean => this.validateName() && this.validateCode() && this.validateArea() && this.validateIcon();
 

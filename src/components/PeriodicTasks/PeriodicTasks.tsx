@@ -73,155 +73,124 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
         let deleteButton = <div></div>;
 
         if (this.periodicTaskSelected !== null) {
-            idInput = <TextField fullWidth disabled label="Id" type="text" name="id" id="id" value={this.periodicTaskSelected.id} variant="outlined" />;
+            const canBeEdited = this.state.periodicTaskInEdit !== null && this.periodicTaskSelected.id === this.state.periodicTaskInEdit.id;
 
-            if (this.state.periodicTaskInEdit !== null && this.periodicTaskSelected.id === this.state.periodicTaskInEdit.id) {
-                if (!this.validateName()) {
-                    nameInput = <TextField
-                        error fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.periodicTaskInEdit.name} variant="outlined" />;
-                } else {
-                    nameInput = <TextField
-                        fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.periodicTaskInEdit.name} variant="outlined" />;
-                }
+            idInput = <TextField
+                fullWidth
+                disabled
+                label="Id"
+                type="text"
+                name="id"
+                id="id"
+                value={this.periodicTaskSelected.id}
+                variant="outlined" />;
 
-                if (!this.validateWirelessSocket()) {
-                    wirelessSocketSelect = <Select
-                        error
-                        fullWidth
-                        value={this.state.periodicTaskInEdit.wirelessSocketId}
-                        onChange={this.handleChangeWirelessSocket}
-                        input={
-                            <OutlinedInput
-                                id="wirelessSocket"
-                                labelWidth={0}
-                                name="wirelessSocket"
-                            />
-                        } >
-                        <MenuItem value={-1}>
-                            <em>None</em>
-                        </MenuItem>
-                        {this.props.state.wirelessSockets.map((wirelessSocket: WirelessSocket, _) => (
-                            <MenuItem value={wirelessSocket.id}>{wirelessSocket.name}</MenuItem>
-                        ))}
-                    </Select>;
-                } else {
-                    wirelessSocketSelect = <Select
-                        fullWidth
-                        value={this.state.periodicTaskInEdit.wirelessSocketId}
-                        onChange={this.handleChangeWirelessSocket}
-                        input={
-                            <OutlinedInput
-                                id="wirelessSocket"
-                                labelWidth={0}
-                                name="wirelessSocket"
-                            />
-                        } >
-                        <MenuItem value={-1}>
-                            <em>None</em>
-                        </MenuItem>
-                        {this.props.state.wirelessSockets.map((wirelessSocket: WirelessSocket, _) => (
-                            <MenuItem value={wirelessSocket.id}>{wirelessSocket.name}</MenuItem>
-                        ))}
-                    </Select>;
-                }
+            nameInput = <TextField
+                error={!this.validateName()}
+                disabled={!canBeEdited}
+                fullWidth
+                label="Name"
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Enter a name"
+                onChange={this.handleChange}
+                value={canBeEdited ? this.state.periodicTaskInEdit.name : this.periodicTaskSelected.name}
+                variant="outlined" />;
 
-                wirelessSocketStateSwitch = <Switch name="wirelessSocketState" id="wirelessSocketState"
-                    onChange={() => {
-                        this.periodicTaskSelected.wirelessSocketState = this.periodicTaskSelected.wirelessSocketState === 0 ? 1 : 0; this.setState({ periodicTaskInEdit: clone(this.periodicTaskSelected) });
-                    }}
-                    checked={this.periodicTaskSelected.wirelessSocketState === 1} />;
+            wirelessSocketSelect = <Select
+                error={!this.validateWirelessSocket()}
+                disabled={!canBeEdited}
+                fullWidth
+                value={canBeEdited ? this.state.periodicTaskInEdit.wirelessSocketId : this.periodicTaskSelected.wirelessSocketId}
+                onChange={this.handleChangeWirelessSocket}
+                input={
+                    <OutlinedInput
+                        id="wirelessSocket"
+                        labelWidth={0}
+                        name="wirelessSocket"
+                    />
+                } >
+                <MenuItem value={-1}>
+                    <em>None</em>
+                </MenuItem>
+                {this.props.state.wirelessSockets.map((wirelessSocket: WirelessSocket, _) => (
+                    <MenuItem value={wirelessSocket.id}>{wirelessSocket.name}</MenuItem>
+                ))}
+            </Select>;
 
-                if (!this.validateWeekday()) {
-                    weekdaySelect = <Select
-                        error
-                        fullWidth
-                        value={this.state.periodicTaskInEdit.weekday}
-                        onChange={this.handleChange}
-                        input={
-                            <OutlinedInput
-                                id="weekday"
-                                labelWidth={0}
-                                name="weekday"
-                            />
-                        } >
-                        <MenuItem value={-1}>
-                            <em>None</em>
-                        </MenuItem>
-                        {weekdayArray.map((weekday: string, index: number) => (
-                            <MenuItem value={index}>{weekday}</MenuItem>
-                        ))}
-                    </Select>;
-                } else {
-                    weekdaySelect = <Select
-                        fullWidth
-                        value={this.state.periodicTaskInEdit.weekday}
-                        onChange={this.handleChange}
-                        input={
-                            <OutlinedInput
-                                id="weekday"
-                                labelWidth={0}
-                                name="weekday"
-                            />
-                        } >
-                        <MenuItem value={-1}>
-                            <em>None</em>
-                        </MenuItem>
-                        {weekdayArray.map((weekday: string, index: number) => (
-                            <MenuItem value={index}>{weekday}</MenuItem>
-                        ))}
-                    </Select>;
-                }
+            wirelessSocketStateSwitch = <Switch
+                disabled={!canBeEdited}
+                name="wirelessSocketState"
+                id="wirelessSocketState"
+                onChange={() => {
+                    this.state.periodicTaskInEdit.wirelessSocketState = this.state.periodicTaskInEdit.wirelessSocketState === 0 ? 1 : 0;
+                    this.setState({ periodicTaskInEdit: clone(this.state.periodicTaskInEdit) });
+                }}
+                checked={canBeEdited ? this.state.periodicTaskInEdit.wirelessSocketState === 1 : this.periodicTaskSelected.wirelessSocketState === 1} />;
 
-                const date: Date = new Date(Date.now());
-                date.setHours(this.periodicTaskSelected.hour);
-                date.setMinutes(this.periodicTaskSelected.minute);
-                if (!this.validateTime()) {
-                    timePicker = <div className="picker">
-                        <TimePicker
-                            error
-                            fullWidth
-                            label="Time"
-                            className="wc-full-width"
-                            ampm={false}
-                            value={date}
-                            onChange={this.handleChangeTime}
-                            variant="outlined"
-                        />
-                    </div>;
-                } else {
-                    timePicker = <div className="picker">
-                        <TimePicker
-                            fullWidth
-                            label="Time"
-                            className="wc-full-width"
-                            ampm={false}
-                            value={date}
-                            onChange={this.handleChangeTime}
-                            variant="outlined"
-                        />
-                    </div>;
-                }
+            weekdaySelect = <Select
+                error={!this.validateWeekday()}
+                disabled={!canBeEdited}
+                fullWidth
+                value={canBeEdited ? this.state.periodicTaskInEdit.weekday : this.periodicTaskSelected.weekday}
+                onChange={this.handleChange}
+                input={
+                    <OutlinedInput
+                        id="weekday"
+                        labelWidth={0}
+                        name="weekday"
+                    />
+                } >
+                <MenuItem value={0}>
+                    <em>None</em>
+                </MenuItem>
+                {weekdayArray.map((weekday: string, index: number) => (
+                    <MenuItem value={index + 1}>{weekday}</MenuItem>
+                ))}
+            </Select>;
 
-                periodicSwitch = <Switch name="periodic" id="periodic"
-                    onChange={() => { this.periodicTaskSelected.periodic = this.periodicTaskSelected.periodic === 0 ? 1 : 0; this.setState({ periodicTaskInEdit: clone(this.periodicTaskSelected) }); }}
-                    checked={this.periodicTaskSelected.periodic === 1} />;
+            const date: Date = new Date(Date.now());
+            date.setHours(canBeEdited ? this.state.periodicTaskInEdit.hour : this.periodicTaskSelected.hour);
+            date.setMinutes(canBeEdited ? this.state.periodicTaskInEdit.minute : this.periodicTaskSelected.minute);
+            timePicker = <div className="picker">
+                <TimePicker
+                    error={!this.validateTime()}
+                    disabled={!canBeEdited}
+                    fullWidth
+                    label="Time"
+                    className="wc-full-width"
+                    ampm={false}
+                    value={date}
+                    onChange={this.handleChangeTime}
+                    variant="outlined"
+                />
+            </div>;
 
-                activeSwitch = <Switch name="active" id="active"
-                    onChange={() => { this.periodicTaskSelected.active = this.periodicTaskSelected.active === 0 ? 1 : 0; this.setState({ periodicTaskInEdit: clone(this.periodicTaskSelected) }); }}
-                    checked={this.periodicTaskSelected.active === 1} />;
+            periodicSwitch = <Switch
+                disabled={!canBeEdited}
+                name="periodic"
+                id="periodic"
+                onChange={() => {
+                    this.state.periodicTaskInEdit.periodic = this.state.periodicTaskInEdit.periodic === 0 ? 1 : 0;
+                    this.setState({ periodicTaskInEdit: clone(this.state.periodicTaskInEdit) });
+                }}
+                checked={canBeEdited ? this.state.periodicTaskInEdit.periodic === 1 : this.periodicTaskSelected.active === 1} />;
 
+            activeSwitch = <Switch
+                disabled={!canBeEdited}
+                name="active"
+                id="active"
+                onChange={() => {
+                    this.state.periodicTaskInEdit.active = this.state.periodicTaskInEdit.active === 0 ? 1 : 0;
+                    this.setState({ periodicTaskInEdit: clone(this.state.periodicTaskInEdit) });
+                }}
+                checked={canBeEdited ? this.state.periodicTaskInEdit.active === 1 : this.periodicTaskSelected.active === 1} />;
+
+            if (canBeEdited) {
                 submitButton = <Button className="wc-button-submit" disabled={!this.validateForm()} type="button" color="primary" onClick={this.handleSubmit}>Save</Button>;
                 cancelEditButton = <Button className="wc-button-submit" type="button" color="primary" onClick={() => this.setState({ periodicTaskInEdit: null })}>Cancel</Button>;
                 deleteButton = <Button className="wc-button-delete" type="button" color="secondary" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>;
-            } else {
-                nameInput = <TextField fullWidth disabled label="Name" type="text" name="name" id="name" value={this.periodicTaskSelected.name} variant="outlined" />;
-                const wirelessSocket: WirelessSocket = this.props.state.wirelessSockets.find((x: WirelessSocket) => x.id === this.periodicTaskSelected.wirelessSocketId);
-                wirelessSocketSelect = <TextField fullWidth disabled label="WirelessSocket" type="text" name="wirelessSocket" id="wirelessSocket" value={wirelessSocket.name} variant="outlined" />;
-                wirelessSocketStateSwitch = <Switch disabled name="wirelessSocketState" id="wirelessSocketState" checked={this.periodicTaskSelected.wirelessSocketState === 1} />;
-                weekdaySelect = <TextField fullWidth disabled label="Weekday" type="text" name="weekday" id="weekday" value={weekdayArray[this.periodicTaskSelected.weekday]} variant="outlined" />;
-                timePicker = <TextField fullWidth disabled label="Time" type="text" name="time" id="time" value={getTimeString(this.periodicTaskSelected)} variant="outlined" />;
-                periodicSwitch = <Switch disabled name="periodic" id="periodic" checked={this.periodicTaskSelected.periodic === 1} />;
-                activeSwitch = <Switch disabled name="active" id="active" checked={this.periodicTaskSelected.active === 1} />;
             }
         }
 
@@ -368,21 +337,19 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
         }
 
         this.setState({
-            areaInEdit: null,
             editMode: EditMode.Null,
+            periodicTaskInEdit: null,
         });
     }
 
-    private validateName = (): boolean => this.state.periodicTaskInEdit !== null
-        && (this.state.periodicTaskInEdit.name.length >= 3
-            && this.state.periodicTaskInEdit.name.length <= 128)
-    private validateWirelessSocket = (): boolean => this.state.periodicTaskInEdit !== null
-        && this.state.periodicTaskInEdit.wirelessSocketId !== -1
-    private validateWeekday = (): boolean => this.state.periodicTaskInEdit !== null
-        && this.state.periodicTaskInEdit.weekday !== -1
-    private validateTime = (): boolean => this.state.periodicTaskInEdit !== null
-        && this.state.periodicTaskInEdit.hour >= 0 && this.state.periodicTaskInEdit.hour <= 23
-        && this.state.periodicTaskInEdit.minute >= 0 && this.state.periodicTaskInEdit.minute <= 59
+    private validateName = (): boolean => this.state.periodicTaskInEdit === null
+        || (this.state.periodicTaskInEdit.name.length >= 3 && this.state.periodicTaskInEdit.name.length <= 128)
+    private validateWirelessSocket = (): boolean => this.state.periodicTaskInEdit === null
+        || this.state.periodicTaskInEdit.wirelessSocketId !== -1
+    private validateWeekday = (): boolean => this.state.periodicTaskInEdit === null
+        || this.state.periodicTaskInEdit.weekday !== -1
+    private validateTime = (): boolean => this.state.periodicTaskInEdit === null
+        || (this.state.periodicTaskInEdit.hour >= 0 && this.state.periodicTaskInEdit.hour <= 23 && this.state.periodicTaskInEdit.minute >= 0 && this.state.periodicTaskInEdit.minute <= 59)
 
     private validateForm = (): boolean => this.validateName() && this.validateWirelessSocket() && this.validateWeekday() && this.validateTime();
 

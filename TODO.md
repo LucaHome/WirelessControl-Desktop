@@ -29,11 +29,12 @@
     - [ ] fix deletion bug in reducers
     - [x] fix layout in periodic tasks if nothing selected
     - [x] fix submit bug
+    - [ ] after adding new periodic task or wireless socket select used wireless socket or area
 - [ ] unifying
     - [x] styles
     - [x] method duplications => more generic
     - [ ] props for area, periodic task & wireless socket
-    - [ ] remove duplicate html creation
+    - [x] remove duplicate html creation
 - [x] remove bootstrap and reactstrap
 - [ ] [create executable](https://github.com/electron/electron/blob/master/docs/tutorial/application-distribution.md)
     - [ ] use [electron-packager](https://github.com/electron-userland/electron-packager)
