@@ -24,7 +24,7 @@ const periodicTasksReducer = (periodicTasks: PeriodicTask[] = [], action: any): 
         }
         case PERIODIC_TASK_ADD:
         case PERIODIC_TASK_DELETE_SUCCESSFUL: {
-            const periodicTask: PeriodicTask = action.payload.periodicTask;
+            const periodicTask: PeriodicTask = periodicTasks.find((periodicTask: PeriodicTask) => periodicTask.id === action.payload.periodicTask.id);
             periodicTasks.splice(periodicTasks.indexOf(periodicTask), 1);
             return periodicTasks;
         }

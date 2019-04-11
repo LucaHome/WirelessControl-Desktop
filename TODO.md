@@ -26,7 +26,7 @@
     - [ ] 302 error loading areas, wireless sockets or periodic tasks after successful login
     - [x] error adding new wireless socket using handleAdd throws null exception in .some ...
     - [x] error adding new periodic task using handleAdd throws null exception in .some ...
-    - [ ] fix deletion bug in reducers
+    - [x] fix deletion bug in reducers
     - [x] fix layout in periodic tasks if nothing selected
     - [x] fix submit bug
     - [x] after adding new periodic task or wireless socket select used wireless socket or area

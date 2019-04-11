@@ -24,7 +24,7 @@ const wirelessSocketsReducer = (wirelessSockets: WirelessSocket[] = [], action: 
         }
         case WIRELESS_SOCKET_ADD:
         case WIRELESS_SOCKET_DELETE_SUCCESSFUL: {
-            const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
+            const wirelessSocket: WirelessSocket = wirelessSockets.find((wirelessSocket: WirelessSocket) => wirelessSocket.id === action.payload.wirelessSocket.id);
             wirelessSockets.splice(wirelessSockets.indexOf(wirelessSocket), 1);
             return wirelessSockets;
         }

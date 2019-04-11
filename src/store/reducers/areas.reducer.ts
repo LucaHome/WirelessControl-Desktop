@@ -31,7 +31,7 @@ const areasReducer = (areas: Area[] = [], action: any): Area[] => {
         }
         case AREA_ADD:
         case AREA_DELETE_SUCCESSFUL: {
-            const area: Area = action.payload.area;
+            const area: Area = areas.find((area: Area) => area.id === action.payload.area.id);
             areas.splice(areas.indexOf(area), 1);
             return areas;
         }
