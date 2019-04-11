@@ -19,7 +19,7 @@ import { clone, maxId } from "../../utils/entity.utils";
 import { getDateTimeString, getTimeString } from "../../utils/periodic-tasks.utils";
 import { IPeriodicTasksProps } from "./IPeriodicTasksProps";
 
-import "./PeriodicTasks.css";
+import "./PeriodicTasks.scss";
 
 class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
 
@@ -210,7 +210,7 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
                     onChange={() => { this.periodicTaskSelected.active = this.periodicTaskSelected.active === 0 ? 1 : 0; this.setState({ periodicTaskInEdit: clone(this.periodicTaskSelected) }); }}
                     checked={this.periodicTaskSelected.active === 1} />;
 
-                submitButton = <Button className="wc-button-submit" disabled={!this.validateForm()} type="submit" color="primary">Save</Button>;
+                submitButton = <Button className="wc-button-submit" disabled={!this.validateForm()} type="button" color="primary" onClick={this.handleSubmit}>Save</Button>;
                 cancelEditButton = <Button className="wc-button-submit" type="button" color="primary" onClick={() => this.setState({ periodicTaskInEdit: null })}>Cancel</Button>;
                 deleteButton = <Button className="wc-button-delete" type="button" color="secondary" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>;
             } else {
@@ -234,7 +234,7 @@ class PeriodicTasks extends React.Component<IPeriodicTasksProps, any> {
                     </div>
                     <div className="wc-form-container">
                         <div className={this.props.classes.root}>
-                            <FormControl fullWidth onSubmit={this.handleSubmit} className={this.props.classes.formControl}>
+                            <FormControl fullWidth className={this.props.classes.formControl}>
                                 <FormGroup>
                                     <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{idInput}</div>} />
                                 </FormGroup>

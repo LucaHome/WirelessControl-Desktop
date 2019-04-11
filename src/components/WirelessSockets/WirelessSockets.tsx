@@ -16,7 +16,7 @@ import { getWirelessSocketsForArea } from "../../store/selectors";
 import { clone, maxId } from "../../utils/entity.utils";
 import { IWirelessSocketsProps } from "./IWirelessSocketsProps";
 
-import "./WirelessSockets.css";
+import "./WirelessSockets.scss";
 
 class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
 
@@ -153,7 +153,7 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                         onChange={this.handleChange} value={this.state.wirelessSocketInEdit.icon} variant="outlined" />;
                 }
 
-                submitButton = <Button className="wc-button-submit" disabled={!this.validateForm()} type="submit" color="primary">Save</Button>;
+                submitButton = <Button className="wc-button-submit" disabled={!this.validateForm()} type="button" color="primary" onClick={this.handleSubmit}>Save</Button>;
                 cancelEditButton = <Button className="wc-button-submit" type="button" color="primary" onClick={() => this.setState({ wirelessSocketInEdit: null })}>Cancel</Button>;
                 deleteButton = <Button className="wc-button-delete" type="button" color="secondary" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>;
             } else {
@@ -175,7 +175,7 @@ class WirelessSockets extends React.Component<IWirelessSocketsProps, any> {
                     </div>
                     <div className="wc-form-container">
                         <div className={this.props.classes.root}>
-                            <FormControl fullWidth onSubmit={this.handleSubmit} className={this.props.classes.formControl}>
+                            <FormControl fullWidth className={this.props.classes.formControl}>
                                 <FormGroup>
                                     <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{idInput}</div>} />
                                 </FormGroup>

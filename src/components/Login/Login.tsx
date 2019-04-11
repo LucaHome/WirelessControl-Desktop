@@ -67,7 +67,7 @@ class Login extends React.Component<ILoginProps, any> {
                     <img className="login-image" src="../assets/images/logo.png"></img>
                 </div>
                 <div className="login-container">
-                    <FormControl onSubmit={this.handleSubmit} className="login-form">
+                    <FormControl className="login-form">
                         <FormGroup>
                             <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{urlInput}</div>} />
                         </FormGroup>
@@ -77,7 +77,7 @@ class Login extends React.Component<ILoginProps, any> {
                         <FormGroup>
                             <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{passPhraseInput}</div>} />
                         </FormGroup>
-                        <Button disabled={!this.validateForm()} color="primary" type="submit">Login</Button>
+                        <Button disabled={!this.validateForm()} color="primary" type="button" onClick={this.handleSubmit}>Login</Button>
                     </FormControl>
                 </div>
             </div>

@@ -68,7 +68,7 @@ class Areas extends React.Component<IAreasProps, any> {
 
                 filterInput = <TextField fullWidth disabled label="Filter" type="text" name="filter" id="filter" value={this.state.areaInEdit.filter} />;
 
-                submitButton = <Button className="wc-button-submit" disabled={!this.validateForm()} type="submit" color="primary">Save</Button>;
+                submitButton = <Button className="wc-button-submit" disabled={!this.validateForm()}  type="button" color="primary" onClick={this.handleSubmit}>Save</Button>;
                 cancelEditButton = <Button className="wc-button-submit" type="button" color="primary" onClick={() => this.setState({ areaInEdit: null })}>Cancel</Button>;
                 deleteButton = <Button className="wc-button-delete" type="button" color="secondary" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>;
             } else {
@@ -84,7 +84,7 @@ class Areas extends React.Component<IAreasProps, any> {
             </div>
             <div className="wc-form-container">
                 <div className={this.props.classes.root}>
-                    <FormControl fullWidth onSubmit={this.handleSubmit} className={this.props.classes.formControl}>
+                    <FormControl fullWidth className={this.props.classes.formControl}>
                         <FormGroup>
                             <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{idInput}</div>} />
                         </FormGroup>
