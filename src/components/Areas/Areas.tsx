@@ -50,31 +50,81 @@ class Areas extends React.Component<IAreasProps, any> {
             </List>
             : <List></List>;
 
-        const idInput = <TextField fullWidth disabled label="Id" type="text" name="id" id="id" value={this.areaSelected.id} variant="outlined" />;
+        const idInput = <TextField
+            fullWidth
+            disabled
+            label="Id"
+            type="text"
+            name="id"
+            id="id"
+            value={this.areaSelected.id}
+            variant="outlined" />;
+
         let nameInput = <div></div>;
         let filterInput = <div></div>;
-
         let submitButton = <div></div>;
         let cancelEditButton = <div></div>;
         let deleteButton = <div></div>;
 
-        if (this.areaSelected !== null) {
-            if ((this.state.areaInEdit !== null && this.areaSelected.id === this.state.areaInEdit.id) && this.areaSelected.deletable === 1) {
-                if (!this.validateName()) {
-                    nameInput = <TextField error fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.areaInEdit.name} />;
-                } else {
-                    nameInput = <TextField fullWidth label="Name" type="text" name="name" id="name" placeholder="Enter a name" onChange={this.handleChange} value={this.state.areaInEdit.name} />;
-                }
+        if ((this.state.areaInEdit !== null && this.areaSelected.id === this.state.areaInEdit.id) && this.areaSelected.deletable === 1) {
+            nameInput = <TextField
+                error={!this.validateName()}
+                fullWidth
+                label="Name"
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Enter a name"
+                onChange={this.handleChange}
+                value={this.state.areaInEdit.name} />;
 
-                filterInput = <TextField fullWidth disabled label="Filter" type="text" name="filter" id="filter" value={this.state.areaInEdit.filter} />;
+            filterInput = <TextField
+                fullWidth
+                disabled
+                label="Filter"
+                type="text"
+                name="filter"
+                id="filter"
+                value={this.state.areaInEdit.filter} />;
 
-                submitButton = <Button className="wc-button-submit" disabled={!this.validateForm()}  type="button" color="primary" onClick={this.handleSubmit}>Save</Button>;
-                cancelEditButton = <Button className="wc-button-submit" type="button" color="primary" onClick={() => this.setState({ areaInEdit: null })}>Cancel</Button>;
-                deleteButton = <Button className="wc-button-delete" type="button" color="secondary" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>;
-            } else {
-                nameInput = <TextField fullWidth disabled label="Name" type="text" name="name" id="name" value={this.areaSelected.name} variant="outlined" />;
-                filterInput = <TextField fullWidth disabled label="Filter" type="text" name="filter" id="filter" value={this.areaSelected.filter} variant="outlined" />;
-            }
+            submitButton = <Button
+                className="wc-button-submit"
+                disabled={!this.validateForm()}
+                type="button"
+                color="primary"
+                onClick={this.handleSubmit}>Save</Button>;
+
+            cancelEditButton = <Button
+                className="wc-button-submit"
+                type="button"
+                color="primary"
+                onClick={() => this.setState({ areaInEdit: null })}>Cancel</Button>;
+
+            deleteButton = <Button
+                className="wc-button-delete"
+                type="button"
+                color="secondary"
+                onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>;
+        } else {
+            nameInput = <TextField
+                fullWidth
+                disabled
+                label="Name"
+                type="text"
+                name="name"
+                id="name"
+                value={this.areaSelected.name}
+                variant="outlined" />;
+
+            filterInput = <TextField
+                fullWidth
+                disabled
+                label="Filter"
+                type="text"
+                name="filter"
+                id="filter"
+                value={this.areaSelected.filter}
+                variant="outlined" />;
         }
 
         return <div>
@@ -149,14 +199,14 @@ class Areas extends React.Component<IAreasProps, any> {
         });
     }
 
-    private handleChange = (event) => {
+    private handleChange = (event: any) => {
         const area: Area = this.state.areaInEdit;
         area.name = event.target.value;
         area.filter = event.target.value;
         this.setState({ areaInEdit: clone(area) });
     }
 
-    private handleSubmit = (event) => {
+    private handleSubmit = (event: any) => {
         event.preventDefault();
 
         switch (this.state.editMode) {
@@ -183,13 +233,13 @@ class Areas extends React.Component<IAreasProps, any> {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
     return {
         state,
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
         dispatch,
     };
