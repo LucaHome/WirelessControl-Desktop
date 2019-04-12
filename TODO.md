@@ -13,24 +13,26 @@
     - [x] display filter for wireless sockets and periodic tasks
         - [x] wireless sockets
         - [x] periodic tasks
-- [ ] Load content (use actions)
+- [x] Load content (use actions)
     - [x] credentials
-    - [ ] areas
-    - [ ] wireless sockets
-    - [ ] periodic tasks
+    - [x] areas
+    - [x] wireless sockets
+    - [x] periodic tasks
 - [x] Add, Update, Delete entries
     - [x] areas
     - [x] wireless sockets
     - [x] periodic tasks
 - [x] Navigating
 - [ ] Bugs
-    - [ ] 302 error loading areas, wireless sockets or periodic tasks after successful login
+    - [x] 302 error loading areas, wireless sockets or periodic tasks after successful login
     - [x] error adding new wireless socket using handleAdd throws null exception in .some ...
     - [x] error adding new periodic task using handleAdd throws null exception in .some ...
     - [x] fix deletion bug in reducers
     - [x] fix layout in periodic tasks if nothing selected
     - [x] fix submit bug
     - [x] after adding new periodic task or wireless socket select used wireless socket or area
+    - [ ] fix add/put & update/post bug
+    - [ ] fix state bug in switch view
 - [x] unifying
     - [x] styles
     - [x] method duplications => more generic
