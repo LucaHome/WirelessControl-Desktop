@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { ApiResponse, Entity, NextCloudCredentials } from "../models";
 import { mockServerGetData, mockServerPostDeleteData, mockServerPutData } from "./request.service.mock";
 
 const apiUrl: string = "/index.php/apps/wirelesscontrol/api/v1/";
-const useMockData: boolean = true;
+const useMockData: boolean = false;
 
 const createHeader = (nextCloudCredentials: NextCloudCredentials): any => {
     const encoded = encodeURIComponent(`${nextCloudCredentials.userName}:${nextCloudCredentials.passPhrase}`);
@@ -17,6 +17,8 @@ const createHeader = (nextCloudCredentials: NextCloudCredentials): any => {
 };
 
 export const serverGet = async <K>(url: string, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
+    console.log(`serverGet: ${url}, ${JSON.stringify(nextCloudCredentials)}`);
+
     if (useMockData) {
         const mockApiResponse: ApiResponse<K> = {
             data: mockServerGetData(url),
@@ -26,11 +28,9 @@ export const serverGet = async <K>(url: string, nextCloudCredentials: NextCloudC
         return mockApiResponse;
     }
 
-    return axios({
-        headers: createHeader(nextCloudCredentials),
-        method: "get",
-        url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}`,
-    })
+    const config: AxiosRequestConfig = { headers: createHeader(nextCloudCredentials) };
+    return axios
+        .get(`${nextCloudCredentials.baseUrl}${apiUrl}${url}`, config)
         .then((response: any) => {
             switch (response.status) {
                 // 401 For invalid userName with message: CORS requires basic auth
@@ -58,6 +58,8 @@ export const serverGet = async <K>(url: string, nextCloudCredentials: NextCloudC
 }
 
 export const serverPost = async <T extends Entity, K>(url: string, data: T, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
+    console.log(`serverPost: ${url}, ${JSON.stringify(data)}, ${JSON.stringify(nextCloudCredentials)}`);
+
     if (useMockData) {
         const mockApiResponse: ApiResponse<K> = {
             status: "success",
@@ -69,12 +71,10 @@ export const serverPost = async <T extends Entity, K>(url: string, data: T, next
 
     const dataJson = JSON.stringify(data);
     delete dataJson["id"];
-    return axios({
-        data: dataJson,
-        headers: createHeader(nextCloudCredentials),
-        method: "post",
-        url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}`,
-    })
+
+    const config: AxiosRequestConfig = { headers: createHeader(nextCloudCredentials) };
+    return axios
+        .post(`${nextCloudCredentials.baseUrl}${apiUrl}${url}`, dataJson, config)
         .then((response) => {
             switch (response.status) {
                 // 401 For invalid userName with message: CORS requires basic auth
@@ -102,6 +102,8 @@ export const serverPost = async <T extends Entity, K>(url: string, data: T, next
 }
 
 export const serverPut = async <T extends Entity, K>(url: string, data: T, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
+    console.log(`serverPut: ${url}, ${JSON.stringify(data)}, ${JSON.stringify(nextCloudCredentials)}`);
+
     if (useMockData) {
         const mockApiResponse: ApiResponse<K> = {
             status: "success",
@@ -112,12 +114,10 @@ export const serverPut = async <T extends Entity, K>(url: string, data: T, nextC
     }
 
     const dataJson = JSON.stringify(data);
-    return axios({
-        data: dataJson,
-        headers: createHeader(nextCloudCredentials),
-        method: "put",
-        url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}/${data.id}`,
-    })
+
+    const config: AxiosRequestConfig = { headers: createHeader(nextCloudCredentials) };
+    return axios
+        .put(`${nextCloudCredentials.baseUrl}${apiUrl}${url}/${data.id}`, dataJson, config)
         .then((response) => {
             switch (response.status) {
                 // 401 For invalid userName with message: CORS requires basic auth
@@ -145,6 +145,8 @@ export const serverPut = async <T extends Entity, K>(url: string, data: T, nextC
 }
 
 export const serverDestroy = async <K>(url: string, id: number, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
+    console.log(`serverDestroy: ${url}, ${id}, ${JSON.stringify(nextCloudCredentials)}`);
+
     if (useMockData) {
         const mockApiResponse: ApiResponse<K> = {
             status: "success",
@@ -154,11 +156,9 @@ export const serverDestroy = async <K>(url: string, id: number, nextCloudCredent
         return mockApiResponse;
     }
 
-    return axios({
-        headers: createHeader(nextCloudCredentials),
-        method: "delete",
-        url: `${nextCloudCredentials.baseUrl}${apiUrl}${url}/${id}`,
-    })
+    const config: AxiosRequestConfig = { headers: createHeader(nextCloudCredentials) };
+    return axios
+        .delete(`${nextCloudCredentials.baseUrl}${apiUrl}${url}/${id}`, config)
         .then((response) => {
             switch (response.status) {
                 // 401 For invalid userName with message: CORS requires basic auth
