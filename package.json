@@ -1,7 +1,7 @@
 {
 	"name": "wireless-control-desktop",
 	"description": "Wireless Control lets you control 433MHz sockets within Nextcloud while running on a raspberry",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"author": {
 		"name": "Jonas Schubert",
 		"email": "guepardoapps@gmail.com"
@@ -31,7 +31,7 @@
 		"@material-ui/core": "3.9.3",
 		"@material-ui/icons": "3.0.2",
 		"axios": "0.18.0",
-		"electron-store": "3.2.0",
+		"electron-store": "3.1.0",
 		"material-ui-pickers": "2.2.4",
 		"moment": "2.24.0",
 		"react": "16.8.6",
