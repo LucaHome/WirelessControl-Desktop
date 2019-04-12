@@ -17,8 +17,7 @@ const createHeader = (nextCloudCredentials: NextCloudCredentials): any => {
 export const serverGet = async <K>(url: string, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
     const options = { headers: createHeader(nextCloudCredentials) };
     const response = await request.get(`${nextCloudCredentials.baseUrl}${apiUrl}${url}`, options);
-    const parsedResponse: ApiResponse<K> = JSON.parse(response);
-    return Promise.resolve(parsedResponse);
+    return Promise.resolve(response);
 }
 
 export const serverPost = async <T extends Entity, K>(url: string, data: T, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
@@ -32,8 +31,7 @@ export const serverPost = async <T extends Entity, K>(url: string, data: T, next
     };
 
     const response = await request.post(`${nextCloudCredentials.baseUrl}${apiUrl}${url}`, options);
-    const parsedResponse: ApiResponse<K> = JSON.parse(response);
-    return Promise.resolve(parsedResponse);
+    return Promise.resolve(response);
 }
 
 export const serverPut = async <T extends Entity, K>(url: string, data: T, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
@@ -46,13 +44,11 @@ export const serverPut = async <T extends Entity, K>(url: string, data: T, nextC
     };
 
     const response = await request.put(`${nextCloudCredentials.baseUrl}${apiUrl}${url}/${data.id}`, options);
-    const parsedResponse: ApiResponse<K> = JSON.parse(response);
-    return Promise.resolve(parsedResponse);
+    return Promise.resolve(response);
 }
 
 export const serverDestroy = async <K>(url: string, id: number, nextCloudCredentials: NextCloudCredentials): Promise<ApiResponse<K>> => {
     const options = { headers: createHeader(nextCloudCredentials) };
     const response = await request.delete(`${nextCloudCredentials.baseUrl}${apiUrl}${url}/${id}`, options);
-    const parsedResponse: ApiResponse<K> = JSON.parse(response);
-    return Promise.resolve(parsedResponse);
+    return Promise.resolve(response);
 }
