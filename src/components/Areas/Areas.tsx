@@ -32,7 +32,10 @@ class Areas extends React.Component<IEntityProps<Area>, any> {
     public render() {
         this.areas = this.props.state.areas;
         this.areaSelected = this.props.state.areaSelected;
-        const canBeEdited = (this.state.areaInEdit !== null && this.areaSelected.id === this.state.areaInEdit.id) && this.areaSelected.deletable === 1;
+
+        if (!this.areas.some((area: Area) => this.areaSelected !== null && area.id === this.areaSelected.id)) {
+            this.handleSelect(this.areas.length > 0 ? this.areas[0] : null);
+        }
 
         const areaList = this.areas.length > 0
             ? <List>
@@ -51,63 +54,75 @@ class Areas extends React.Component<IEntityProps<Area>, any> {
             </List>
             : <List></List>;
 
-        const idInput = <TextField
-            fullWidth
-            disabled
-            label="Id"
-            type="text"
-            name="id"
-            id="id"
-            value={this.areaSelected.id}
-            variant="outlined" />;
+        let idInput = <div></div>;
+        let nameInput = <div></div>;
+        let filterInput = <div></div>;
 
-        const nameInput = <TextField
-            error={!this.validateName()}
-            disabled={!canBeEdited}
-            fullWidth
-            label="Name"
-            type="text"
-            name="name"
-            id="name"
-            placeholder="Enter a name"
-            onChange={this.handleChange}
-            value={canBeEdited ? this.state.areaInEdit.name : this.areaSelected.name}
-            variant="outlined" />;
+        let submitButton = <div></div>;
+        let cancelEditButton = <div></div>;
+        let deleteButton = <div></div>;
 
-        const filterInput = <TextField
-            fullWidth
-            disabled
-            label="Filter"
-            type="text"
-            name="filter"
-            id="filter"
-            value={canBeEdited ? this.state.areaInEdit.filter : this.areaSelected.filter}
-            variant="outlined" />;
+        if (this.areaSelected !== null) {
+            const canBeEdited = (this.state.areaInEdit !== null && this.areaSelected.id === this.state.areaInEdit.id) && this.areaSelected.deletable === 1;
 
-        const submitButton = canBeEdited
-            ? <Button
-                className="wc-button-submit"
-                disabled={!this.validateForm()}
-                type="button"
-                color="primary"
-                onClick={this.handleSubmit}>Save</Button>
-            : <div></div>;
+            idInput = <TextField
+                fullWidth
+                disabled
+                label="Id"
+                type="text"
+                name="id"
+                id="id"
+                value={this.areaSelected.id}
+                variant="outlined" />;
 
-        const cancelEditButton = canBeEdited
-            ? <Button
-                className="wc-button-submit"
-                type="button"
-                color="primary"
-                onClick={() => this.setState({ areaInEdit: null })}>Cancel</Button>
-            : <div></div>;
+            nameInput = <TextField
+                error={!this.validateName()}
+                disabled={!canBeEdited}
+                fullWidth
+                label="Name"
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Enter a name"
+                onChange={this.handleChange}
+                value={canBeEdited ? this.state.areaInEdit.name : this.areaSelected.name}
+                variant="outlined" />;
 
-        const deleteButton = canBeEdited
-            ? <Button
-                className="wc-button-delete"
-                type="button"
-                color="secondary"
-                onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>
-            : <div></div>;
+            filterInput = <TextField
+                fullWidth
+                disabled
+                label="Filter"
+                type="text"
+                name="filter"
+                id="filter"
+                value={canBeEdited ? this.state.areaInEdit.filter : this.areaSelected.filter}
+                variant="outlined" />;
+
+            submitButton = canBeEdited
+                ? <Button
+                    className="wc-button-submit"
+                    disabled={!this.validateForm()}
+                    type="button"
+                    color="primary"
+                    onClick={this.handleSubmit}>Save</Button>
+                : <div></div>;
+
+            cancelEditButton = canBeEdited
+                ? <Button
+                    className="wc-button-submit"
+                    type="button"
+                    color="primary"
+                    onClick={() => this.setState({ areaInEdit: null })}>Cancel</Button>
+                : <div></div>;
+
+            deleteButton = canBeEdited
+                ? <Button
+                    className="wc-button-delete"
+                    type="button"
+                    color="secondary"
+                    onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>
+                : <div></div>;
+        }
 
         return <div>
             <Typography className="wc-full-width" component="h5" variant="h5" gutterBottom>Wireless Control</Typography>

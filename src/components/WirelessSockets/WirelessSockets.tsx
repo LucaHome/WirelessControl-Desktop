@@ -168,11 +168,30 @@ class WirelessSockets extends React.Component<IEntityProps<WirelessSocket>, any>
                 value={canBeEdited ? this.state.wirelessSocketInEdit.icon : this.wirelessSocketSelected.icon}
                 variant="outlined" />;
 
-            if (canBeEdited) {
-                submitButton = <Button className="wc-button-submit" disabled={!this.validateForm()} type="button" color="primary" onClick={this.handleSubmit}>Save</Button>;
-                cancelEditButton = <Button className="wc-button-submit" type="button" color="primary" onClick={() => this.setState({ wirelessSocketInEdit: null })}>Cancel</Button>;
-                deleteButton = <Button className="wc-button-delete" type="button" color="secondary" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>;
-            }
+            submitButton = canBeEdited
+                ? <Button
+                    className="wc-button-submit"
+                    disabled={!this.validateForm()}
+                    type="button"
+                    color="primary"
+                    onClick={this.handleSubmit}>Save</Button>
+                : <div></div>;
+
+            cancelEditButton = canBeEdited
+                ? <Button
+                    className="wc-button-submit"
+                    type="button"
+                    color="primary"
+                    onClick={() => this.setState({ wirelessSocketInEdit: null })}>Cancel</Button>
+                : <div></div>;
+
+            deleteButton = canBeEdited
+                ? <Button
+                    className="wc-button-delete"
+                    type="button"
+                    color="secondary"
+                    onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>
+                : <div></div>;
         }
 
         return <div>

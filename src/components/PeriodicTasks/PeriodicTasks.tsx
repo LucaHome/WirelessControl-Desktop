@@ -187,11 +187,30 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
                 }}
                 checked={canBeEdited ? this.state.periodicTaskInEdit.active === 1 : this.periodicTaskSelected.active === 1} />;
 
-            if (canBeEdited) {
-                submitButton = <Button className="wc-button-submit" disabled={!this.validateForm()} type="button" color="primary" onClick={this.handleSubmit}>Save</Button>;
-                cancelEditButton = <Button className="wc-button-submit" type="button" color="primary" onClick={() => this.setState({ periodicTaskInEdit: null })}>Cancel</Button>;
-                deleteButton = <Button className="wc-button-delete" type="button" color="secondary" onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>;
-            }
+            submitButton = canBeEdited
+                ? <Button
+                    className="wc-button-submit"
+                    disabled={!this.validateForm()}
+                    type="button"
+                    color="primary"
+                    onClick={this.handleSubmit}>Save</Button>
+                : <div></div>;
+
+            cancelEditButton = canBeEdited
+                ? <Button
+                    className="wc-button-submit"
+                    type="button"
+                    color="primary"
+                    onClick={() => this.setState({ periodicTaskInEdit: null })}>Cancel</Button>
+                : <div></div>;
+
+            deleteButton = canBeEdited
+                ? <Button
+                    className="wc-button-delete"
+                    type="button"
+                    color="secondary"
+                    onClick={() => this.setState({ deleteDialogOpen: true })}>Delete</Button>
+                : <div></div>;
         }
 
         return <div>
