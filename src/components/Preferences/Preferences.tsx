@@ -1,6 +1,4 @@
-import {
-    FormControl, FormControlLabel, FormGroup, MenuItem, OutlinedInput, Select, Typography, withStyles,
-} from "@material-ui/core";
+import { FormControl, FormGroup, FormLabel, MenuItem, OutlinedInput, Select, withStyles } from "@material-ui/core";
 import * as React from "react";
 import { connect } from "react-redux";
 
@@ -9,6 +7,8 @@ import { AppTheme } from "../../enums";
 import { loadAppThemeFromStore, saveAppThemeInStore } from "../../services/storage.service";
 import { saveTheme } from "../../store/actions";
 import { IPreferencesProps } from "./IPreferencesProps";
+
+import "./Preferences.scss";
 
 class Preferences extends React.Component<IPreferencesProps, any> {
 
@@ -21,26 +21,24 @@ class Preferences extends React.Component<IPreferencesProps, any> {
     }
 
     public render() {
-        return <div>
-            <Typography className="wc-full-width" component="h5" variant="h5" gutterBottom>Preferences</Typography>
-            <FormControl fullWidth >
+        return <div className="preferences-container">
+            <FormControl>
+                <FormLabel component="label">Theme</FormLabel>
                 <FormGroup>
-                    <FormControlLabel label="" control={
-                        <Select
-                            fullWidth
-                            value={this.state.theme}
-                            onChange={this.handleChange}
-                            input={
-                                <OutlinedInput
-                                    id="area"
-                                    labelWidth={0}
-                                    name="area"
-                                />
-                            } >
-                            <MenuItem value={AppTheme.Dark}>{AppTheme.Dark}</MenuItem>
-                            <MenuItem value={AppTheme.Light}>{AppTheme.Light}</MenuItem>
-                        </Select>
-                    } />
+                    <Select
+                        fullWidth
+                        value={this.state.theme}
+                        onChange={this.handleChange}
+                        input={
+                            <OutlinedInput
+                                id="theme"
+                                labelWidth={0}
+                                name="theme"
+                            />
+                        } >
+                        <MenuItem value={AppTheme.Dark}>{AppTheme.Dark}</MenuItem>
+                        <MenuItem value={AppTheme.Light}>{AppTheme.Light}</MenuItem>
+                    </Select>
                 </FormGroup>
             </FormControl>
         </div>;
@@ -50,7 +48,7 @@ class Preferences extends React.Component<IPreferencesProps, any> {
         const theme: AppTheme = event.target.value;
         this.setState({ theme: theme });
         saveAppThemeInStore(theme);
-        this.props.dispatch(saveTheme(`Saved new theme ${theme}. Restart application to display new theme.`));
+        this.props.dispatch(saveTheme(`Saved new theme ${theme}. Restart application to use new theme.`));
     }
 }
 

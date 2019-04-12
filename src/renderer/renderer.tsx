@@ -6,16 +6,14 @@ import * as ReactDom from "react-dom";
 import { Provider, ReactReduxContext } from "react-redux";
 
 import App from "../components/App/App";
+import { AppTheme } from "../enums";
 import { loadAppThemeFromStore, loadNextCloudCredentialsFromStore } from "../services/storage.service";
 import configureStore from "../store";
 import { nextCloudCredentialsLogin } from "../store/actions";
 import rootSaga from "../store/sagas";
 
-const theme = createMuiTheme({
-    palette: {
-        type: loadAppThemeFromStore(),
-    },
-});
+const themeDark = createMuiTheme({ palette: { type: "dark" } });
+const themeLight = createMuiTheme({ palette: { type: "light" } });
 
 const store = configureStore();
 store.runSaga(rootSaga);
@@ -26,7 +24,7 @@ if (!!nextCloudCredentials) {
 }
 
 ReactDom.render(
-    <MuiThemeProvider theme={theme}>
+    <MuiThemeProvider theme={loadAppThemeFromStore() === AppTheme.Dark ? themeDark : themeLight}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
             <Provider store={store} context={ReactReduxContext}>
                 <App context={ReactReduxContext} />

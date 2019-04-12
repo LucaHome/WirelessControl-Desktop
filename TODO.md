@@ -1,15 +1,15 @@
 # TODO
 
 - [x] Store data
-- [ ] Display content
+- [x] Display content
     - [x] login possibility
     - [x] areas
     - [x] wireless sockets
     - [x] periodic tasks
-    - [ ] settings
+    - [x] settings
         - [x] change credentials => Logout-Button
         - [x] change theme
-            - [ ] change theme on the fly
+            - [x] change theme on the fly => CANCELED
     - [x] display filter for wireless sockets and periodic tasks
         - [x] wireless sockets
         - [x] periodic tasks
