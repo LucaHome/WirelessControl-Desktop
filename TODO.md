@@ -39,6 +39,6 @@
     - [x] props for area, periodic task & wireless socket
     - [x] remove duplicate html creation
 - [x] remove bootstrap and reactstrap
-- [ ] reload button or automatic reload
+- [x] reload button (y) or automatic reload
 - [ ] [create executable](https://github.com/electron/electron/blob/master/docs/tutorial/application-distribution.md)
     - [ ] use [electron-packager](https://github.com/electron-userland/electron-packager)

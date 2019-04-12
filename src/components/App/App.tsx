@@ -6,6 +6,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import CloseIcon from "@material-ui/icons/Close";
 import MenuIcon from "@material-ui/icons/Menu";
+import SyncIcon from "@material-ui/icons/Sync";
 
 import classNames from "classnames";
 import * as React from "react";
@@ -13,7 +14,7 @@ import { connect } from "react-redux";
 
 import * as Routes from "../../constants/routes.constants";
 import { DrawerEntity } from "../../models";
-import { nextCloudCredentialsLogout, routeSet } from "../../store/actions";
+import { areasLoad, nextCloudCredentialsLogout, periodicTasksLoad, routeSet, wirelessSocketsLoad } from "../../store/actions";
 import { isAnythingLoading, snackbarContent } from "../../store/selectors";
 
 import Areas from "../Areas/Areas";
@@ -143,6 +144,7 @@ class App extends React.Component<IAppProps, any> {
                     {this.createDrawerToogleButton()}
                     <Typography variant="h6" color="inherit" noWrap />
                 </Toolbar>
+                {this.createReloadButton(route)}
                 {this.createLogoutButton()}
             </AppBar>
             <Drawer
@@ -227,6 +229,19 @@ class App extends React.Component<IAppProps, any> {
             </IconButton>;
     }
 
+    private createReloadButton = (route: string): any => {
+        return isAnythingLoading(this.props.state) || !this.props.state.nextCloudCredentials
+            || (route !== Routes.areas && route !== Routes.periodicTasks && route !== Routes.wirelessSockets)
+            ? null
+            : <IconButton
+                className="sync-button"
+                color="inherit"
+                aria-label="Sync"
+                onClick={() => this.handleSync(route)} >
+                <SyncIcon />
+            </IconButton>;
+    }
+
     private createLogoutButton = (): any => {
         return isAnythingLoading(this.props.state) || !this.props.state.nextCloudCredentials
             ? null
@@ -286,6 +301,20 @@ class App extends React.Component<IAppProps, any> {
                 break;
         }
         return contentComponent;
+    }
+
+    private handleSync = (route: string): void => {
+        switch (route) {
+            case Routes.areas:
+                this.props.dispatch(areasLoad());
+                break;
+            case Routes.periodicTasks:
+                this.props.dispatch(periodicTasksLoad());
+                break;
+            case Routes.wirelessSockets:
+                this.props.dispatch(wirelessSocketsLoad());
+                break;
+        }
     }
 
     private handleDrawerOpen = () => this.setState({ drawerOpen: true });

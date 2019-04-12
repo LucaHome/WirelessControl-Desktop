@@ -1,4 +1,11 @@
 .preferences-list {
-  position: absolute !important;
   bottom: 0;
+  position: absolute !important;
+}
+
+.sync-button {
+  position: absolute !important;
+  right: 6rem;
+  top: 0.65rem;
+  width: 3rem;
 }
