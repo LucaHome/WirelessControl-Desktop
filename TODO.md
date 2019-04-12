@@ -23,7 +23,7 @@
     - [x] wireless sockets
     - [x] periodic tasks
 - [x] Navigating
-- [ ] Bugs
+- [x] Bugs
     - [x] 302 error loading areas, wireless sockets or periodic tasks after successful login
     - [x] error adding new wireless socket using handleAdd throws null exception in .some ...
     - [x] error adding new periodic task using handleAdd throws null exception in .some ...
@@ -31,13 +31,14 @@
     - [x] fix layout in periodic tasks if nothing selected
     - [x] fix submit bug
     - [x] after adding new periodic task or wireless socket select used wireless socket or area
-    - [ ] fix add/put & update/post bug
-    - [ ] fix state bug in switch view
+    - [x] fix add/put & update/post bug
+    - [x] fix state bug in switch view
 - [x] unifying
     - [x] styles
     - [x] method duplications => more generic
     - [x] props for area, periodic task & wireless socket
     - [x] remove duplicate html creation
 - [x] remove bootstrap and reactstrap
+- [ ] reload button or automatic reload
 - [ ] [create executable](https://github.com/electron/electron/blob/master/docs/tutorial/application-distribution.md)
     - [ ] use [electron-packager](https://github.com/electron-userland/electron-packager)
