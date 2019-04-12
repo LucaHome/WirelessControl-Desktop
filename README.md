@@ -6,7 +6,7 @@ Electron client to remotely control wireless sockets and switches using Nextclou
 [![Donate: PayPal](https://img.shields.io/badge/paypal-donate-blue.svg)](https://www.paypal.me/GuepardoApps)
 
 [![Build](https://img.shields.io/badge/build-Succeed-green.svg)](./)
-[![Version](https://img.shields.io/badge/version-0.1.0-yellow.svg)](./)
+[![Version](https://img.shields.io/badge/version-0.3.0-yellow.svg)](./)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
 [![Typescript](https://img.shields.io/badge/lang-Typescript-yellow.svg)](https://www.typescriptlang.org/)
@@ -15,10 +15,10 @@ Electron client to remotely control wireless sockets and switches using Nextclou
 
 ## Screenshots
 
-![alt tag](/screenshots/1_login.jpg)
-![alt tag](/screenshots/2_1_area_readonly.jpg)
-![alt tag](/screenshots/3_2_wireless_socket_edit.jpg)
-![alt tag](/screenshots/4_3_periodic_Task_delete.jpg)
+![alt tag](/screenshots/light_1_login.jpg)
+![alt tag](/screenshots/light_2_1_area_readonly.jpg)
+![alt tag](/screenshots/dark_3_2_wireless_socket_edit.jpg)
+![alt tag](/screenshots/dark_4_3_periodic_Task_delete.jpg)
 
 ## License
 
