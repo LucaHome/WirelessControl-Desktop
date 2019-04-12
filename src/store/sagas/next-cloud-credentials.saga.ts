@@ -1,5 +1,6 @@
 import { call, put } from "redux-saga/effects";
 import * as Routes from "../../constants/routes.constants";
+import { convertPingResponse } from "../../converter";
 import { NextCloudCredentials } from "../../models";
 import { serverGet } from "../../services/request.service";
 import { deleteNextCloudCredentialsInStore, saveNextCloudCredentialsInStore } from "../../services/storage.service";
@@ -14,7 +15,9 @@ const subUrl: string = "ping";
 export function* login(action: any) {
     try {
         const nextCloudCredentials: NextCloudCredentials = action.payload.nextCloudCredentials;
-        const response = yield call(serverGet, subUrl, nextCloudCredentials);
+
+        const jsonResponse = yield call(serverGet, subUrl, nextCloudCredentials);
+        const response = yield convertPingResponse(jsonResponse);
 
         switch (response.status) {
             case "success":
