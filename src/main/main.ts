@@ -17,6 +17,7 @@ function createWindow(): void {
     autoHideMenuBar: true,
     darkTheme: true,
     fullscreen: false,
+    icon: __dirname + "/logo.ico",
     height: 900,
     minHeight: 450,
     minWidth: 800,
