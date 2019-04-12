@@ -7,7 +7,6 @@ import {
     areaDeleteFail, areaDeleteSuccessful,
     areasLoadFail, areasLoadSuccessful,
     areaUpdateFail, areaUpdateSuccessful,
-    wirelessSocketsLoad,
 } from "../actions";
 
 const subUrl: string = "area";
@@ -24,7 +23,6 @@ export function* areasLoad(action: any) {
             switch (response.status) {
                 case "success":
                     yield put(areasLoadSuccessful(response.data));
-                    yield put(wirelessSocketsLoad());
                     break;
                 default:
                     yield put(areasLoadFail(response.message));

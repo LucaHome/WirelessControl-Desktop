@@ -4,7 +4,6 @@ import { serverDestroy, serverGet, serverPost, serverPut } from "../../services/
 import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
 import {
     areaSelectByFilter,
-    periodicTasksLoad,
     wirelessSocketAddFail, wirelessSocketAddSuccessful,
     wirelessSocketDeleteFail, wirelessSocketDeleteSuccessful,
     wirelessSocketsLoadFail, wirelessSocketsLoadSuccessful,
@@ -25,7 +24,6 @@ export function* wirelessSocketsLoad(action: any) {
             switch (response.status) {
                 case "success":
                     yield put(wirelessSocketsLoadSuccessful(response.data));
-                    yield put(periodicTasksLoad());
                     break;
                 default:
                     yield put(wirelessSocketsLoadFail(response.message));

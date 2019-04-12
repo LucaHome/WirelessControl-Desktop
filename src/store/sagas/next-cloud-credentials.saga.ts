@@ -4,7 +4,6 @@ import { NextCloudCredentials } from "../../models";
 import { serverGet } from "../../services/request.service";
 import { deleteNextCloudCredentialsInStore, saveNextCloudCredentialsInStore } from "../../services/storage.service";
 import {
-    areasLoad,
     nextCloudCredentialsLoginFail, nextCloudCredentialsLoginSuccessful, nextCloudCredentialsLogoutFail, nextCloudCredentialsLogoutSuccessful,
     routeSet,
 } from "../actions";
@@ -21,7 +20,6 @@ export function* login(action: any) {
             case "success":
                 yield saveNextCloudCredentialsInStore(nextCloudCredentials);
                 yield put(nextCloudCredentialsLoginSuccessful(nextCloudCredentials));
-                yield put(areasLoad());
                 break;
             default:
                 yield put(nextCloudCredentialsLoginFail(response.message));
