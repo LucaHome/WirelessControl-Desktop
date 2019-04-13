@@ -175,7 +175,7 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
                     this.state.periodicTaskInEdit.periodic = this.state.periodicTaskInEdit.periodic === 0 ? 1 : 0;
                     this.setState({ periodicTaskInEdit: clone(this.state.periodicTaskInEdit) });
                 }}
-                checked={canBeEdited ? this.state.periodicTaskInEdit.periodic === 1 : this.periodicTaskSelected.active === 1} />;
+                checked={canBeEdited ? this.state.periodicTaskInEdit.periodic === 1 : this.periodicTaskSelected.periodic === 1} />;
 
             activeSwitch = <Switch
                 disabled={!canBeEdited}
