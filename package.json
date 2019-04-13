@@ -1,7 +1,7 @@
 {
 	"name": "wireless-control-desktop",
 	"description": "Wireless Control lets you control 433MHz sockets within Nextcloud while running on a raspberry",
-	"version": "0.5.0",
+	"version": "0.5.1",
 	"author": {
 		"name": "Jonas Schubert",
 		"email": "guepardoapps@gmail.com"
