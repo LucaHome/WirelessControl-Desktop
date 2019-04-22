@@ -14,10 +14,13 @@ import { formStyles } from "../../constants/style.constants";
 import { EditMode } from "../../enums";
 import { IEntityProps } from "../../interfaces";
 import { PeriodicTask, WirelessSocket } from "../../models";
-import { periodicTaskAdd, periodicTaskAddLocal, periodicTaskDelete, periodicTaskSelectSuccessful, periodicTaskUpdate } from "../../store/actions";
+import {
+    periodicTaskAdd, periodicTaskAddLocal, periodicTaskDelete, periodicTaskSelectSuccessful, periodicTaskUpdate,
+    wirelessSocketSelectById
+} from "../../store/actions";
 import { getPeriodicTasksForWirelessSocket } from "../../store/selectors";
 import { clone, maxId } from "../../utils/entity.utils";
-import { getDateTimeString, getTimeString } from "../../utils/periodic-tasks.utils";
+import { getDateTimeString } from "../../utils/periodic-tasks.utils";
 
 import "./PeriodicTasks.scss";
 
@@ -59,9 +62,28 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
             </List>
             : <List></List>;
 
+        let wirelessSocketSelect = this.props.state.wirelessSocketSelected
+            ? <Select
+                disabled={!this.props.state.wirelessSockets || this.props.state.wirelessSockets.length === 0}
+                fullWidth
+                value={this.props.state.areaSelected}
+                onChange={this.handleWirelessSocketSelection}
+                input={
+                    <OutlinedInput
+                        id="wirelessSocketSelection"
+                        labelWidth={0}
+                        name="wirelessSocketSelection"
+                    />
+                } >
+                {this.props.state.wirelessSockets.map((wirelessSocket: WirelessSocket, _) => (
+                    <MenuItem value={wirelessSocket.id}>{wirelessSocket.name}</MenuItem>
+                ))}
+            </Select>
+            : "";
+
         let idInput = <div></div>;
         let nameInput = <div></div>;
-        let wirelessSocketSelect = <div></div>;
+        let wirelessSocketForPeriodicTaskSelect = <div></div>;
         let wirelessSocketStateSwitch = <div></div>;
         let weekdaySelect = <div></div>;
         let timePicker = <div></div>;
@@ -98,7 +120,7 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
                 value={canBeEdited ? this.state.periodicTaskInEdit.name : this.periodicTaskSelected.name}
                 variant="outlined" />;
 
-            wirelessSocketSelect = <Select
+            wirelessSocketForPeriodicTaskSelect = <Select
                 error={!this.validateWirelessSocket()}
                 disabled={!canBeEdited}
                 fullWidth
@@ -214,7 +236,7 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
         }
 
         return <div>
-            <Typography className="wc-full-width" component="h5" variant="h5" gutterBottom>{this.props.state.wirelessSocketSelected ? this.props.state.wirelessSocketSelected.name : ""}</Typography>
+            <Typography className="wc-full-width" component="h5" variant="h5" gutterBottom>{wirelessSocketSelect}</Typography>
             {this.periodicTaskSelected !== null
                 ? <div>
                     <div className="wc-list-container">
@@ -231,7 +253,7 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
                                 </FormGroup>
                                 <div className="wc-full-width">
                                     <FormGroup className="wireless-socket-name-container">
-                                        <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{wirelessSocketSelect}</div>} />
+                                        <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{wirelessSocketForPeriodicTaskSelect}</div>} />
                                     </FormGroup>
                                     <FormGroup className="wireless-socket-state-container">
                                         <FormControlLabel label="State" control={<div className="wc-margin-bottom-1-rem">{wirelessSocketStateSwitch}</div>} />
@@ -285,6 +307,8 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
             }
         </div>;
     }
+
+    private handleWirelessSocketSelection = (event: any): void => this.props.dispatch(wirelessSocketSelectById(event.target.value, this.props.state.wirelessSockets));
 
     private handleSelect = (periodicTask: PeriodicTask): void => this.props.dispatch(periodicTaskSelectSuccessful(periodicTask));
     private isSelected = (periodicTask: PeriodicTask): boolean => this.periodicTaskSelected !== null && this.periodicTaskSelected.id === periodicTask.id;

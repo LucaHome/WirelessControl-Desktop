@@ -12,7 +12,10 @@ import { formStyles } from "../../constants/style.constants";
 import { EditMode } from "../../enums";
 import { IEntityProps } from "../../interfaces";
 import { Area, WirelessSocket } from "../../models";
-import { wirelessSocketAdd, wirelessSocketAddLocal, wirelessSocketDelete, wirelessSocketSelectSuccessful, wirelessSocketUpdate } from "../../store/actions";
+import {
+    areaSelectByFilter, 
+    wirelessSocketAdd, wirelessSocketAddLocal, wirelessSocketDelete, wirelessSocketSelectSuccessful, wirelessSocketUpdate
+} from "../../store/actions";
 import { getWirelessSocketsForArea } from "../../store/selectors";
 import { clone, maxId } from "../../utils/entity.utils";
 
@@ -62,11 +65,30 @@ class WirelessSockets extends React.Component<IEntityProps<WirelessSocket>, any>
             </List>
             : <List></List>;
 
+        let areaSelect = this.props.state.areaSelected
+            ? <Select
+                disabled={!this.props.state.areas || this.props.state.areas.length === 0}
+                fullWidth
+                value={this.props.state.areaSelected}
+                onChange={this.handleAreaSelection}
+                input={
+                    <OutlinedInput
+                        id="areaSelection"
+                        labelWidth={0}
+                        name="areaSelection"
+                    />
+                } >
+                {this.props.state.areas.filter((area: Area) => area.filter !== "").map((area: Area, _) => (
+                    <MenuItem value={area.filter}>{area.name}</MenuItem>
+                ))}
+            </Select>
+            : "";
+
         let idInput = <div></div>;
         let nameInput = <div></div>;
         let codeInput = <div></div>;
         let descriptionInput = <div></div>;
-        let areaSelect = <div></div>;
+        let areaForWirelessSocketSelect = <div></div>;
         let iconPreview = <div></div>;
         let iconInput = <div></div>;
 
@@ -128,7 +150,7 @@ class WirelessSockets extends React.Component<IEntityProps<WirelessSocket>, any>
                 variant="outlined"
             />;
 
-            areaSelect = <Select
+            areaForWirelessSocketSelect = <Select
                 error={!this.validateArea()}
                 disabled={!canBeEdited}
                 fullWidth
@@ -195,7 +217,7 @@ class WirelessSockets extends React.Component<IEntityProps<WirelessSocket>, any>
         }
 
         return <div>
-            <Typography className="wc-full-width" component="h5" variant="h5" gutterBottom>{this.props.state.areaSelected ? this.props.state.areaSelected.name : ""}</Typography>
+            <Typography className="wc-full-width" component="h5" variant="h5" gutterBottom>{areaSelect}</Typography>
             {this.wirelessSocketSelected !== null
                 ? <div>
                     <div className="wc-list-container">
@@ -217,7 +239,7 @@ class WirelessSockets extends React.Component<IEntityProps<WirelessSocket>, any>
                                     <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{descriptionInput}</div>} />
                                 </FormGroup>
                                 <FormGroup>
-                                    <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{areaSelect}</div>} />
+                                    <FormControlLabel label="" control={<div className="wc-full-width wc-margin-bottom-1-rem">{areaForWirelessSocketSelect}</div>} />
                                 </FormGroup>
                                 <FormGroup>
                                     <FormControlLabel label="" control={<div className="wc-full-width">{iconPreview}{iconInput}</div>} />
@@ -254,6 +276,8 @@ class WirelessSockets extends React.Component<IEntityProps<WirelessSocket>, any>
             }
         </div>;
     }
+
+    private handleAreaSelection = (event: any): void => this.props.dispatch(areaSelectByFilter(event.target.value, this.props.state.areas));
 
     private handleSelect = (wirelessSocket: WirelessSocket): void => this.props.dispatch(wirelessSocketSelectSuccessful(wirelessSocket));
     private isSelected = (wirelessSocket: WirelessSocket): boolean => this.wirelessSocketSelected !== null && this.wirelessSocketSelected.id === wirelessSocket.id;
