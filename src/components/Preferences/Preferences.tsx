@@ -23,7 +23,7 @@ class Preferences extends React.Component<IPreferencesProps, any> {
     public render() {
         return <div className="preferences-container">
             <FormControl>
-                <FormLabel component="label">Theme</FormLabel>
+                <FormLabel>Theme</FormLabel>
                 <FormGroup>
                     <Select
                         fullWidth

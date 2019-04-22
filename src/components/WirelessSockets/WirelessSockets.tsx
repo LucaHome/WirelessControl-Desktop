@@ -217,7 +217,7 @@ class WirelessSockets extends React.Component<IEntityProps<WirelessSocket>, any>
         }
 
         return <div>
-            <Typography className="wc-full-width" component="h5" variant="h5" gutterBottom>{areaSelect}</Typography>
+            <Typography className="wc-full-width" variant="h5" gutterBottom>{areaSelect}</Typography>
             {this.wirelessSocketSelected !== null
                 ? <div>
                     <div className="wc-list-container">

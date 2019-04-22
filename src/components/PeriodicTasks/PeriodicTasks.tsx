@@ -236,7 +236,7 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
         }
 
         return <div>
-            <Typography className="wc-full-width" component="h5" variant="h5" gutterBottom>{wirelessSocketSelect}</Typography>
+            <Typography className="wc-full-width" variant="h5" gutterBottom>{wirelessSocketSelect}</Typography>
             {this.periodicTaskSelected !== null
                 ? <div>
                     <div className="wc-list-container">

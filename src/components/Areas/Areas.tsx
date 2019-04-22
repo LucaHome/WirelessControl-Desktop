@@ -125,7 +125,7 @@ class Areas extends React.Component<IEntityProps<Area>, any> {
         }
 
         return <div>
-            <Typography className="wc-full-width" component="h5" variant="h5" gutterBottom>Wireless Control</Typography>
+            <Typography className="wc-full-width" variant="h5" gutterBottom>Wireless Control</Typography>
             <div className="wc-list-container">
                 {areaList}
             </div>
