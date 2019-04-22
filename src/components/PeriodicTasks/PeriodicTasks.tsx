@@ -62,11 +62,11 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
             </List>
             : <List></List>;
 
-        let wirelessSocketSelect = this.props.state.wirelessSocketSelected
+        const wirelessSocketSelect = this.props.state.wirelessSocketSelected
             ? <Select
                 disabled={!this.props.state.wirelessSockets || this.props.state.wirelessSockets.length === 0}
                 fullWidth
-                value={this.props.state.areaSelected}
+                value={this.props.state.wirelessSocketSelected.id}
                 onChange={this.handleWirelessSocketSelection}
                 input={
                     <OutlinedInput

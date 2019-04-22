@@ -13,7 +13,7 @@ import { EditMode } from "../../enums";
 import { IEntityProps } from "../../interfaces";
 import { Area, WirelessSocket } from "../../models";
 import {
-    areaSelectByFilter, 
+    areaSelectByFilter,
     wirelessSocketAdd, wirelessSocketAddLocal, wirelessSocketDelete, wirelessSocketSelectSuccessful, wirelessSocketUpdate
 } from "../../store/actions";
 import { getWirelessSocketsForArea } from "../../store/selectors";
@@ -65,11 +65,11 @@ class WirelessSockets extends React.Component<IEntityProps<WirelessSocket>, any>
             </List>
             : <List></List>;
 
-        let areaSelect = this.props.state.areaSelected
+        const areaSelect = this.props.state.areaSelected
             ? <Select
                 disabled={!this.props.state.areas || this.props.state.areas.length === 0}
                 fullWidth
-                value={this.props.state.areaSelected}
+                value={this.props.state.areaSelected.name}
                 onChange={this.handleAreaSelection}
                 input={
                     <OutlinedInput
@@ -78,7 +78,7 @@ class WirelessSockets extends React.Component<IEntityProps<WirelessSocket>, any>
                         name="areaSelection"
                     />
                 } >
-                {this.props.state.areas.filter((area: Area) => area.filter !== "").map((area: Area, _) => (
+                {this.props.state.areas.map((area: Area, _) => (
                     <MenuItem value={area.filter}>{area.name}</MenuItem>
                 ))}
             </Select>
