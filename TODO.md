@@ -42,3 +42,4 @@
 - [x] reload button (y) or automatic reload
 - [x] [create executable](https://github.com/electron/electron/blob/master/docs/tutorial/application-distribution.md)
     - [x] use [electron-packager](https://github.com/electron-userland/electron-packager)
+- [ ] Fix Electron build problem --> stuck and not doing anything after starting build #3
