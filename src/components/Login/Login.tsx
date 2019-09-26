@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { formStyles } from "../../constants/style.constants";
 import { NextCloudCredentials } from "../../models";
 import { nextCloudCredentialsLogin } from "../../store/actions";
+import { validateNextCloudUrl, validatePassPhrase, validateUserName } from "../../utils/login.utils";
 import { ILoginProps } from "./ILoginProps";
 
 import "./Login.scss";
@@ -23,7 +24,7 @@ class Login extends React.Component<ILoginProps, any> {
 
     public render() {
         const urlInput = <TextField
-            error={!this.validateNextCloudUrl()}
+            error={!validateNextCloudUrl(this.state.baseUrl)}
             fullWidth
             label="Url"
             type="url"
@@ -36,7 +37,7 @@ class Login extends React.Component<ILoginProps, any> {
         />;
 
         const userNameInput = <TextField
-            error={!this.validateUserName()}
+            error={!validateUserName(this.state.userName)}
             fullWidth
             label="UserName"
             type="text"
@@ -49,7 +50,7 @@ class Login extends React.Component<ILoginProps, any> {
         />;
 
         const passPhraseInput = <TextField
-            error={!this.validatePassPhrase()}
+            error={!validatePassPhrase(this.state.passPhrase)}
             fullWidth
             label="Password"
             type="password"
@@ -84,7 +85,11 @@ class Login extends React.Component<ILoginProps, any> {
         );
     }
 
-    private handleSubmit = (event: any) => {
+    private handleChange = (event: any): void => {
+        this.setState({ [event.target.id]: event.target.value });
+    }
+
+    private handleSubmit = (event: any): void => {
         event.preventDefault();
         const nextCloudCredentials: NextCloudCredentials = {
             baseUrl: this.state.baseUrl,
@@ -94,28 +99,21 @@ class Login extends React.Component<ILoginProps, any> {
         this.props.login(nextCloudCredentials);
     }
 
-    private handleChange = (event: any) => {
-        this.setState({
-            [event.target.id]: event.target.value,
-        });
-    }
-
-    private validateNextCloudUrl = (): boolean => this.state.baseUrl.length > 0 && /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}(\.[a-z]{2,6})?\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/.test(this.state.baseUrl);
-    private validatePassPhrase = (): boolean => this.state.passPhrase.length > 0;
-    private validateUserName = (): boolean => this.state.userName.length > 0;
-    private validateForm = (): boolean => this.validateNextCloudUrl() && this.validatePassPhrase() && this.validateUserName();
+    private validateForm = (): boolean => validateNextCloudUrl(this.state.baseUrl)
+        && validatePassPhrase(this.state.passPhrase)
+        && validateUserName(this.state.userName);
 }
-
-const mapStateToProps = (state: any) => {
-    return {
-        nextCloudCredentials: state.nextCloudCredentials,
-    };
-};
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
         dispatch,
         login: (nextCloudCredentials: NextCloudCredentials) => dispatch(nextCloudCredentialsLogin(nextCloudCredentials)),
+    };
+};
+
+const mapStateToProps = (state: any) => {
+    return {
+        nextCloudCredentials: state.nextCloudCredentials,
     };
 };
 

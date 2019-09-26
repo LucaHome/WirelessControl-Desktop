@@ -3,7 +3,7 @@ import { RouteAction } from "./route.action.d";
 
 export const routeSet = (route: string): RouteAction => ({
     payload: {
-        error: null,
+        error: undefined,
         route,
     },
     type: ROUTE_SET,

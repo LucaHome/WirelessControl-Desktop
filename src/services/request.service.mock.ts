@@ -54,6 +54,8 @@ export const mockServerGetData = (url: string): any => {
                     id: 0,
                     name: "Light Sleeping",
                     state: 0,
+                    lastToggled: 1569438706,
+                    group: "Couple"
                 },
                 {
                     area: "Living Room",
@@ -64,6 +66,8 @@ export const mockServerGetData = (url: string): any => {
                     id: 1,
                     name: "Sound TV",
                     state: 0,
+                    lastToggled: 1569438706,
+                    group: ""
                 },
                 {
                     area: "Living Room",
@@ -74,6 +78,8 @@ export const mockServerGetData = (url: string): any => {
                     id: 2,
                     name: "Raspberry Pi MediaCenter",
                     state: 0,
+                    lastToggled: 1569438706,
+                    group: ""
                 },
                 {
                     area: "Living Room",
@@ -84,6 +90,8 @@ export const mockServerGetData = (url: string): any => {
                     id: 3,
                     name: "Light Couch",
                     state: 1,
+                    lastToggled: 1569438706,
+                    group: ""
                 },
                 {
                     area: "Working Room",
@@ -94,6 +102,8 @@ export const mockServerGetData = (url: string): any => {
                     id: 4,
                     name: "Backup Drive",
                     state: 0,
+                    lastToggled: 1569438706,
+                    group: "Restricted"
                 },
                 {
                     area: "Kitchen",
@@ -104,6 +114,8 @@ export const mockServerGetData = (url: string): any => {
                     id: 5,
                     name: "Media Mirror Kitchen",
                     state: 1,
+                    lastToggled: 1569438706,
+                    group: ""
                 },
                 {
                     area: "Living Room",
@@ -114,6 +126,8 @@ export const mockServerGetData = (url: string): any => {
                     id: 6,
                     name: "Light Ceiling",
                     state: 0,
+                    lastToggled: 1569438706,
+                    group: ""
                 },
             ];
         default:
@@ -121,10 +135,6 @@ export const mockServerGetData = (url: string): any => {
     }
 };
 
-export const mockServerPutData = (inputNumber: number): any => {
-    return ++inputNumber;
-};
+export const mockServerPutData = (inputNumber: number): number => ++inputNumber;
 
-export const mockServerPostDeleteData = (): any => {
-    return 0;
-};
+export const mockServerPostDeleteData = (): number => 0;

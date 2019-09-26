@@ -1,7 +1,7 @@
 import { call, put } from "redux-saga/effects";
 import { convertPeriodicTaskLoadResponse, convertNumberResponse } from "../../converter";
 import { ApiResponse, Area, NextCloudCredentials, PeriodicTask, WirelessSocket } from "../../models";
-import { serverDestroy, serverGet, serverPost, serverPut } from "../../services/request.service";
+import { serverDelete, serverGet, serverPost, serverPut } from "../../services/request.service";
 import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
 import {
     areaSelectByFilter,
@@ -12,18 +12,20 @@ import {
     wirelessSocketSelectById
 } from "../actions";
 
+const apiVersion: "v1" | "v2" = "v1";
+
 const subUrl: string = "periodic_task";
 
 // worker Saga: will be fired on PERIODIC_TASKS_LOAD actions
-export function* periodicTasksLoad(action: any) {
+export function* periodicTasksLoad(_: any) {
     try {
         const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
 
         if (!nextCloudCredentials) {
             yield put(periodicTasksLoadFail("No Credentials available!"));
         } else {
-            const jsonResponse = yield call(serverGet, subUrl, nextCloudCredentials);
-            const response = yield convertPeriodicTaskLoadResponse(jsonResponse);
+            const jsonResponse: string = yield call(serverGet, subUrl, apiVersion, nextCloudCredentials);
+            const response: ApiResponse<PeriodicTask[]> = yield convertPeriodicTaskLoadResponse(jsonResponse);
 
             switch (response.status) {
                 case "success":
@@ -52,8 +54,9 @@ export function* periodicTaskAdd(action: any) {
         if (!nextCloudCredentials) {
             yield put(periodicTaskAddFail("No Credentials available!"));
         } else {
-            const jsonResponse = yield call(serverPost, subUrl, periodicTask, nextCloudCredentials);
+            const jsonResponse: string = yield call(serverPost, subUrl, apiVersion, periodicTask, nextCloudCredentials);
             const response: ApiResponse<number> = yield convertNumberResponse(jsonResponse);
+
             switch (response.status) {
                 case "success":
                     yield periodicTask.id = response.data;
@@ -82,8 +85,9 @@ export function* periodicTaskUpdate(action: any) {
         if (!nextCloudCredentials) {
             yield put(periodicTaskUpdateFail("No Credentials available!"));
         } else {
-            const jsonResponse = yield call(serverPut, subUrl, periodicTask, nextCloudCredentials);
+            const jsonResponse: string = yield call(serverPut, subUrl, apiVersion, periodicTask, nextCloudCredentials);
             const response: ApiResponse<number> = yield convertNumberResponse(jsonResponse);
+
             switch (response.status) {
                 case "success":
                     yield put(periodicTaskUpdateSuccessful(periodicTask));
@@ -109,8 +113,9 @@ export function* periodicTaskDelete(action: any) {
         if (!nextCloudCredentials) {
             yield put(periodicTaskDeleteFail("No Credentials available!"));
         } else {
-            const jsonResponse = yield call(serverDestroy, subUrl, periodicTask.id, nextCloudCredentials);
+            const jsonResponse: string = yield call(serverDelete, subUrl, apiVersion, periodicTask.id, nextCloudCredentials);
             const response: ApiResponse<number> = yield convertNumberResponse(jsonResponse);
+
             switch (response.status) {
                 case "success":
                     yield put(periodicTaskDeleteSuccessful(periodicTask));

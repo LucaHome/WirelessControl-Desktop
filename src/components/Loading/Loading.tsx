@@ -5,7 +5,7 @@ import { ILoadingProps } from "./ILoadingProps";
 
 import "../../../styles/main.scss";
 
-const styles = (theme: any) => ({
+const styles = (theme: any): any => ({
     progress: {
         margin: theme.spacing.unit * 2,
     },

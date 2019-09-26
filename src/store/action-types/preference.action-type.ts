@@ -1,1 +1,1 @@
-export const SAVE_THEME = "SAVE_THEME";
+export const SAVE_THEME: string = "SAVE_THEME";

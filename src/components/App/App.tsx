@@ -28,9 +28,9 @@ import { IAppProps } from "./IAppProps";
 
 import "./App.scss";
 
-const drawerWidth = 240;
+const drawerWidth: number = 240;
 
-const styles = (theme: any) => ({
+const styles = (theme: any): any => ({
     appBar: {
         transition: theme.transitions.create(["width", "margin"], {
             duration: theme.transitions.duration.leavingScreen,
@@ -103,9 +103,9 @@ const styles = (theme: any) => ({
 
 class App extends React.Component<IAppProps, any> {
 
-    public snackbarQueue = [];
+    public snackbarQueue: any[] = [];
 
-    public state = {
+    public state: any = {
         drawerOpen: false,
         snackbarDisplay: false,
         snackbarMessageInfo: { key: "", message: "" },
@@ -126,7 +126,7 @@ class App extends React.Component<IAppProps, any> {
     }
 
     public render() {
-        const route = this.calculateRoute();
+        const route: string = this.calculateRoute();
         const snackbarSelection: any = snackbarContent(this.props.state);
         if (snackbarSelection.display) {
             this.handleSnackbarDisplay(snackbarSelection.message);
@@ -215,40 +215,7 @@ class App extends React.Component<IAppProps, any> {
         return route;
     }
 
-    private createDrawerToogleButton = (): any => {
-        return !this.props.state.nextCloudCredentials
-            ? null
-            : <IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={this.handleDrawerOpen}
-                className={classNames(this.props.classes.menuButton, {
-                    [this.props.classes.hide]: this.state.drawerOpen,
-                })} >
-                <MenuIcon />
-            </IconButton>;
-    }
-
-    private createReloadButton = (route: string): any => {
-        return isAnythingLoading(this.props.state) || !this.props.state.nextCloudCredentials
-            || (route !== Routes.areas && route !== Routes.periodicTasks && route !== Routes.wirelessSockets)
-            ? null
-            : <IconButton
-                className="sync-button"
-                color="inherit"
-                aria-label="Sync"
-                onClick={() => this.handleSync(route)} >
-                <SyncIcon />
-            </IconButton>;
-    }
-
-    private createLogoutButton = (): any => {
-        return isAnythingLoading(this.props.state) || !this.props.state.nextCloudCredentials
-            ? null
-            : <Button className={this.props.classes.logoutButton} onClick={() => this.props.dispatch(nextCloudCredentialsLogout())}>Logout</Button>;
-    }
-
-    private createDrawerButtonEntityList = (route: string): any => {
+    private createDrawerButtonEntityList = (route: string): JSX.Element => {
         return !this.props.state.nextCloudCredentials
             ? <List></List>
             : <List>
@@ -261,7 +228,7 @@ class App extends React.Component<IAppProps, any> {
             </List>;
     }
 
-    private createDrawerPreferencesList = (route: string): any => {
+    private createDrawerPreferencesList = (route: string): JSX.Element => {
         return !this.props.state.nextCloudCredentials
             ? <List></List>
             : <List className="preferences-list">
@@ -274,34 +241,79 @@ class App extends React.Component<IAppProps, any> {
             </List>;
     }
 
-    private findContentComponent = (route: string): any => {
-        let contentComponent = null;
+    private createDrawerToogleButton = (): JSX.Element => {
+        return !this.props.state.nextCloudCredentials
+            ? undefined
+            : <IconButton
+                color="inherit"
+                aria-label="Open drawer"
+                onClick={this.handleDrawerOpen}
+                className={classNames(this.props.classes.menuButton, {
+                    [this.props.classes.hide]: this.state.drawerOpen,
+                })} >
+                <MenuIcon />
+            </IconButton>;
+    }
+
+    private createLogoutButton = (): JSX.Element => {
+        return isAnythingLoading(this.props.state) || !this.props.state.nextCloudCredentials
+            ? undefined
+            : <Button className={this.props.classes.logoutButton} onClick={() => this.props.dispatch(nextCloudCredentialsLogout())}>Logout</Button>;
+    }
+
+    private createReloadButton = (route: string): JSX.Element => {
+        return isAnythingLoading(this.props.state) || !this.props.state.nextCloudCredentials
+            || (route !== Routes.areas && route !== Routes.periodicTasks && route !== Routes.wirelessSockets)
+            ? undefined
+            : <IconButton
+                className="sync-button"
+                color="inherit"
+                aria-label="Sync"
+                onClick={() => this.handleSync(route)} >
+                <SyncIcon />
+            </IconButton>;
+    }
+
+    private findContentComponent = (route: string): JSX.Element => {
         switch (route) {
             case Routes.login:
-                contentComponent = <Login></Login>;
-                break;
+                return <Login></Login>;
             case Routes.areas:
-                contentComponent = <Areas></Areas>;
-                break;
+                return <Areas></Areas>;
             case Routes.periodicTasks:
-                contentComponent = <PeriodicTasks></PeriodicTasks>;
-                break;
+                return <PeriodicTasks></PeriodicTasks>;
             case Routes.wirelessSockets:
-                contentComponent = <WirelessSockets></WirelessSockets>;
-                break;
+                return <WirelessSockets></WirelessSockets>;
             case Routes.preferences:
-                contentComponent = <Preferences></Preferences>;
-                break;
+                return <Preferences></Preferences>;
             case Routes.loading:
-                contentComponent = <Loading></Loading>;
-                break;
+                return <Loading></Loading>;
             case Routes.notFound:
             default:
-                contentComponent = <NotFound></NotFound>;
-                break;
+                return <NotFound></NotFound>;
         }
-        return contentComponent;
     }
+
+    private handleDrawerClose = (): void => this.setState({ drawerOpen: false });
+
+    private handleDrawerOpen = (): void => this.setState({ drawerOpen: true });
+
+    private handleSnackbarDisplay = (message: string): void => {
+        this.snackbarQueue.push({
+            key: new Date().getTime(),
+            message,
+        });
+
+        if (this.state.snackbarDisplay) {
+            this.setState({ snackbarDisplay: false });
+        } else {
+            this.processSnackbarQueue();
+        }
+    }
+
+    private handleSnackbarExited = (): void => this.processSnackbarQueue();
+
+    private handleSnackbarHide = (): void => this.setState({ snackbarDisplay: false });
 
     private handleSync = (route: string): void => {
         switch (route) {
@@ -317,24 +329,7 @@ class App extends React.Component<IAppProps, any> {
         }
     }
 
-    private handleDrawerOpen = () => this.setState({ drawerOpen: true });
-    private handleDrawerClose = () => this.setState({ drawerOpen: false });
-    private handleSnackbarDisplay = (message: string) => {
-        this.snackbarQueue.push({
-            key: new Date().getTime(),
-            message,
-        });
-
-        if (this.state.snackbarDisplay) {
-            this.setState({ snackbarDisplay: false });
-        } else {
-            this.processSnackbarQueue();
-        }
-    }
-
-    private handleSnackbarHide = () => this.setState({ snackbarDisplay: false });
-    private handleSnackbarExited = () => this.processSnackbarQueue();
-    private processSnackbarQueue = () => {
+    private processSnackbarQueue = (): void => {
         if (this.snackbarQueue.length > 0) {
             this.setState({
                 snackbarDisplay: true,
@@ -344,15 +339,15 @@ class App extends React.Component<IAppProps, any> {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapDispatchToProps = (dispatch: any): any => {
     return {
-        state,
+        dispatch,
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state: any): any => {
     return {
-        dispatch,
+        state,
     };
 };
 

@@ -9,16 +9,14 @@ import {
 
 const wirelessSocketsReducer = (wirelessSockets: WirelessSocket[] = [], action: any): WirelessSocket[] => {
     switch (action.type) {
-        case WIRELESS_SOCKETS_LOAD_SUCCESSFUL: {
+        case WIRELESS_SOCKETS_LOAD_SUCCESSFUL:
             return action.payload.list;
-        }
         case WIRELESS_SOCKET_ADD_LOCAL:
-        case WIRELESS_SOCKET_ADD_SUCCESSFUL: {
+        case WIRELESS_SOCKET_ADD_SUCCESSFUL:
             return [...wirelessSockets, action.payload.wirelessSocket];
-        }
         case WIRELESS_SOCKET_UPDATE_SUCCESSFUL: {
             const wirelessSocket: WirelessSocket = action.payload.wirelessSocket;
-            const index = wirelessSockets.map((x: WirelessSocket) => x.id).indexOf(wirelessSocket.id);
+            const index: number = wirelessSockets.map((x: WirelessSocket) => x.id).indexOf(wirelessSocket.id);
             wirelessSockets[index] = wirelessSocket;
             return wirelessSockets;
         }
@@ -33,7 +31,7 @@ const wirelessSocketsReducer = (wirelessSockets: WirelessSocket[] = [], action: 
     }
 };
 
-const wirelessSocketSelectReducer = (wirelessSocket: WirelessSocket = null, action: any): WirelessSocket => {
+const wirelessSocketSelectReducer = (wirelessSocket: WirelessSocket = undefined, action: any): WirelessSocket => {
     switch (action.type) {
         case WIRELESS_SOCKET_ADD_LOCAL:
         case WIRELESS_SOCKET_ADD_SUCCESSFUL:
@@ -41,9 +39,9 @@ const wirelessSocketSelectReducer = (wirelessSocket: WirelessSocket = null, acti
         case WIRELESS_SOCKET_UPDATE_SUCCESSFUL:
             return action.payload.wirelessSocket;
         case WIRELESS_SOCKET_DELETE_SUCCESSFUL:
-            return null;
+            return undefined;
         case WIRELESS_SOCKETS_LOAD_SUCCESSFUL:
-            return action.payload.list.length > 0 ? action.payload.list[0] : null;
+            return action.payload.list.length > 0 ? action.payload.list[0] : undefined;
         case WIRELESS_SOCKET_SELECT_BY_ID: {
             const wirelessSockets: WirelessSocket[] = action.payload.list;
             const id: number = action.payload.id;
@@ -54,14 +52,13 @@ const wirelessSocketSelectReducer = (wirelessSocket: WirelessSocket = null, acti
     }
 };
 
-const wirelessSocketAddReducer = (wirelessSocket: WirelessSocket = null, action: any): WirelessSocket => {
+const wirelessSocketAddReducer = (wirelessSocket: WirelessSocket = undefined, action: any): WirelessSocket => {
     switch (action.type) {
-        case WIRELESS_SOCKET_ADD: {
+        case WIRELESS_SOCKET_ADD:
             return action.payload.wirelessSocket;
-        }
         case WIRELESS_SOCKET_ADD_SUCCESSFUL:
         case WIRELESS_SOCKET_ADD_FAIL:
-            return null;
+            return undefined;
         default:
             return wirelessSocket;
     }

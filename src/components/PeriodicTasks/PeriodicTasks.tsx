@@ -1,3 +1,4 @@
+import { cloneDeep, max } from "lodash/fp";
 import {
     Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, FormControl, FormControlLabel,
     FormGroup, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, MenuItem, OutlinedInput, Select,
@@ -9,31 +10,29 @@ import { TimePicker } from "material-ui-pickers";
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { weekdayArray } from "../../constants/periodic-tasks.constants";
 import { formStyles } from "../../constants/style.constants";
 import { EditMode } from "../../enums";
 import { IEntityProps } from "../../interfaces";
 import { PeriodicTask, WirelessSocket } from "../../models";
 import {
-    periodicTaskAdd, periodicTaskAddLocal, periodicTaskDelete, periodicTaskSelectSuccessful, periodicTaskUpdate,
-    wirelessSocketSelectById
+    periodicTaskAdd, periodicTaskAddLocal, periodicTaskDelete, periodicTaskSelectSuccessful, periodicTaskUpdate, wirelessSocketSelectById
 } from "../../store/actions";
 import { getPeriodicTasksForWirelessSocket } from "../../store/selectors";
-import { clone, maxId } from "../../utils/entity.utils";
-import { getDateTimeString } from "../../utils/periodic-tasks.utils";
+import { getDateTimeString, validateName, validateTime, validateWeekday, validateWirelessSocket, weekdayArray } from "../../utils/periodic-tasks.utils";
 
 import "./PeriodicTasks.scss";
 
 class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
 
-    public state = {
+    public state: any = {
         deleteDialogOpen: false,
         editMode: EditMode.Null,
-        periodicTaskInEdit: null,
+        periodicTaskInEdit: undefined,
     };
 
     private periodicTasks: PeriodicTask[] = [];
-    private periodicTaskSelected: PeriodicTask = null;
+
+    private periodicTaskSelected: PeriodicTask = undefined;
 
     constructor(props: IEntityProps<PeriodicTask>) {
         super(props);
@@ -43,18 +42,18 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
         this.periodicTasks = getPeriodicTasksForWirelessSocket(this.props.state);
         this.periodicTaskSelected = this.props.state.periodicTaskSelected;
 
-        if (!this.periodicTasks.some((periodicTask) => this.periodicTaskSelected !== null && periodicTask.id === this.periodicTaskSelected.id)) {
-            this.handleSelect(this.periodicTasks.length > 0 ? this.periodicTasks[0] : null);
+        if (!this.periodicTasks.some((periodicTask) => this.periodicTaskSelected !== undefined && periodicTask.id === this.periodicTaskSelected.id)) {
+            this.handleSelect(this.periodicTasks.length > 0 ? this.periodicTasks[0] : undefined);
         }
 
-        const periodicTaskList = this.periodicTasks.length > 0
+        const periodicTaskList: JSX.Element = this.periodicTasks.length > 0
             ? <List>
                 {this.periodicTasks.map((periodicTask: PeriodicTask, _) => (
                     <ListItem button key={periodicTask.id} onClick={() => this.handleSelect(periodicTask)} selected={this.isSelected(periodicTask)}>
                         <ListItemText primary={periodicTask.name} secondary={getDateTimeString(periodicTask)} />
                         <ListItemSecondaryAction>
                             <IconButton aria-label="Edit" onClick={() => this.handleEdit(periodicTask)}>
-                                <EditIcon color={(this.state.periodicTaskInEdit !== null && periodicTask.id === this.state.periodicTaskInEdit.id) ? "secondary" : "primary"} />
+                                <EditIcon color={(this.state.periodicTaskInEdit !== undefined && periodicTask.id === this.state.periodicTaskInEdit.id) ? "secondary" : "primary"} />
                             </IconButton>
                         </ListItemSecondaryAction>
                     </ListItem>
@@ -62,7 +61,7 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
             </List>
             : <List></List>;
 
-        const wirelessSocketSelect = this.props.state.wirelessSocketSelected
+        const wirelessSocketSelect: JSX.Element | "" = this.props.state.wirelessSocketSelected
             ? <Select
                 disabled={!this.props.state.wirelessSockets || this.props.state.wirelessSockets.length === 0}
                 fullWidth
@@ -75,27 +74,27 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
                         name="wirelessSocketSelection"
                     />
                 } >
-                {this.props.state.wirelessSockets.map((wirelessSocket: WirelessSocket, _) => (
+                {this.props.state.wirelessSockets.map((wirelessSocket: WirelessSocket, _: any) => (
                     <MenuItem value={wirelessSocket.id}>{wirelessSocket.name}</MenuItem>
                 ))}
             </Select>
             : "";
 
-        let idInput = <div></div>;
-        let nameInput = <div></div>;
-        let wirelessSocketForPeriodicTaskSelect = <div></div>;
-        let wirelessSocketStateSwitch = <div></div>;
-        let weekdaySelect = <div></div>;
-        let timePicker = <div></div>;
-        let periodicSwitch = <div></div>;
-        let activeSwitch = <div></div>;
+        let idInput: JSX.Element = <div></div>;
+        let nameInput: JSX.Element = <div></div>;
+        let wirelessSocketForPeriodicTaskSelect: JSX.Element = <div></div>;
+        let wirelessSocketStateSwitch: JSX.Element = <div></div>;
+        let weekdaySelect: JSX.Element = <div></div>;
+        let timePicker: JSX.Element = <div></div>;
+        let periodicSwitch: JSX.Element = <div></div>;
+        let activeSwitch: JSX.Element = <div></div>;
 
-        let submitButton = <div></div>;
-        let cancelEditButton = <div></div>;
-        let deleteButton = <div></div>;
+        let submitButton: JSX.Element = <div></div>;
+        let cancelEditButton: JSX.Element = <div></div>;
+        let deleteButton: JSX.Element = <div></div>;
 
-        if (this.periodicTaskSelected !== null) {
-            const canBeEdited = this.state.periodicTaskInEdit !== null && this.periodicTaskSelected.id === this.state.periodicTaskInEdit.id;
+        if (this.periodicTaskSelected !== undefined) {
+            const canBeEdited: boolean = this.state.periodicTaskInEdit !== undefined && this.periodicTaskSelected.id === this.state.periodicTaskInEdit.id;
 
             idInput = <TextField
                 fullWidth
@@ -108,7 +107,7 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
                 variant="outlined" />;
 
             nameInput = <TextField
-                error={!this.validateName()}
+                error={!validateName(this.state.periodicTaskInEdit)}
                 disabled={!canBeEdited}
                 fullWidth
                 label="Name"
@@ -121,7 +120,7 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
                 variant="outlined" />;
 
             wirelessSocketForPeriodicTaskSelect = <Select
-                error={!this.validateWirelessSocket()}
+                error={!validateWirelessSocket(this.state.periodicTaskInEdit)}
                 disabled={!canBeEdited}
                 fullWidth
                 value={canBeEdited ? this.state.periodicTaskInEdit.wirelessSocketId : this.periodicTaskSelected.wirelessSocketId}
@@ -147,12 +146,12 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
                 id="wirelessSocketState"
                 onChange={() => {
                     this.state.periodicTaskInEdit.wirelessSocketState = this.state.periodicTaskInEdit.wirelessSocketState === 0 ? 1 : 0;
-                    this.setState({ periodicTaskInEdit: clone(this.state.periodicTaskInEdit) });
+                    this.setState({ periodicTaskInEdit: cloneDeep(this.state.periodicTaskInEdit) });
                 }}
                 checked={canBeEdited ? this.state.periodicTaskInEdit.wirelessSocketState === 1 : this.periodicTaskSelected.wirelessSocketState === 1} />;
 
             weekdaySelect = <Select
-                error={!this.validateWeekday()}
+                error={!validateWeekday(this.state.periodicTaskInEdit)}
                 disabled={!canBeEdited}
                 fullWidth
                 value={canBeEdited ? this.state.periodicTaskInEdit.weekday : this.periodicTaskSelected.weekday}
@@ -177,7 +176,7 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
             date.setMinutes(canBeEdited ? this.state.periodicTaskInEdit.minute : this.periodicTaskSelected.minute);
             timePicker = <div className="picker">
                 <TimePicker
-                    error={!this.validateTime()}
+                    error={!validateTime(this.state.periodicTaskInEdit)}
                     disabled={!canBeEdited}
                     fullWidth
                     label="Time"
@@ -195,7 +194,7 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
                 id="periodic"
                 onChange={() => {
                     this.state.periodicTaskInEdit.periodic = this.state.periodicTaskInEdit.periodic === 0 ? 1 : 0;
-                    this.setState({ periodicTaskInEdit: clone(this.state.periodicTaskInEdit) });
+                    this.setState({ periodicTaskInEdit: cloneDeep(this.state.periodicTaskInEdit) });
                 }}
                 checked={canBeEdited ? this.state.periodicTaskInEdit.periodic === 1 : this.periodicTaskSelected.periodic === 1} />;
 
@@ -205,7 +204,7 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
                 id="active"
                 onChange={() => {
                     this.state.periodicTaskInEdit.active = this.state.periodicTaskInEdit.active === 0 ? 1 : 0;
-                    this.setState({ periodicTaskInEdit: clone(this.state.periodicTaskInEdit) });
+                    this.setState({ periodicTaskInEdit: cloneDeep(this.state.periodicTaskInEdit) });
                 }}
                 checked={canBeEdited ? this.state.periodicTaskInEdit.active === 1 : this.periodicTaskSelected.active === 1} />;
 
@@ -223,7 +222,7 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
                     className="wc-button-submit"
                     type="button"
                     color="primary"
-                    onClick={() => this.setState({ periodicTaskInEdit: null })}>Cancel</Button>
+                    onClick={() => this.setState({ periodicTaskInEdit: undefined })}>Cancel</Button>
                 : <div></div>;
 
             deleteButton = canBeEdited
@@ -237,7 +236,7 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
 
         return <div>
             <Typography className="wc-full-width" variant="h5" gutterBottom>{wirelessSocketSelect}</Typography>
-            {this.periodicTaskSelected !== null
+            {this.periodicTaskSelected !== undefined
                 ? <div>
                     <div className="wc-list-container">
                         {periodicTaskList}
@@ -303,22 +302,19 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
                         </DialogActions>
                     </Dialog>
                 </div>
-                : null
+                : undefined
             }
         </div>;
     }
 
-    private handleWirelessSocketSelection = (event: any): void => this.props.dispatch(wirelessSocketSelectById(event.target.value, this.props.state.wirelessSockets));
-
-    private handleSelect = (periodicTask: PeriodicTask): void => this.props.dispatch(periodicTaskSelectSuccessful(periodicTask));
-    private isSelected = (periodicTask: PeriodicTask): boolean => this.periodicTaskSelected !== null && this.periodicTaskSelected.id === periodicTask.id;
+    private isSelected = (periodicTask: PeriodicTask): boolean => this.periodicTaskSelected !== undefined && this.periodicTaskSelected.id === periodicTask.id;
 
     private handleAdd = (): void => {
-        const now = new Date(Date.now());
+        const now: Date = new Date(Date.now());
         const periodicTask: PeriodicTask = {
             active: 1,
             hour: now.getHours(),
-            id: maxId(this.props.state.periodicTasks) + 1,
+            id: max<number>(this.props.state.periodicTasks.map((periodicTask: PeriodicTask) => periodicTask.id)) + 1,
             minute: now.getMinutes(),
             name: "",
             periodic: 1,
@@ -328,46 +324,47 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
             wirelessSocketState: this.props.state.wirelessSocketSelected.state,
         };
         this.props.dispatch(periodicTaskAddLocal(periodicTask));
-        this.setState({
-            editMode: EditMode.Add,
-            periodicTaskInEdit: periodicTask,
-        });
+        this.setState({ editMode: EditMode.Add, periodicTaskInEdit: periodicTask });
     }
 
-    private handleEdit = (periodicTask: PeriodicTask): void => {
-        this.props.dispatch(periodicTaskSelectSuccessful(periodicTask));
-        this.setState({
-            editMode: EditMode.Edit,
-            periodicTaskInEdit: clone(periodicTask),
-        });
-    }
-
-    private handleChange = (event: any) => {
+    private handleChange = (event: any): void => {
         const periodicTask: PeriodicTask = this.state.periodicTaskInEdit;
         periodicTask[event.target.name] = event.target.value;
-        this.setState({ periodicTaskInEdit: clone(periodicTask) });
+        this.setState({ periodicTaskInEdit: cloneDeep(periodicTask) });
     }
 
-    private handleChangeWirelessSocket = (event: any) => {
-        const periodicTask: PeriodicTask = this.state.periodicTaskInEdit;
-        periodicTask.wirelessSocketId = event.target.value;
-        this.setState({ periodicTaskInEdit: clone(periodicTask) });
-    }
-
-    private handleChangeTime = (selectedValue: any) => {
+    private handleChangeTime = (selectedValue: any): void => {
         const selectedTime: Date = new Date(selectedValue);
         const periodicTask: PeriodicTask = this.state.periodicTaskInEdit;
-        if (selectedTime !== null) {
+        if (selectedTime !== undefined) {
             periodicTask.hour = selectedTime.getHours();
             periodicTask.minute = selectedTime.getMinutes();
         } else {
             periodicTask.hour = -1;
             periodicTask.minute = -1;
         }
-        this.setState({ periodicTaskInEdit: clone(periodicTask) });
+        this.setState({ periodicTaskInEdit: cloneDeep(periodicTask) });
     }
 
-    private handleSubmit = (event: any) => {
+    private handleChangeWirelessSocket = (event: any): void => {
+        const periodicTask: PeriodicTask = this.state.periodicTaskInEdit;
+        periodicTask.wirelessSocketId = event.target.value;
+        this.setState({ periodicTaskInEdit: cloneDeep(periodicTask) });
+    }
+
+    private handleDelete = (): void => {
+        this.props.dispatch(periodicTaskDelete(this.state.periodicTaskInEdit));
+        this.setState({ periodicTaskInEdit: undefined, deleteDialogOpen: false });
+    }
+
+    private handleEdit = (periodicTask: PeriodicTask): void => {
+        this.props.dispatch(periodicTaskSelectSuccessful(periodicTask));
+        this.setState({ editMode: EditMode.Edit, periodicTaskInEdit: cloneDeep(periodicTask) });
+    }
+
+    private handleSelect = (periodicTask: PeriodicTask): void => this.props.dispatch(periodicTaskSelectSuccessful(periodicTask));
+
+    private handleSubmit = (event: any): void => {
         event.preventDefault();
 
         switch (this.state.editMode) {
@@ -379,38 +376,26 @@ class PeriodicTasks extends React.Component<IEntityProps<PeriodicTask>, any> {
                 break;
         }
 
-        this.setState({
-            editMode: EditMode.Null,
-            periodicTaskInEdit: null,
-        });
+        this.setState({ editMode: EditMode.Null, periodicTaskInEdit: undefined });
     }
 
-    private validateName = (): boolean => this.state.periodicTaskInEdit === null
-        || (this.state.periodicTaskInEdit.name.length >= 3 && this.state.periodicTaskInEdit.name.length <= 128)
-    private validateWirelessSocket = (): boolean => this.state.periodicTaskInEdit === null
-        || this.state.periodicTaskInEdit.wirelessSocketId !== -1
-    private validateWeekday = (): boolean => this.state.periodicTaskInEdit === null
-        || this.state.periodicTaskInEdit.weekday !== -1
-    private validateTime = (): boolean => this.state.periodicTaskInEdit === null
-        || (this.state.periodicTaskInEdit.hour >= 0 && this.state.periodicTaskInEdit.hour <= 23 && this.state.periodicTaskInEdit.minute >= 0 && this.state.periodicTaskInEdit.minute <= 59)
+    private handleWirelessSocketSelection = (event: any): void => this.props.dispatch(wirelessSocketSelectById(event.target.value, this.props.state.wirelessSockets));
 
-    private validateForm = (): boolean => this.validateName() && this.validateWirelessSocket() && this.validateWeekday() && this.validateTime();
-
-    private handleDelete = (): void => {
-        this.props.dispatch(periodicTaskDelete(this.state.periodicTaskInEdit));
-        this.setState({ periodicTaskInEdit: null, deleteDialogOpen: false });
-    }
+    private validateForm = (): boolean => validateName(this.state.periodicTaskInEdit)
+        && validateTime(this.state.periodicTaskInEdit)
+        && validateWeekday(this.state.periodicTaskInEdit)
+        && validateWirelessSocket(this.state.periodicTaskInEdit);
 }
-
-const mapStateToProps = (state: any) => {
-    return {
-        state,
-    };
-};
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
         dispatch,
+    };
+};
+
+const mapStateToProps = (state: any) => {
+    return {
+        state,
     };
 };
 

@@ -4,16 +4,16 @@ import {
     NEXT_CLOUD_CREDENTIALS_LOGOUT, NEXT_CLOUD_CREDENTIALS_LOGOUT_FAIL, NEXT_CLOUD_CREDENTIALS_LOGOUT_SUCCESSFUL,
 } from "../action-types";
 
-const nextCloudCredentialsReducer = (nextCloudCredentials: NextCloudCredentials = null, action: any): NextCloudCredentials => {
+const nextCloudCredentialsReducer = (nextCloudCredentials: NextCloudCredentials = undefined, action: any): NextCloudCredentials => {
     switch (action.type) {
         case NEXT_CLOUD_CREDENTIALS_LOGIN_FAIL:
-            return null;
+            return undefined;
         case NEXT_CLOUD_CREDENTIALS_LOGIN_SUCCESSFUL:
             return action.payload.nextCloudCredentials;
         case NEXT_CLOUD_CREDENTIALS_LOGOUT_FAIL:
             return nextCloudCredentials;
         case NEXT_CLOUD_CREDENTIALS_LOGOUT_SUCCESSFUL:
-            return null;
+            return undefined;
         default:
             return nextCloudCredentials;
     }

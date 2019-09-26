@@ -21,7 +21,7 @@ import {
     /*WIRELESS_SOCKETS_LOAD,*/ WIRELESS_SOCKETS_LOAD_FAIL, /*WIRELESS_SOCKETS_LOAD_SUCCESSFUL,*/
 } from "../action-types";
 
-const snackbarMessageReducer = (snackbarMessage: string = "", action: any): string => {
+const snackbarMessageReducer = (_: string = "", action: any): string => {
     switch (action.type) {
         case AREA_ADD_FAIL:
             return "Add of area failed!";
@@ -104,7 +104,7 @@ const snackbarMessageReducer = (snackbarMessage: string = "", action: any): stri
     }
 };
 
-const snackbarSeverityReducer = (snackbarSeverity: Severity = Severity.Null, action: any): Severity => {
+const snackbarSeverityReducer = (_: Severity = Severity.Null, action: any): Severity => {
     switch (action.type) {
         case AREA_ADD_FAIL:
         case AREA_DELETE_FAIL:

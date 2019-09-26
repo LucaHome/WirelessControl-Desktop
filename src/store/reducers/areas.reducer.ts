@@ -9,16 +9,14 @@ import {
 
 const areasReducer = (areas: Area[] = [], action: any): Area[] => {
     switch (action.type) {
-        case AREAS_LOAD_SUCCESSFUL: {
+        case AREAS_LOAD_SUCCESSFUL:
             return [...action.payload.list];
-        }
         case AREA_ADD_LOCAL:
-        case AREA_ADD_SUCCESSFUL: {
+        case AREA_ADD_SUCCESSFUL:
             return [...areas, action.payload.area];
-        }
         case AREA_UPDATE_SUCCESSFUL: {
             const area: Area = action.payload.area;
-            const index = areas.map((x: Area) => x.id).indexOf(area.id);
+            const index: number = areas.map((x: Area) => x.id).indexOf(area.id);
             areas[index] = area;
             return areas;
         }
@@ -33,7 +31,7 @@ const areasReducer = (areas: Area[] = [], action: any): Area[] => {
     }
 };
 
-const areaSelectReducer = (area: Area = null, action: any): Area => {
+const areaSelectReducer = (area: Area = undefined, action: any): Area => {
     switch (action.type) {
         case AREA_ADD_LOCAL:
         case AREA_ADD_SUCCESSFUL:
@@ -41,9 +39,9 @@ const areaSelectReducer = (area: Area = null, action: any): Area => {
         case AREA_UPDATE_SUCCESSFUL:
             return action.payload.area;
         case AREAS_LOAD_SUCCESSFUL:
-            return action.payload.list.length > 0 ? action.payload.list[0] : null
+            return action.payload.list.length > 0 ? action.payload.list[0] : undefined;
         case AREA_DELETE_SUCCESSFUL:
-            return null;
+            return undefined;
         case AREA_SELECT_BY_FILTER: {
             const areas: Area[] = action.payload.list;
             const filter: string = action.payload.filter;
@@ -54,14 +52,13 @@ const areaSelectReducer = (area: Area = null, action: any): Area => {
     }
 };
 
-const areaAddReducer = (area: Area = null, action: any): Area => {
+const areaAddReducer = (area: Area = undefined, action: any): Area => {
     switch (action.type) {
-        case AREA_ADD: {
+        case AREA_ADD:
             return action.payload.area;
-        }
         case AREA_ADD_SUCCESSFUL:
         case AREA_ADD_FAIL:
-            return null;
+            return undefined;
         default:
             return area;
     }

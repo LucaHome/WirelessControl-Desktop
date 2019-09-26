@@ -1,1 +1,1 @@
-export const ROUTE_SET = "ROUTE_SET";
+export const ROUTE_SET: string = "ROUTE_SET";

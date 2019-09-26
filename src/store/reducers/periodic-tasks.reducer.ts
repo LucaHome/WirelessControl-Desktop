@@ -9,16 +9,14 @@ import {
 
 const periodicTasksReducer = (periodicTasks: PeriodicTask[] = [], action: any): PeriodicTask[] => {
     switch (action.type) {
-        case PERIODIC_TASKS_LOAD_SUCCESSFUL: {
+        case PERIODIC_TASKS_LOAD_SUCCESSFUL:
             return action.payload.list;
-        }
         case PERIODIC_TASK_ADD_LOCAL:
-        case PERIODIC_TASK_ADD_SUCCESSFUL: {
+        case PERIODIC_TASK_ADD_SUCCESSFUL:
             return [...periodicTasks, action.payload.periodicTask];
-        }
         case PERIODIC_TASK_UPDATE_SUCCESSFUL: {
             const periodicTask: PeriodicTask = action.payload.periodicTask;
-            const index = periodicTasks.map((x: PeriodicTask) => x.id).indexOf(periodicTask.id);
+            const index: number = periodicTasks.map((x: PeriodicTask) => x.id).indexOf(periodicTask.id);
             periodicTasks[index] = periodicTask;
             return periodicTasks;
         }
@@ -33,7 +31,7 @@ const periodicTasksReducer = (periodicTasks: PeriodicTask[] = [], action: any): 
     }
 };
 
-const periodicTaskSelectReducer = (periodicTask: PeriodicTask = null, action: any): PeriodicTask => {
+const periodicTaskSelectReducer = (periodicTask: PeriodicTask = undefined, action: any): PeriodicTask => {
     switch (action.type) {
         case PERIODIC_TASK_ADD_LOCAL:
         case PERIODIC_TASK_ADD_SUCCESSFUL:
@@ -41,22 +39,21 @@ const periodicTaskSelectReducer = (periodicTask: PeriodicTask = null, action: an
         case PERIODIC_TASK_UPDATE_SUCCESSFUL:
             return action.payload.periodicTask;
         case PERIODIC_TASK_DELETE_SUCCESSFUL:
-            return null;
+            return undefined;
         case PERIODIC_TASKS_LOAD_SUCCESSFUL:
-            return action.payload.list.length > 0 ? action.payload.list[0] : null;
+            return action.payload.list.length > 0 ? action.payload.list[0] : undefined;
         default:
             return periodicTask;
     }
 };
 
-const periodicTaskAddReducer = (periodicTask: PeriodicTask = null, action: any): PeriodicTask => {
+const periodicTaskAddReducer = (periodicTask: PeriodicTask = undefined, action: any): PeriodicTask => {
     switch (action.type) {
-        case PERIODIC_TASK_ADD: {
+        case PERIODIC_TASK_ADD:
             return action.payload.periodicTask;
-        }
         case PERIODIC_TASK_ADD_SUCCESSFUL:
         case PERIODIC_TASK_ADD_FAIL:
-            return null;
+            return undefined;
         default:
             return periodicTask;
     }

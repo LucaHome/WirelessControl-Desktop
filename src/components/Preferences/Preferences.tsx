@@ -12,7 +12,7 @@ import "./Preferences.scss";
 
 class Preferences extends React.Component<IPreferencesProps, any> {
 
-    public state = {
+    public state: any = {
         theme: loadAppThemeFromStore(),
     };
 
@@ -52,15 +52,15 @@ class Preferences extends React.Component<IPreferencesProps, any> {
     }
 }
 
-const mapStateToProps = (state: any) => {
-    return {
-        state,
-    };
-};
-
 const mapDispatchToProps = (dispatch: any) => {
     return {
         dispatch,
+    };
+};
+
+const mapStateToProps = (state: any) => {
+    return {
+        state,
     };
 };
 

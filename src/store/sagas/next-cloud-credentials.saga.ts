@@ -1,13 +1,15 @@
 import { call, put } from "redux-saga/effects";
 import * as Routes from "../../constants/routes.constants";
 import { convertPingResponse } from "../../converter";
-import { NextCloudCredentials } from "../../models";
+import { ApiResponse, NextCloudCredentials } from "../../models";
 import { serverGet } from "../../services/request.service";
 import { deleteNextCloudCredentialsInStore, saveNextCloudCredentialsInStore } from "../../services/storage.service";
 import {
     nextCloudCredentialsLoginFail, nextCloudCredentialsLoginSuccessful, nextCloudCredentialsLogoutFail, nextCloudCredentialsLogoutSuccessful,
     routeSet,
 } from "../actions";
+
+const apiVersion: "v1" | "v2" = "v1";
 
 const subUrl: string = "ping";
 
@@ -16,8 +18,8 @@ export function* login(action: any) {
     try {
         const nextCloudCredentials: NextCloudCredentials = action.payload.nextCloudCredentials;
 
-        const jsonResponse = yield call(serverGet, subUrl, nextCloudCredentials);
-        const response = yield convertPingResponse(jsonResponse);
+        const jsonResponse: string = yield call(serverGet, subUrl, apiVersion, nextCloudCredentials);
+        const response: ApiResponse<string> = yield convertPingResponse(jsonResponse);
 
         switch (response.status) {
             case "success":
@@ -38,7 +40,7 @@ export function* login(action: any) {
 }
 
 // worker Saga: will be fired on NEXT_CLOUD_CREDENTIALS_LOGOUT actions
-export function* logout(action: any) {
+export function* logout(_: any) {
     try {
         yield deleteNextCloudCredentialsInStore();
         yield put(nextCloudCredentialsLogoutSuccessful());

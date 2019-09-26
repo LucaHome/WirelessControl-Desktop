@@ -8,4 +8,6 @@ export interface WirelessSocket extends Entity {
     description: string;
     icon: string;
     deletable: 0 | 1;
+    lastToggled: number;
+    group: string;
 }

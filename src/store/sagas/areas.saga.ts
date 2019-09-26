@@ -1,7 +1,7 @@
 import { call, put } from "redux-saga/effects";
 import { convertAreaLoadResponse, convertNumberResponse } from "../../converter";
 import { ApiResponse, Area, NextCloudCredentials } from "../../models";
-import { serverDestroy, serverGet, serverPost, serverPut } from "../../services/request.service";
+import { serverDelete, serverGet, serverPost, serverPut } from "../../services/request.service";
 import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
 import {
     areaAddFail, areaAddSuccessful,
@@ -10,18 +10,20 @@ import {
     areaUpdateFail, areaUpdateSuccessful,
 } from "../actions";
 
+const apiVersion: "v1" | "v2" = "v1";
+
 const subUrl: string = "area";
 
 // worker Saga: will be fired on AREAS_LOAD actions
-export function* areasLoad(action: any) {
+export function* areasLoad(_: any) {
     try {
         const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
 
         if (!nextCloudCredentials) {
             yield put(areasLoadFail("No Credentials available!"));
         } else {
-            const jsonResponse = yield call(serverGet, subUrl, nextCloudCredentials);
-            const response = yield convertAreaLoadResponse(jsonResponse);
+            const jsonResponse: string = yield call(serverGet, subUrl, apiVersion, nextCloudCredentials);
+            const response: ApiResponse<Area[]> = yield convertAreaLoadResponse(jsonResponse);
 
             switch (response.status) {
                 case "success":
@@ -48,8 +50,9 @@ export function* areaAdd(action: any) {
         if (!nextCloudCredentials) {
             yield put(areaAddFail("No Credentials available!"));
         } else {
-            const jsonResponse = yield call(serverPost, subUrl, area, nextCloudCredentials);
+            const jsonResponse: string = yield call(serverPost, subUrl, apiVersion, area, nextCloudCredentials);
             const response: ApiResponse<number> = yield convertNumberResponse(jsonResponse);
+
             switch (response.status) {
                 case "success":
                     yield area.id = response.data;
@@ -76,8 +79,9 @@ export function* areaUpdate(action: any) {
         if (!nextCloudCredentials) {
             yield put(areaUpdateFail("No Credentials available!"));
         } else {
-            const jsonResponse = yield call(serverPut, subUrl, area, nextCloudCredentials);
+            const jsonResponse: string = yield call(serverPut, subUrl, apiVersion, area, nextCloudCredentials);
             const response: ApiResponse<number> = yield convertNumberResponse(jsonResponse);
+
             switch (response.status) {
                 case "success":
                     yield put(areaUpdateSuccessful(area));
@@ -103,8 +107,9 @@ export function* areaDelete(action: any) {
         if (!nextCloudCredentials) {
             yield put(areaDeleteFail("No Credentials available!"));
         } else {
-            const jsonResponse = yield call(serverDestroy, subUrl, area.id, nextCloudCredentials);
+            const jsonResponse: string = yield call(serverDelete, subUrl, apiVersion, area.id, nextCloudCredentials);
             const response: ApiResponse<number> = yield convertNumberResponse(jsonResponse);
+
             switch (response.status) {
                 case "success":
                     yield put(areaDeleteSuccessful(area));

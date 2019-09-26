@@ -1,3 +1,4 @@
+import { cloneDeep, max } from "lodash/fp";
 import {
     Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, FormControl, FormControlLabel,
     FormGroup, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, TextField, Typography, withStyles,
@@ -12,18 +13,19 @@ import { EditMode } from "../../enums";
 import { IEntityProps } from "../../interfaces";
 import { Area } from "../../models";
 import { areaAdd, areaAddLocal, areaDelete, areaSelectSuccessful, areaUpdate } from "../../store/actions";
-import { clone, maxId } from "../../utils/entity.utils";
+import { validate } from "../../utils/area.utils";
 
 class Areas extends React.Component<IEntityProps<Area>, any> {
 
-    public state = {
-        areaInEdit: null,
+    public state: any = {
+        areaInEdit: undefined,
         deleteDialogOpen: false,
         editMode: EditMode.Null,
     };
 
     private areas: Area[] = [];
-    private areaSelected: Area = null;
+
+    private areaSelected: Area = undefined;
 
     constructor(props: IEntityProps<Area>) {
         super(props);
@@ -33,11 +35,11 @@ class Areas extends React.Component<IEntityProps<Area>, any> {
         this.areas = this.props.state.areas;
         this.areaSelected = this.props.state.areaSelected;
 
-        if (!this.areas.some((area: Area) => this.areaSelected !== null && area.id === this.areaSelected.id)) {
-            this.handleSelect(this.areas.length > 0 ? this.areas[0] : null);
+        if (!this.areas.some((area: Area) => this.areaSelected !== undefined && area.id === this.areaSelected.id)) {
+            this.handleSelect(this.areas.length > 0 ? this.areas[0] : undefined);
         }
 
-        const areaList = this.areas.length > 0
+        const areaList: JSX.Element = this.areas.length > 0
             ? <List>
                 {this.areas.map((area: Area, _) => (
                     <ListItem button key={area.id} onClick={() => this.handleSelect(area)} selected={this.isSelected(area)}>
@@ -45,25 +47,25 @@ class Areas extends React.Component<IEntityProps<Area>, any> {
                         {area.deletable === 1
                             ? <ListItemSecondaryAction>
                                 <IconButton aria-label="Edit" onClick={() => this.handleEdit(area)}>
-                                    <EditIcon color={(this.state.areaInEdit !== null && area.id === this.state.areaInEdit.id) ? "secondary" : "primary"} />
+                                    <EditIcon color={(this.state.areaInEdit !== undefined && area.id === this.state.areaInEdit.id) ? "secondary" : "primary"} />
                                 </IconButton>
                             </ListItemSecondaryAction>
-                            : null}
+                            : undefined}
                     </ListItem>
                 ))}
             </List>
             : <List></List>;
 
-        let idInput = <div></div>;
-        let nameInput = <div></div>;
-        let filterInput = <div></div>;
+        let idInput: JSX.Element = <div></div>;
+        let nameInput: JSX.Element = <div></div>;
+        let filterInput: JSX.Element = <div></div>;
 
-        let submitButton = <div></div>;
-        let cancelEditButton = <div></div>;
-        let deleteButton = <div></div>;
+        let submitButton: JSX.Element = <div></div>;
+        let cancelEditButton: JSX.Element = <div></div>;
+        let deleteButton: JSX.Element = <div></div>;
 
-        if (this.areaSelected !== null) {
-            const canBeEdited = (this.state.areaInEdit !== null && this.areaSelected.id === this.state.areaInEdit.id) && this.areaSelected.deletable === 1;
+        if (this.areaSelected !== undefined) {
+            const canBeEdited: boolean = (this.state.areaInEdit !== undefined && this.areaSelected.id === this.state.areaInEdit.id) && this.areaSelected.deletable === 1;
 
             idInput = <TextField
                 fullWidth
@@ -76,7 +78,7 @@ class Areas extends React.Component<IEntityProps<Area>, any> {
                 variant="outlined" />;
 
             nameInput = <TextField
-                error={!this.validateName()}
+                error={!validate(this.state.areaInEdit)}
                 disabled={!canBeEdited}
                 fullWidth
                 label="Name"
@@ -101,7 +103,7 @@ class Areas extends React.Component<IEntityProps<Area>, any> {
             submitButton = canBeEdited
                 ? <Button
                     className="wc-button-submit"
-                    disabled={!this.validateForm()}
+                    disabled={!validate(this.state.areaInEdit)}
                     type="button"
                     color="primary"
                     onClick={this.handleSubmit}>Save</Button>
@@ -112,7 +114,7 @@ class Areas extends React.Component<IEntityProps<Area>, any> {
                     className="wc-button-submit"
                     type="button"
                     color="primary"
-                    onClick={() => this.setState({ areaInEdit: null })}>Cancel</Button>
+                    onClick={() => this.setState({ areaInEdit: undefined })}>Cancel</Button>
                 : <div></div>;
 
             deleteButton = canBeEdited
@@ -171,39 +173,39 @@ class Areas extends React.Component<IEntityProps<Area>, any> {
         </div>;
     }
 
-    private handleSelect = (area: Area): void => this.props.dispatch(areaSelectSuccessful(area));
-    private isSelected = (area: Area): boolean => this.areaSelected !== null && this.areaSelected.id === area.id;
+    private isSelected = (area: Area): boolean => this.areaSelected !== undefined && this.areaSelected.id === area.id;
 
     private handleAdd = (): void => {
         const area: Area = {
             deletable: 1,
             filter: "",
-            id: maxId(this.props.state.areas) + 1,
+            id: max<number>(this.props.state.areas.map((area: Area) => area.id)) + 1,
             name: "",
         };
         this.props.dispatch(areaAddLocal(area));
-        this.setState({
-            areaInEdit: area,
-            editMode: EditMode.Add,
-        });
+        this.setState({ areaInEdit: area, editMode: EditMode.Add });
+    }
+
+    private handleChange = (event: any): void => {
+        const area: Area = this.state.areaInEdit;
+        area.name = event.target.value;
+        area.filter = event.target.value;
+        this.setState({ areaInEdit: cloneDeep(area) });
+    }
+
+    private handleDelete = (): void => {
+        this.props.dispatch(areaDelete(this.state.areaInEdit));
+        this.setState({ areaInEdit: undefined, deleteDialogOpen: false });
     }
 
     private handleEdit = (area: Area): void => {
         this.props.dispatch(areaSelectSuccessful(area));
-        this.setState({
-            areaInEdit: clone(area),
-            editMode: EditMode.Edit,
-        });
+        this.setState({ areaInEdit: cloneDeep(area), editMode: EditMode.Edit });
     }
 
-    private handleChange = (event: any) => {
-        const area: Area = this.state.areaInEdit;
-        area.name = event.target.value;
-        area.filter = event.target.value;
-        this.setState({ areaInEdit: clone(area) });
-    }
+    private handleSelect = (area: Area): void => this.props.dispatch(areaSelectSuccessful(area));
 
-    private handleSubmit = (event: any) => {
+    private handleSubmit = (event: any): void => {
         event.preventDefault();
 
         switch (this.state.editMode) {
@@ -215,30 +217,19 @@ class Areas extends React.Component<IEntityProps<Area>, any> {
                 break;
         }
 
-        this.setState({
-            areaInEdit: null,
-            editMode: EditMode.Null,
-        });
-    }
-
-    private validateName = (): boolean => this.state.areaInEdit === null || (this.state.areaInEdit.deletable === 0 || this.state.areaInEdit.name.length > 0);
-    private validateForm = (): boolean => this.validateName();
-
-    private handleDelete = (): void => {
-        this.props.dispatch(areaDelete(this.state.areaInEdit));
-        this.setState({ areaInEdit: null, deleteDialogOpen: false });
+        this.setState({ areaInEdit: undefined, editMode: EditMode.Null });
     }
 }
-
-const mapStateToProps = (state: any) => {
-    return {
-        state,
-    };
-};
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
         dispatch,
+    };
+};
+
+const mapStateToProps = (state: any) => {
+    return {
+        state,
     };
 };
 

@@ -1,7 +1,7 @@
 import { call, put } from "redux-saga/effects";
 import { convertWirelessSocketLoadResponse, convertNumberResponse } from "../../converter";
 import { ApiResponse, Area, NextCloudCredentials, WirelessSocket } from "../../models";
-import { serverDestroy, serverGet, serverPost, serverPut } from "../../services/request.service";
+import { serverDelete, serverGet, serverPost, serverPut } from "../../services/request.service";
 import { loadNextCloudCredentialsFromStore } from "../../services/storage.service";
 import {
     areaSelectByFilter,
@@ -11,17 +11,19 @@ import {
     wirelessSocketUpdateFail, wirelessSocketUpdateSuccessful,
 } from "../actions";
 
+const apiVersion: "v1" | "v2" = "v2";
+
 const subUrl: string = "wireless_socket";
 
 // worker Saga: will be fired on WIRELESS_SOCKETS_LOAD actions
-export function* wirelessSocketsLoad(action: any) {
+export function* wirelessSocketsLoad(_: any) {
     try {
         const nextCloudCredentials: NextCloudCredentials = loadNextCloudCredentialsFromStore();
 
         if (!nextCloudCredentials) {
             yield put(wirelessSocketsLoadFail("No Credentials available!"));
         } else {
-            const jsonResponse = yield call(serverGet, subUrl, nextCloudCredentials);
+            const jsonResponse: string = yield call(serverGet, subUrl, apiVersion, nextCloudCredentials);
             const response: ApiResponse<WirelessSocket[]> = yield convertWirelessSocketLoadResponse(jsonResponse);
 
             switch (response.status) {
@@ -50,8 +52,9 @@ export function* wirelessSocketAdd(action: any) {
         if (!nextCloudCredentials) {
             yield put(wirelessSocketAddFail("No Credentials available!"));
         } else {
-            const jsonResponse = yield call(serverPost, subUrl, wirelessSocket, nextCloudCredentials);
+            const jsonResponse: string = yield call(serverPost, subUrl, apiVersion, wirelessSocket, nextCloudCredentials);
             const response: ApiResponse<number> = yield convertNumberResponse(jsonResponse);
+
             switch (response.status) {
                 case "success":
                     yield wirelessSocket.id = response.data;
@@ -79,8 +82,9 @@ export function* wirelessSocketUpdate(action: any) {
         if (!nextCloudCredentials) {
             yield put(wirelessSocketUpdateFail("No Credentials available!"));
         } else {
-            const jsonResponse = yield call(serverPut, subUrl, wirelessSocket, nextCloudCredentials);
+            const jsonResponse: string = yield call(serverPut, subUrl, apiVersion, wirelessSocket, nextCloudCredentials);
             const response: ApiResponse<number> = yield convertNumberResponse(jsonResponse);
+
             switch (response.status) {
                 case "success":
                     yield put(wirelessSocketUpdateSuccessful(wirelessSocket));
@@ -106,8 +110,9 @@ export function* wirelessSocketDelete(action: any) {
         if (!nextCloudCredentials) {
             yield put(wirelessSocketDeleteFail("No Credentials available!"));
         } else {
-            const jsonResponse = yield call(serverDestroy, subUrl, wirelessSocket.id, nextCloudCredentials);
+            const jsonResponse: string = yield call(serverDelete, subUrl, apiVersion, wirelessSocket.id, nextCloudCredentials);
             const response: ApiResponse<number> = yield convertNumberResponse(jsonResponse);
+
             switch (response.status) {
                 case "success":
                     yield put(wirelessSocketDeleteSuccessful(wirelessSocket));

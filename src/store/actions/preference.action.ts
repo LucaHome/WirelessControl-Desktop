@@ -3,7 +3,7 @@ import { PreferenceAction } from "./preference.action.d";
 
 export const saveTheme = (message: string): PreferenceAction => ({
     payload: {
-        error: null,
+        error: undefined,
         message,
     },
     type: SAVE_THEME,
