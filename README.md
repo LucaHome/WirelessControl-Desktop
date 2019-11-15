@@ -20,6 +20,12 @@ Electron client to remotely control wireless sockets and switches using Nextclou
 ![alt tag](/screenshots/dark_3_2_wireless_socket_edit.jpg)
 ![alt tag](/screenshots/dark_4_3_periodic_Task_delete.jpg)
 
+## Contributors
+
+| [<img alt="JonasSchubert" src="https://avatars0.githubusercontent.com/u/21952813?v=4&s=117" width="117"/>](https://github.com/JonasSchubert) |
+| :---------------------------------------------------------------------------------------------------------------------------------------: |
+| [Jonas Schubert](https://github.com/JonasSchubert) |
+
 ## License
 
 WirelessControl-Desktop is distributed under the MIT license. [See LICENSE](LICENSE.md) for details.
